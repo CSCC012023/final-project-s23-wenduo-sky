@@ -12,7 +12,7 @@
       ]
     },
     {
-      "target": "yourscope",
+      "target": "dashboard",
       "source": ".",
       "frameworksBackend": {}
     }

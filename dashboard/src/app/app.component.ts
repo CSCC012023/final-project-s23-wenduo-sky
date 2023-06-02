@@ -7,7 +7,7 @@ import { Database, ref, set } from '@angular/fire/database';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'yourscope';
+  title = 'dashboard';
 
   private database: Database = inject(Database);
 
