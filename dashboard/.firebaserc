@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "dashboard-66bdb"
+  },
+  "targets": {
+    "dashboard-66bdb": {
+      "hosting": {
+        "dashboard": [
+          "dashboard-66bdb"
+        ]
+      }
+    }
+  }
+}
