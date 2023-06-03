@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using yourscope_api.Models.Request;
 
 namespace yourscope_api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/Test/v1")]
     public class EventController : ControllerBase
     {
 
@@ -15,8 +16,9 @@ namespace yourscope_api.Controllers
         {
             _logger = logger;
         }
-
-        [HttpPost(Name = "event")]
+        
+        [HttpPost]
+        [Route("add-to-database")]
         public int Post()
         {
             using (var context = new YourScopeContext())
