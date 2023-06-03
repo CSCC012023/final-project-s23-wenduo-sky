@@ -1,14 +1,5 @@
 {
   "projects": {
-    "default": "yourscope-66bdb"
-  },
-  "targets": {
-    "yourscope-66bdb": {
-      "hosting": {
-        "yourscope": [
-          "yourscope-66bdb"
-        ]
-      }
-    }
+    "default": "yourscope-we"
   }
 }
