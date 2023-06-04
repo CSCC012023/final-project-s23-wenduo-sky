@@ -15,3 +15,8 @@ api/yourscope-api/*.VisualState.xml
 api/yourscope-api/Version.cs
 api/yourscope-api/Version.h
 api/yourscope-api/Version.cpp
+api/yourscope-api/.vs/
+yourscope/.angular/cache/
+yourscope/.firebase/*.cache/
+yourscope/node_modules/
+api/yourscope-api/Properties/launchSettings
