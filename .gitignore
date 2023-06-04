@@ -4,8 +4,8 @@ api/yourscope-api/*.suo
 api/yourscope-api/*.user
 api/yourscope-api/_ReSharper.*/
 api/yourscope-api/*.sdf
-bin/
-obj/
+api/yourscope-api/bin/
+api/yourscope-api/obj/
 api/yourscope-api/Debug/
 api/yourscope-api/Release/
 api/yourscope-api/*.opensdf
