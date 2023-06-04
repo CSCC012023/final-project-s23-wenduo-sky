@@ -51,8 +51,6 @@ public class YourScopeContext : DbContext
         .AddEnvironmentVariables()
         .Build();
 
-    //static readonly string connectionString = "Server=yourscope.c0a92ja1esk5.us-east-1.rds.amazonaws.com; User ID=admin; Password=CSCC01wenduo#sky; Database=yourscope";
-
     public DbSet<Event> Events { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
