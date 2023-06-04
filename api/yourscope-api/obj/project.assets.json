@@ -1473,30 +1473,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Jason Su\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "/Users/ethan/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Jason Su\\Documents\\UTSC Non-Github\\CSCC01\\final-project-s23-wenduo-sky\\api\\yourscope-api\\yourscope-api.csproj",
+      "projectUniqueName": "/Users/ethan/Documents/Projects/final-project-s23-wenduo-sky/api/yourscope-api/yourscope-api.csproj",
       "projectName": "yourscope-api",
-      "projectPath": "C:\\Users\\Jason Su\\Documents\\UTSC Non-Github\\CSCC01\\final-project-s23-wenduo-sky\\api\\yourscope-api\\yourscope-api.csproj",
-      "packagesPath": "C:\\Users\\Jason Su\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Jason Su\\Documents\\UTSC Non-Github\\CSCC01\\final-project-s23-wenduo-sky\\api\\yourscope-api\\obj\\",
+      "projectPath": "/Users/ethan/Documents/Projects/final-project-s23-wenduo-sky/api/yourscope-api/yourscope-api.csproj",
+      "packagesPath": "/Users/ethan/.nuget/packages/",
+      "outputPath": "/Users/ethan/Documents/Projects/final-project-s23-wenduo-sky/api/yourscope-api/obj/",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Jason Su\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/ethan/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "/usr/local/share/dotnet/sdk/7.0.302/Sdks/Microsoft.NET.Sdk.Web/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -1559,7 +1554,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.302/RuntimeIdentifierGraph.json"
       }
     }
   }
