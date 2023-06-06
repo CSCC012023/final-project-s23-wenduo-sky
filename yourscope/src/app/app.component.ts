@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Database, ref, set } from '@angular/fire/database';
-import { HttpClient } from '@angular/common/http';
+import { APIService } from './services/api.service';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +12,7 @@ export class AppComponent {
 
   private database: Database = inject(Database);
 
-  constructor(private hc: HttpClient) { }
+  constructor(private api: APIService) { }
 
   addFireData() {
     const test = ref(this.database, '/test')
@@ -24,8 +24,9 @@ export class AppComponent {
   }
 
   addSQLData() {
-    const body = { Title: "Tested", Description: "Tested" };
-    this.hc.post('https://localhost:7184/api/Test/v1/add-to-database', body).subscribe(res => {
+    const url = 'https://localhost:7184/api/Test/v1/add-to-database';
+    const data = { Title: "Tested", Description: "Tested" };
+    this.api.post(url, data).subscribe(res => {
       console.log(res);
     });
   }
