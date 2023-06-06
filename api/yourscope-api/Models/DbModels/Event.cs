@@ -1,4 +1,4 @@
-﻿namespace yourscope_api.Models.Request
+﻿namespace yourscope_api.Models.DbModels
 {
     public class Event
     {
