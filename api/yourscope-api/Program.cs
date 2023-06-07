@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using yourscope_api.Models.Request;
 using Microsoft.Extensions.Configuration;
 
 string YourScopePolicy = "YourScopePolicy";
@@ -43,19 +42,3 @@ app.UseCors(YourScopePolicy);
 #endregion
 
 app.Run();
-
-public class YourScopeContext : DbContext
-{
-    IConfiguration config = new ConfigurationBuilder()
-        .AddJsonFile("appsettings.json")
-        .AddEnvironmentVariables()
-        .Build();
-
-    public DbSet<Event> Events { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        string? connectionString = config.GetConnectionString("db");
-        optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-    }
-}

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
-using yourscope_api.Models.Request;
+using yourscope_api.Models.DbModels;
 
 namespace yourscope_api.Controllers
 {
