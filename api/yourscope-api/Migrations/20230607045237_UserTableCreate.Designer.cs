@@ -11,7 +11,7 @@ using yourscope_api;
 namespace yourscope_api.Migrations
 {
     [DbContext(typeof(YourScopeContext))]
-    [Migration("20230606044850_UserTableCreate")]
+    [Migration("20230607045237_UserTableCreate")]
     partial class UserTableCreate
     {
         /// <inheritdoc />
@@ -53,6 +53,10 @@ namespace yourscope_api.Migrations
 
                     b.Property<DateTime?>("Birthday")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
