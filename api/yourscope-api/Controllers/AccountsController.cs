@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using yourscope_api.Models;
+using yourscope_api.entities;
 using yourscope_api.service;
 
 namespace yourscope_api.Controllers
@@ -25,6 +26,20 @@ namespace yourscope_api.Controllers
             try
             {
                 return Ok(service.CheckEmailRegistered(email));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("student/register")]
+        public IActionResult RegisterStudent([FromBody] UserRegistration userInfo)
+        {
+            try
+            {
+                return service.RegisterStudentMethod(userInfo);
             }
             catch (Exception ex)
             {

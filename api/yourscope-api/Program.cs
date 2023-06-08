@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using yourscope_api.service;
+using Firebase.Auth;
+using Firebase.Auth.Providers;
 
 string YourScopePolicy = "YourScopePolicy";
 
@@ -25,6 +27,7 @@ builder.Services.AddCors(options =>
 
 #region dependency injection
 builder.Services.AddTransient<IAccountsService, AccountsService>();
+
 #endregion
 
 #endregion
