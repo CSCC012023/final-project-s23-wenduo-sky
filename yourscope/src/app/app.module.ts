@@ -7,13 +7,31 @@ import { environment } from '../environments/environment';
 import { provideAuth,getAuth } from '@angular/fire/auth';
 import { provideDatabase,getDatabase } from '@angular/fire/database';
 import { provideRemoteConfig,getRemoteConfig } from '@angular/fire/remote-config';
+import { LoginComponent } from './pages/login/login.component';
+import { RouterModule, Routes } from '@angular/router';
+import { LandingComponent } from './pages/landing/landing.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { RegisterComponent } from './pages/register/register.component';
+
+
+const routes: Routes = [
+  { path: 'dashboard', component: DashboardComponent},
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: '', component: LandingComponent },
+]
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginComponent,
+    LandingComponent,
+    DashboardComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
+    RouterModule.forRoot(routes),
     HttpClientModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
