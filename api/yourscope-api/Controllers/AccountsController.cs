@@ -34,7 +34,7 @@ namespace yourscope_api.Controllers
         }
 
         [HttpPost]
-        [Route("/student/register")]
+        [Route("student/register")]
         public IActionResult RegisterStudent([FromBody] UserRegistration userInfo)
         {
             try
