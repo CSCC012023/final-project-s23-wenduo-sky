@@ -24,7 +24,7 @@ namespace yourscope_api.Controllers
             using (var context = new YourScopeContext())
             {
 
-                Event newEvent = new Event { Title = "test", Description = "test"};
+                Event newEvent = new() { Title = "test", Description = "test"};
                 context.Events.Add(newEvent);
                 context.SaveChanges();
             }

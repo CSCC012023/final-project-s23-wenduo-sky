@@ -5,7 +5,7 @@ namespace yourscope_api
 {
     public class YourScopeContext : DbContext
     {
-        IConfiguration config = new ConfigurationBuilder()
+        private readonly IConfiguration config = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json")
             .AddEnvironmentVariables()
             .Build();
