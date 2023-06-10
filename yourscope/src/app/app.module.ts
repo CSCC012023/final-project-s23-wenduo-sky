@@ -9,6 +9,8 @@ import { provideDatabase,getDatabase } from '@angular/fire/database';
 import { provideRemoteConfig,getRemoteConfig } from '@angular/fire/remote-config';
 import { AppRoutingModule } from './app-routing.module';
 import { AdminModule } from './admin/admin.module';
+import { EmployerModule } from './employer/employer.module';
+import { StudentModule } from './student/student.module';
 import { CommonModule } from '@angular/common';
 
 
@@ -25,6 +27,8 @@ import { CommonModule } from '@angular/common';
     provideRemoteConfig(() => getRemoteConfig()),
     AppRoutingModule,
     AdminModule,
+    StudentModule,
+    EmployerModule,
     CommonModule
   ],
   providers: [],
