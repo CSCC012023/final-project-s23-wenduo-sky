@@ -1,21 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { Routes, RouterModule } from '@angular/router'; 
 import { AdminRoutingModule } from './admin-routing.module';
+import { DashboardAdminComponent } from './dashboard-admin/dashboard-admin.component';
+import { AdminEventsComponent } from './admin-events/admin-events.component';
+import { AdminCoursesComponent } from './admin-courses/admin-courses.component';
 
-const routes: Routes = [
-  {   path: '',   component: DashboardComponent},
-  {   path: 'admin',   component: DashboardComponent,
-      children :[
-          { path: 'dashboard', component: DashboardComponent},
-      ]
-  },
-];
 
 @NgModule({
   declarations: [
-    DashboardComponent,
+    DashboardAdminComponent,
+    AdminEventsComponent,
+    AdminCoursesComponent
   ],
   imports: [
     CommonModule,
