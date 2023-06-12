@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using yourscope_api.Models;
 using yourscope_api.entities;
 using yourscope_api.service;
+using Microsoft.AspNetCore.Authorization;
 
 namespace yourscope_api.Controllers
 {
@@ -19,7 +20,7 @@ namespace yourscope_api.Controllers
         }
         #endregion
 
-        [HttpGet]
+        [HttpGet, Authorize]
         [Route("check-registered/{email}")]
         public IActionResult CheckEmailRegistered(string email)
         {
@@ -35,11 +36,25 @@ namespace yourscope_api.Controllers
 
         [HttpPost]
         [Route("student/register")]
-        public IActionResult RegisterStudent([FromBody] UserRegistration userInfo)
+        public IActionResult RegisterStudent([FromBody] UserRegistrationDto userInfo)
         {
             try
             {
                 return service.RegisterStudentMethod(userInfo);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("login")]
+        public async Task<IActionResult> Login([FromBody] UserLoginDto userInfo)
+        {
+            try
+            {
+                return await service.LoginMethod(userInfo);
             }
             catch (Exception ex)
             {

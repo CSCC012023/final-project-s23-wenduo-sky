@@ -2,7 +2,7 @@
 
 namespace yourscope_api.entities
 {
-    public class UserRegistration : User
+    public class UserRegistrationDto : User
     {
         public required string Password { get; set; }
     }
