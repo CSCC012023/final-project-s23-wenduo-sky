@@ -20,4 +20,6 @@ api/yourscope-api/.vs/
 yourscope/.angular/cache/
 yourscope/.firebase/*.cache/
 yourscope/node_modules/
+yourscope/public/
+api/yourscope-api/firebase-config.json
 /api/yourscope-api/appsettings.json
