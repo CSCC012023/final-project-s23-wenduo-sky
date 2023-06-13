@@ -36,11 +36,11 @@ namespace yourscope_api.Controllers
 
         [HttpPost]
         [Route("student/register")]
-        public IActionResult RegisterStudent([FromBody] UserRegistrationDto userInfo)
+        public async Task<IActionResult> RegisterStudent([FromBody] UserRegistrationDto userInfo)
         {
             try
             {
-                return service.RegisterStudentMethod(userInfo);
+                return await service.RegisterStudentMethod(userInfo);
             }
             catch (Exception ex)
             {
