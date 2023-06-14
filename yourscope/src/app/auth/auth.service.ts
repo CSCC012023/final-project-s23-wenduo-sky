@@ -20,11 +20,11 @@ export class AuthService {
         if(loginToken.role === 0){
           this.router.navigate(['/dashboardStudent']);
         }
-        if(loginToken.role === 1){
-          this.router.navigate(['/dashboardEmployer']);
-        }
-        if(loginToken.role === 2){
+        else if(loginToken.role === 1){
           this.router.navigate(['/dashboardAdmin']);
+        }
+        else{
+          this.router.navigate(['/dashboardEmployer']);
         }
       }, 
       error: err => {
