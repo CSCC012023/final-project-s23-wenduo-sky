@@ -13,6 +13,7 @@ import { EmployerModule } from './employer/employer.module';
 import { StudentModule } from './student/student.module';
 import { CommonModule } from '@angular/common';
 import {AngularFireModule} from '@angular/fire/compat';
+import { JwtService } from './services/jwt.service';
 
 
 @NgModule({
@@ -33,7 +34,7 @@ import {AngularFireModule} from '@angular/fire/compat';
     AngularFireModule.initializeApp(environment.firebase),
     CommonModule
   ],
-  providers: [],
+  providers: [JwtService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

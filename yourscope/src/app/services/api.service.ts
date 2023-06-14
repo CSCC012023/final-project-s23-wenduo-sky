@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -13,5 +13,22 @@ export class APIService {
 
   public post(url: string, data: any, options?: any) {
     return this.hc.post(url, data, options);
+  }
+
+  public getLogin(email : string, password : string){
+    const body = JSON.stringify({"email":email, "password":password})
+    const options = {
+        headers: new HttpHeaders(
+        {
+          "Api-Key": 'AIzaSyDVpKBZOYpKp-hEt35-Zgm2MbRqE0FLU4Y' as const,
+          'Accept': 'application/json' as const, 
+          'Content-Type': 'application/json' as const, 
+          'Response-Type': 'text' as const
+        }
+        )
+      };
+    
+      //replace with yourscope-api
+    return this.hc.post('https://localhost:7184/api/Accounts/v1/login', body, options);
   }
 }
