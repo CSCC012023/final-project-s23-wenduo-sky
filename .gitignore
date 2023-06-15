@@ -23,5 +23,5 @@ yourscope/node_modules/
 yourscope/public/
 api/yourscope-api/firebase-config.json
 /api/yourscope-api/appsettings.json
-.vs
 api/yourscope-api/appsettings.json
+.vs
