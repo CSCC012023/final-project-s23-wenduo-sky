@@ -13,6 +13,7 @@ import { EmployerModule } from './employer/employer.module';
 import { StudentModule } from './student/student.module';
 import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularFireModule } from '@angular/fire/compat';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     EmployerModule,
     CommonModule,
     NgbModule,
+    AngularFireModule.initializeApp(environment.firebase),
   ],
   providers: [],
   bootstrap: [AppComponent]
