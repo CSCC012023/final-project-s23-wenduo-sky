@@ -25,3 +25,4 @@ api/yourscope-api/firebase-config.json
 /api/yourscope-api/appsettings.json
 api/yourscope-api/appsettings.json
 .vs
+.vscode
