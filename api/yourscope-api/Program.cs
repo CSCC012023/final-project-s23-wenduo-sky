@@ -37,6 +37,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 #region dependency injection
 builder.Services.AddTransient<IAccountsService, AccountsService>();
+builder.Services.AddTransient<ICompanyService, CompanyService>();
 builder.Services.AddSingleton(FirebaseApp.Create());
 #endregion
 
