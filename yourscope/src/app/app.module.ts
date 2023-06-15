@@ -12,6 +12,7 @@ import { AdminModule } from './admin/admin.module';
 import { EmployerModule } from './employer/employer.module';
 import { StudentModule } from './student/student.module';
 import { CommonModule } from '@angular/common';
+import {AngularFireModule} from '@angular/fire/compat';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { CommonModule } from '@angular/common';
     AdminModule,
     StudentModule,
     EmployerModule,
+    AngularFireModule.initializeApp(environment.firebase),
     CommonModule
   ],
   providers: [],

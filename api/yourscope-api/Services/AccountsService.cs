@@ -6,6 +6,8 @@ using User = yourscope_api.Models.DbModels.User;
 using Firebase.Auth;
 using Firebase.Auth.Providers;
 using Firebase.Auth.Repository;
+using FirebaseAdmin;
+using FirebaseAdmin.Auth;
 
 namespace yourscope_api.service
 {
@@ -17,13 +19,16 @@ namespace yourscope_api.service
         private readonly string FirebaseWebAPIKey;
         private readonly string FirebaseAuthDomain;
 
-        public AccountsService(IConfiguration configuration)
+        private readonly FirebaseApp firebaseApp;
+
+        public AccountsService(IConfiguration configuration, FirebaseApp firebaseApp)
         {
             this.configuration = configuration;
+            this.firebaseApp = firebaseApp;
 
             // Setting configuration values.
-            string? apiKey = configuration.GetValue<string>("FirebaseAuth:APIKey");
-            string? authDomain = configuration.GetValue<string>("FirebaseAuth:AuthDomain");
+            string? apiKey = this.configuration.GetValue<string>("FirebaseAuth:APIKey");
+            string? authDomain = this.configuration.GetValue<string>("FirebaseAuth:AuthDomain");
 
             // Null checks.
             if (string.IsNullOrEmpty(apiKey))
@@ -36,8 +41,8 @@ namespace yourscope_api.service
 
             #region setup firebase
             var config = new FirebaseAuthConfig {
-                ApiKey = this.FirebaseWebAPIKey,
-                AuthDomain = authDomain,
+                ApiKey = FirebaseWebAPIKey,
+                AuthDomain = FirebaseAuthDomain,
                 Providers = new FirebaseAuthProvider[]
                 {
                     new EmailProvider()
@@ -56,23 +61,37 @@ namespace yourscope_api.service
             return users.Count > 0;
         }
 
-        public IActionResult RegisterStudentMethod(UserRegistration userInfo)
+        public async Task<IActionResult> RegisterStudentMethod(UserRegistrationDto userInfo)
         {
             if (CheckEmailRegistered(userInfo.Email))
                 return new BadRequestObjectResult($"{userInfo.Email} has already been registered!");
 
             userInfo.Role = UserRole.Student;
 
-            FirebaseRegister(userInfo);
+            // Adding the extra roles claim to the Firebase user.
+            string uid = (await FirebaseRegister(userInfo)).User.Uid;
+            var claims = new Dictionary<string, object>()
+            {
+                { "role", UserRole.Student }
+            };
+            await FirebaseAuth.GetAuth(firebaseApp).SetCustomUserClaimsAsync(uid, claims);
 
             InsertUserIntoDb(userInfo);
 
             return new CreatedResult("User successfully registered.", true);
         }
 
-        private async void FirebaseRegister(UserRegistration userInfo)
+        private async Task<UserCredential> FirebaseRegister(UserRegistrationDto userInfo)
         {
-            await firebase.CreateUserWithEmailAndPasswordAsync(userInfo.Email, userInfo.Password);
+            var nameList = new List<string>
+            {
+                userInfo.FirstName.Trim(),
+                userInfo.MiddleName?.Trim()[0]+".",
+                userInfo.LastName.Trim()
+            };
+            string displayName = string.Join(" ", nameList);
+
+            return await firebase.CreateUserWithEmailAndPasswordAsync(userInfo.Email, userInfo.Password, displayName);
         }
 
         private static async void InsertUserIntoDb(User user)
@@ -81,6 +100,22 @@ namespace yourscope_api.service
 
             context.Users.Add(user);
             await context.SaveChangesAsync();
+        }
+
+        public async Task<IActionResult> LoginMethod(UserLoginDto loginInfo)
+        {
+            UserCredential userLogin;
+            
+            try
+            {
+                userLogin = await firebase.SignInWithEmailAndPasswordAsync(loginInfo.Email, loginInfo.Password);
+            }
+            catch (Firebase.Auth.FirebaseAuthException)
+            {
+                return new UnauthorizedObjectResult("Incorrect email or password.");
+            }
+
+            return new OkObjectResult(userLogin.User.Credential.IdToken);
         }
     }
 }
