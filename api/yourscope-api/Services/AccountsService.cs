@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using yourscope_api;
 using yourscope_api.entities;
+using yourscope_api.service;
 using yourscope_api.Models.DbModels;
 using User = yourscope_api.Models.DbModels.User;
 using Firebase.Auth;
@@ -73,6 +74,31 @@ namespace yourscope_api.service
             var claims = new Dictionary<string, object>()
             {
                 { "role", UserRole.Student }
+            };
+            await FirebaseAuth.GetAuth(firebaseApp).SetCustomUserClaimsAsync(uid, claims);
+
+            InsertUserIntoDb(userInfo);
+
+            return new CreatedResult("User successfully registered.", true);
+        }
+
+        public async Task<IActionResult> RegisterEmployerMethod(UserRegistrationDto userInfo)
+        {
+            if (CheckEmailRegistered(userInfo.Email))
+                return new BadRequestObjectResult($"{userInfo.Email} has already been registered!");
+
+            CompanyService exists = new (userInfo.Affiliation);
+            if (!exists.CheckCompanyExists(exists.name))
+            {
+                return new BadRequestObjectResult($"{exists.name} does not exist!");
+            }
+
+            userInfo.Role = UserRole.Employer;
+
+            string uid = (await FirebaseRegister(userInfo)).User.Uid;
+            var claims = new Dictionary<string, object>()
+            {
+                { "role", UserRole.Employer }
             };
             await FirebaseAuth.GetAuth(firebaseApp).SetCustomUserClaimsAsync(uid, claims);
 
