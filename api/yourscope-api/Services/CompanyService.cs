@@ -20,9 +20,31 @@ namespace yourscope_api.service
             return exist.Count > 0;
         }
 
-        public async Task<IActionResult> RegisterCompanyMethod()
+        public async Task<IActionResult> RegisterCompanyMethod(Company companyInfo)
         {
-            return new CreatedResult("User successfully registered.", true);
+            if (CheckCompanyExists(companyInfo.CompanyName))
+                return new BadRequestObjectResult($"{companyInfo.CompanyName} already exists!");
+
+            await InsertCompanyIntoDb(companyInfo);
+
+            return new CreatedResult("Company successfully registered.", true);
+        }
+
+        private static async Task<bool> InsertCompanyIntoDb(Company company)
+        {
+            using var context = new YourScopeContext();
+
+            context.Company.Add(company);
+            try
+            {
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+            return true;
         }
     }
 }
