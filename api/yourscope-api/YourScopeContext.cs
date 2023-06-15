@@ -12,6 +12,7 @@ namespace yourscope_api
 
         public DbSet<Event> Events { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Company> Company { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
