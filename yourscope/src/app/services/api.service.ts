@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class APIService {
     const options = {
         headers: new HttpHeaders(
         {
-          "Api-Key": 'AIzaSyDVpKBZOYpKp-hEt35-Zgm2MbRqE0FLU4Y' as const,
+          "Api-Key": environment.firebase.apiKey,
           'Accept': 'application/json' as const, 
           'Content-Type': 'application/json' as const, 
           'Response-Type': 'text' as const
