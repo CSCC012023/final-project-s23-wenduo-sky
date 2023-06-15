@@ -12,7 +12,8 @@ import { AdminModule } from './admin/admin.module';
 import { EmployerModule } from './employer/employer.module';
 import { StudentModule } from './student/student.module';
 import { CommonModule } from '@angular/common';
-import {AngularFireModule} from '@angular/fire/compat';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularFireModule } from '@angular/fire/compat';
 
 
 @NgModule({
@@ -30,8 +31,9 @@ import {AngularFireModule} from '@angular/fire/compat';
     AdminModule,
     StudentModule,
     EmployerModule,
+    CommonModule,
+    NgbModule,
     AngularFireModule.initializeApp(environment.firebase),
-    CommonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
