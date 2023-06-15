@@ -8,6 +8,9 @@ using Firebase.Auth.Providers;
 using Firebase.Auth.Repository;
 using FirebaseAdmin;
 using FirebaseAdmin.Auth;
+using Newtonsoft.Json;
+using System.Text;
+using Newtonsoft.Json.Serialization;
 
 namespace yourscope_api.service
 {
@@ -19,25 +22,31 @@ namespace yourscope_api.service
         private readonly string FirebaseWebAPIKey;
         private readonly string FirebaseAuthDomain;
 
-        private readonly FirebaseApp firebaseApp;
+        private readonly FirebaseApp FirebaseApp;
+
+        private readonly string FirebaseSendPasswordResetEmailUrl;
 
         public AccountsService(IConfiguration configuration, FirebaseApp firebaseApp)
         {
             this.configuration = configuration;
-            this.firebaseApp = firebaseApp;
+            this.FirebaseApp = firebaseApp;
 
             // Setting configuration values.
             string? apiKey = this.configuration.GetValue<string>("FirebaseAuth:APIKey");
             string? authDomain = this.configuration.GetValue<string>("FirebaseAuth:AuthDomain");
+            string? firebaseResetPassword = this.configuration.GetValue<string>("FirebaseAuth:ResetPasswordUrl");
 
             // Null checks.
             if (string.IsNullOrEmpty(apiKey))
                 throw new ArgumentNullException(nameof(apiKey), "Missing FirebaseWebAPIKey configuration field in appsettings.json");
             if (string.IsNullOrEmpty(authDomain))
                 throw new ArgumentNullException(nameof(authDomain), "Missing FirebaseAuth:AuthDomain configuration field in appsettings.json");
+            if (string.IsNullOrEmpty(firebaseResetPassword))
+                throw new ArgumentNullException(nameof(firebaseResetPassword), "Missing FirebaseAuth:ResetPasswordUrl configuration field in appsettings.json");
 
             FirebaseWebAPIKey = apiKey;
             FirebaseAuthDomain = authDomain;
+            FirebaseSendPasswordResetEmailUrl = firebaseResetPassword + FirebaseWebAPIKey;
 
             #region setup firebase
             var config = new FirebaseAuthConfig {
@@ -74,7 +83,7 @@ namespace yourscope_api.service
             {
                 { "role", UserRole.Student }
             };
-            await FirebaseAuth.GetAuth(firebaseApp).SetCustomUserClaimsAsync(uid, claims);
+            await FirebaseAuth.GetAuth(FirebaseApp).SetCustomUserClaimsAsync(uid, claims);
 
             InsertUserIntoDb(userInfo);
 
@@ -83,12 +92,11 @@ namespace yourscope_api.service
 
         private async Task<UserCredential> FirebaseRegister(UserRegistrationDto userInfo)
         {
-            var nameList = new List<string>
-            {
-                userInfo.FirstName.Trim(),
-                userInfo.MiddleName?.Trim()[0]+".",
-                userInfo.LastName.Trim()
-            };
+            var nameList = new List<string> { userInfo.FirstName.Trim() };
+            if (userInfo.MiddleName is not null && userInfo.MiddleName.Trim().Length > 1)
+                nameList.Add(userInfo.MiddleName.Trim() + ".");
+            nameList.Add(userInfo.LastName.Trim());
+
             string displayName = string.Join(" ", nameList);
 
             return await firebase.CreateUserWithEmailAndPasswordAsync(userInfo.Email, userInfo.Password, displayName);
@@ -116,6 +124,29 @@ namespace yourscope_api.service
             }
 
             return new OkObjectResult(userLogin.User.Credential.IdToken);
+        }
+
+        public async Task<IActionResult> SendPasswordResetEmailMethod(string email)
+        {
+            if (!CheckEmailRegistered(email))
+                return new NotFoundObjectResult("Email is not registered.");
+
+            #region sending the api call to firebase api
+            using (var client = new HttpClient())
+            {
+                FirebasePasswordResetRequest request = new() { Email = email };
+                StringContent body = new(JsonConvert.SerializeObject(request, new JsonSerializerSettings
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                }));
+
+                var response = await client.PostAsync(FirebaseSendPasswordResetEmailUrl, body);
+                if (!response.IsSuccessStatusCode)
+                    throw new ApplicationException($"Unable to call firebase API to send password to user. Got: {response.StatusCode}");
+            }
+            #endregion
+
+            return new OkObjectResult(true);
         }
     }
 }
