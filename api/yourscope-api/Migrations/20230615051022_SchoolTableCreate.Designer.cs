@@ -11,7 +11,7 @@ using yourscope_api;
 namespace yourscope_api.Migrations
 {
     [DbContext(typeof(YourScopeContext))]
-    [Migration("20230615044247_SchoolTableCreate")]
+    [Migration("20230615051022_SchoolTableCreate")]
     partial class SchoolTableCreate
     {
         /// <inheritdoc />
