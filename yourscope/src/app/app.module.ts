@@ -12,6 +12,7 @@ import { AdminModule } from './admin/admin.module';
 import { EmployerModule } from './employer/employer.module';
 import { StudentModule } from './student/student.module';
 import { CommonModule } from '@angular/common';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { CommonModule } from '@angular/common';
     AdminModule,
     StudentModule,
     EmployerModule,
-    CommonModule
+    CommonModule,
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
