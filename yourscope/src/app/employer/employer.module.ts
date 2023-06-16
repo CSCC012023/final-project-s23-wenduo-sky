@@ -4,16 +4,18 @@ import { CommonModule } from '@angular/common';
 import { EmployerRoutingModule } from './employer-routing.module';
 import { DashboardEmployerComponent } from './dashboard-employer/dashboard-employer.component';
 import { EmployerPostingComponent } from './employer-posting/employer-posting.component';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
   declarations: [
     DashboardEmployerComponent,
-    EmployerPostingComponent
+    EmployerPostingComponent,
   ],
   imports: [
     CommonModule,
-    EmployerRoutingModule
+    EmployerRoutingModule,
+    NgbCollapse,
   ]
 })
 export class EmployerModule { }

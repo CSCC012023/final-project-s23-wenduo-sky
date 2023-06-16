@@ -6,6 +6,8 @@ import { DashboardStudentComponent } from './dashboard-student/dashboard-student
 import { StudentCoursesComponent } from './student-courses/student-courses.component';
 import { StudentPostingsComponent } from './student-postings/student-postings.component';
 import { StudentEventsComponent } from './student-events/student-events.component';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
+import { TruncatePipe } from '../pipes/truncate.pipe';
 
 @NgModule({
   declarations: [
@@ -13,11 +15,12 @@ import { StudentEventsComponent } from './student-events/student-events.componen
     StudentPostingsComponent,
     StudentEventsComponent,
     StudentCoursesComponent,
-    
+    TruncatePipe,
   ],
   imports: [
     CommonModule,
-    StudentRoutingModule
+    StudentRoutingModule,
+    NgbCollapse,
   ]
 })
 export class StudentModule { }
