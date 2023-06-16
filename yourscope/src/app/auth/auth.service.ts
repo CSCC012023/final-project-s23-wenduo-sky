@@ -1,23 +1,36 @@
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { APIService } from '../services/api.service';
+import { JwtService } from '../services/jwt.service';
 
 @Injectable({
   providedIn: 'root'
 })
 
-@Injectable({
-  providedIn: 'root'
-})
 export class AuthService {
-  constructor(private router : Router, private service : APIService)  { }
 
-  login() {
-    this.router.navigate(['/dashboardStudent']);
+  constructor(private router : Router, private service : APIService, private jwtService : JwtService)  { }
+
+  login(email: string, password: string) {
+    this.service.getLogin(email, password).subscribe({
+      next: res => {
+        let loginToken = this.jwtService.DecodeToken(res.toString());
+        if(loginToken.role === 0){
+          this.router.navigate(['/dashboardStudent']);
+        }
+        else if(loginToken.role === 1){
+          this.router.navigate(['/dashboardAdmin']);
+        }
+        else{
+          this.router.navigate(['/dashboardEmployer']);
+        }
+      }, 
+      error: err => {
+        alert(err.error);
+      }
+    });
   }
-
+  
   passwordReset(email: string) {
     this.service.passwordReset(email).subscribe({
       next: res => {

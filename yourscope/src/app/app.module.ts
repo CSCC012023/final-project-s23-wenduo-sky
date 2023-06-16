@@ -12,11 +12,11 @@ import { AdminModule } from './admin/admin.module';
 import { EmployerModule } from './employer/employer.module';
 import { StudentModule } from './student/student.module';
 import { CommonModule } from '@angular/common';
+import { JwtService } from './services/jwt.service';
 import { PasswordResetComponent } from './auth/password-reset/password-reset.component';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularFireModule } from '@angular/fire/compat';
-
 
 @NgModule({
   declarations: [
@@ -39,7 +39,7 @@ import { AngularFireModule } from '@angular/fire/compat';
     AngularFireModule.initializeApp(environment.firebase),
     FormsModule
   ],
-  providers: [],
+  providers: [JwtService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
