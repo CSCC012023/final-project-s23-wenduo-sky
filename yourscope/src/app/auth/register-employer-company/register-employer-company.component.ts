@@ -122,7 +122,10 @@ export class RegisterEmployerCompanyComponent implements AfterViewInit, OnDestro
   }
   
   loadEmployerRegistration() {
-    if (this.selected != "" && this.selected != null && this.selected != "Select Company") this.regState = 1;
+    if (this.selected != "" && this.selected != null && this.selected != "Select Company") {
+      localStorage.setItem("companyName", this.selected);
+      this.regState = 1;
+    }
     else this.regState = 3;
   }
 
