@@ -116,6 +116,25 @@ namespace yourscope_api.service
             return new CreatedResult("User successfully registered.", true);
         }
 
+        public async Task<IActionResult> RegisterEmployerMethod(UserRegistrationDto userInfo)
+        {
+            if (CheckEmailRegistered(userInfo.Email))
+                return new BadRequestObjectResult($"{userInfo.Email} has already been registered!");
+
+            userInfo.Role = UserRole.Employer;
+
+            string uid = (await FirebaseRegister(userInfo)).User.Uid;
+            var claims = new Dictionary<string, object>()
+            {
+                { "role", UserRole.Employer }
+            };
+            await FirebaseAuth.GetAuth(firebaseApp).SetCustomUserClaimsAsync(uid, claims);
+
+            InsertUserIntoDb(userInfo);
+
+            return new CreatedResult("User successfully registered.", true);
+        }
+
         private async Task<UserCredential> FirebaseRegister(UserRegistrationDto userInfo)
         {
             var nameList = new List<string> { userInfo.FirstName.Trim() };

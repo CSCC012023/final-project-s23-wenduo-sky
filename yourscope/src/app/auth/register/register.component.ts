@@ -8,12 +8,11 @@ import { Component } from '@angular/core';
 export class RegisterComponent {
   public regState: number = 0;
 
-  loadStudentRegistraion(){
+  loadStudentRegistration(){
     this.regState = 1;
   }
 
-  loadEmployerRegistraion(){
+  loadEmployerCompanyRegistration(){
     this.regState = 2;
   }
-
 }

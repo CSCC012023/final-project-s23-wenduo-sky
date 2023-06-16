@@ -49,10 +49,10 @@ namespace yourscope_api.Models.DbModels
         public required string Country { get; set; }
         public required string City { get; set; }
         public required string Address { get; set; }
-        public required int? UnitNumber { get; set; }
-        public required string? Phone { get; set; }
-        public required string? Fax { get; set; }
+        public int? UnitNumber { get; set; }
+        public string? Phone { get; set; }
+        public string? Fax { get; set; }
         public required string Email { get; set; }
-        public required string? Type { get; set; }
+        public string? Type { get; set; }
     }
 }

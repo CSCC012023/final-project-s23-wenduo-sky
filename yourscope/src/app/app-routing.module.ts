@@ -1,12 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RegisterComponent } from './auth/register/register.component';
-import { LoginComponent } from './auth/login/login.component';
-import { LandingComponent } from './landing/landing.component';
 import { RouterModule, Routes } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+
+import { LandingComponent } from './landing/landing.component';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
 import { RegisterStudentComponent } from './auth/register-student/register-student.component';
 import { RegisterEmployerComponent } from './auth/register-employer/register-employer.component';
-import { FormsModule } from '@angular/forms';
+import { RegisterEmployerCompanyComponent } from './auth/register-employer-company/register-employer-company.component';
+import { RegisterCompanyComponent } from './auth/register-company/register-company.component';
+
 import { DashboardStudentComponent } from './student/dashboard-student/dashboard-student.component';
 import { DashboardAdminComponent } from './admin/dashboard-admin/dashboard-admin.component';
 import { DashboardEmployerComponent } from './employer/dashboard-employer/dashboard-employer.component';
@@ -33,6 +37,8 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     RegisterStudentComponent,
     RegisterEmployerComponent,
+    RegisterEmployerCompanyComponent,
+    RegisterCompanyComponent,
     FormsModule
   ],
   exports: [

@@ -32,7 +32,7 @@ namespace yourscope_api.Controllers
         }
 
         [HttpPost]
-        [Route("company/register")]
+        [Route("register")]
         public async Task<IActionResult> RegisterCompany([FromBody] Company companyInfo)
         {
             try
