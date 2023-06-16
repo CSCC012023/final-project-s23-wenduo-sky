@@ -13,11 +13,14 @@ import { EmployerModule } from './employer/employer.module';
 import { StudentModule } from './student/student.module';
 import { CommonModule } from '@angular/common';
 import {AngularFireModule} from '@angular/fire/compat';
+import { PasswordResetComponent } from './auth/password-reset/password-reset.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    PasswordResetComponent,
   ],
   imports: [
     BrowserModule,
@@ -31,7 +34,8 @@ import {AngularFireModule} from '@angular/fire/compat';
     StudentModule,
     EmployerModule,
     AngularFireModule.initializeApp(environment.firebase),
-    CommonModule
+    CommonModule, 
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

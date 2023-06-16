@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { DashboardStudentComponent } from './student/dashboard-student/dashboard-student.component';
 import { DashboardAdminComponent } from './admin/dashboard-admin/dashboard-admin.component';
 import { DashboardEmployerComponent } from './employer/dashboard-employer/dashboard-employer.component';
+import { PasswordResetComponent } from './auth/password-reset/password-reset.component';
 
 const routes: Routes = [
   { path: '', component: LandingComponent },
@@ -17,7 +18,8 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'dashboardStudent', component: DashboardStudentComponent },
   { path: 'dashboardAdmin', component: DashboardAdminComponent },
-  { path: 'dashboardEmployer', component: DashboardEmployerComponent }
+  { path: 'dashboardEmployer', component: DashboardEmployerComponent },
+  { path: 'passwordReset', component: PasswordResetComponent}
 ]
 
 @NgModule({
