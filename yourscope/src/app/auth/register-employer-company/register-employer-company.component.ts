@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatSelect } from '@angular/material/select';
+import { MatSelectChange } from '@angular/material/select';
 import { ReplaySubject, Subject } from 'rxjs';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -69,7 +69,10 @@ export class RegisterEmployerCompanyComponent implements AfterViewInit, OnDestro
   protected _onDestroy = new Subject();
   constructor() { }
 
-  @ViewChild('companySelectionInput') selectCompany!: MatSelect;
+  selectedCompany(event: MatSelectChange) {
+    this.selected = event.source.triggerValue;
+    if (this.selected != "" && this.selected != null && this.selected != "Select Company") this.regState = 0;
+  }
 
   ngOnInit() {
     this.companyControl.setValue(this.companies[1]);
@@ -84,10 +87,6 @@ export class RegisterEmployerCompanyComponent implements AfterViewInit, OnDestro
 
   ngAfterViewInit() {
     this.setInitialValue();
-    this.selectCompany.valueChange.subscribe(value => {
-      this.selected = value;
-      if (this.selected != "" && this.selected != null && this.selected != "Select Company") this.regState = 0;
-    });
   }
 
   ngOnDestroy() {
@@ -96,11 +95,7 @@ export class RegisterEmployerCompanyComponent implements AfterViewInit, OnDestro
   }
 
   protected setInitialValue() {
-    this.filteredCompanies
-    .pipe(take(1), takeUntil(this._onDestroy))
-    .subscribe(() => {
-      this.selectCompany.compareWith = (a: Company, b: Company) => a && b && a.name === b.name;
-  });
+    this.filteredCompanies.pipe(take(1), takeUntil(this._onDestroy));
   }
 
   protected filterCompanies() {
@@ -124,6 +119,7 @@ export class RegisterEmployerCompanyComponent implements AfterViewInit, OnDestro
   loadEmployerRegistration() {
     if (this.selected != "" && this.selected != null && this.selected != "Select Company") {
       localStorage.setItem("companyName", this.selected);
+
       this.regState = 1;
     }
     else this.regState = 3;

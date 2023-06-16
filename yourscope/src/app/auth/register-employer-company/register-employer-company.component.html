@@ -5,7 +5,7 @@
     <div class="form-group py-2">
       <p>
         <mat-form-field>
-          <mat-select #companySelectionInput [formControl]="companyControl" placeholder="Select Company">
+          <mat-select (selectionChange)="selectedCompany($event)" [formControl]="companyControl" placeholder="Select Company">
             <mat-option>
               <ngx-mat-select-search placeholderLabel="Search..." [formControl]="companyFilter">
                 <span ngxMatSelectNoEntriesFound>
