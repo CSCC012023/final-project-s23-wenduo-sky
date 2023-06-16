@@ -75,17 +75,6 @@ export class RegisterEmployerComponent {
       null,
       this.employerForm.get("pass")!.value
     );
-    const data = {
-      Email: this.employerForm.get("email")!.value,
-      FirstName: this.employerForm.get("fname")!.value,
-      MiddleName: this.employerForm.get("mname")!.value,
-      LastName: this.employerForm.get("lname")!.value,
-      Birthday: null,
-      Role: 2,
-      Affiliation: localStorage.getItem("companyName"),
-      Grade: null,
-      Password: this.employerForm.get("pass")!.value
-    };
     this.api.post(url, user).subscribe(res => {
       console.log(res);
       if (res) localStorage.removeItem("companyName");
