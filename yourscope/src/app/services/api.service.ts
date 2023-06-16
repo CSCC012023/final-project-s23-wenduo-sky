@@ -16,6 +16,22 @@ export class APIService {
     return this.hc.post(url, data, options);
   }
 
+  public getLogin(email : string, password : string){
+    const body = JSON.stringify({"email":email, "password":password})
+    const options = {
+        headers: new HttpHeaders(
+        {
+          "Api-Key": environment.firebase.apiKey,
+          'Accept': 'application/json' as const, 
+          'Content-Type': 'application/json' as const, 
+          'Response-Type': 'text' as const
+        }
+        )
+      };
+     
+    return this.hc.post('https://localhost:7184/api/Accounts/v1/login', body, options);
+  }
+  
   public passwordReset(email : string){
     const body = JSON.stringify({"email":email})
     const options = {
@@ -33,6 +49,4 @@ export class APIService {
       url = url.concat(email, '/send-password-reset-email')
       return this.hc.post(url, body, options);
   }
-
-
 }

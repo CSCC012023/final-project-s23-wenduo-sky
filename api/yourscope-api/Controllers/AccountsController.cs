@@ -20,7 +20,7 @@ namespace yourscope_api.Controllers
         }
         #endregion
 
-        [HttpGet, Authorize]
+        [HttpGet]
         [Route("check-registered/{email}")]
         public IActionResult CheckEmailRegistered(string email)
         {
@@ -29,6 +29,20 @@ namespace yourscope_api.Controllers
                 return Ok(service.CheckEmailRegistered(email));
             }
             catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("{email}/send-password-reset-email")]
+        public async Task<IActionResult> SendPasswordResetEmail(string email)
+        {
+            try
+            {
+                return await service.SendPasswordResetEmailMethod(email);
+            }
+            catch(Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }

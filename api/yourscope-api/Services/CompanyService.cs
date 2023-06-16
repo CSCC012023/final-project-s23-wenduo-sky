@@ -6,8 +6,9 @@ namespace yourscope_api.service
     public class CompanyService : ICompanyService
     {
         #region constructors and class fields
+
         public CompanyService() { }
-        #endregion
+        
         public bool CheckCompanyExists(string company)
         {
             using var context = new YourScopeContext();
