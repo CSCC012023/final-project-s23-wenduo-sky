@@ -16,6 +16,7 @@ namespace yourscope_api.service
             List<Company> exist = context.Company.Where(comp => comp.CompanyName == company).ToList();
             return exist.Count > 0;
         }
+        #endregion
 
         public async Task<IActionResult> RegisterCompanyMethod(Company companyInfo)
         {

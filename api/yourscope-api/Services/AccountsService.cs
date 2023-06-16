@@ -96,12 +96,6 @@ namespace yourscope_api.service
             if (CheckEmailRegistered(userInfo.Email))
                 return new BadRequestObjectResult($"{userInfo.Email} has already been registered!");
 
-            CompanyService exists = new (userInfo.Affiliation);
-            if (!exists.CheckCompanyExists(exists.name))
-            {
-                return new BadRequestObjectResult($"{exists.name} does not exist!");
-            }
-
             userInfo.Role = UserRole.Employer;
 
             string uid = (await FirebaseRegister(userInfo)).User.Uid;
@@ -109,26 +103,7 @@ namespace yourscope_api.service
             {
                 { "role", UserRole.Employer }
             };
-            await FirebaseAuth.GetAuth(firebaseApp).SetCustomUserClaimsAsync(uid, claims);
-
-            InsertUserIntoDb(userInfo);
-
-            return new CreatedResult("User successfully registered.", true);
-        }
-
-        public async Task<IActionResult> RegisterEmployerMethod(UserRegistrationDto userInfo)
-        {
-            if (CheckEmailRegistered(userInfo.Email))
-                return new BadRequestObjectResult($"{userInfo.Email} has already been registered!");
-
-            userInfo.Role = UserRole.Employer;
-
-            string uid = (await FirebaseRegister(userInfo)).User.Uid;
-            var claims = new Dictionary<string, object>()
-            {
-                { "role", UserRole.Employer }
-            };
-            await FirebaseAuth.GetAuth(firebaseApp).SetCustomUserClaimsAsync(uid, claims);
+            await FirebaseAuth.GetAuth(FirebaseApp).SetCustomUserClaimsAsync(uid, claims);
 
             InsertUserIntoDb(userInfo);
 
