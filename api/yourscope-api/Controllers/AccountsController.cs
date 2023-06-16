@@ -49,6 +49,20 @@ namespace yourscope_api.Controllers
         }
 
         [HttpPost]
+        [Route("employer/register")]
+        public async Task<IActionResult> RegisterEmployer([FromBody] UserRegistrationDto userInfo)
+        {
+            try
+            {
+                return await service.RegisterEmployerMethod(userInfo);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginDto userInfo)
         {
