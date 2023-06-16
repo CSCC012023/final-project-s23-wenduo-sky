@@ -35,6 +35,8 @@ builder.Services.AddCors(options =>
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddScheme<AuthenticationSchemeOptions, YourScopeAuthHandler>(JwtBearerDefaults.AuthenticationScheme, options => { });
 
+builder.Services.AddRouting(builder => { builder.LowercaseUrls = true; });
+
 #region dependency injection
 builder.Services.AddTransient<IAccountsService, AccountsService>();
 builder.Services.AddTransient<ICompanyService, CompanyService>();

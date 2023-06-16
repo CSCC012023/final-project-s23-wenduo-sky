@@ -88,7 +88,7 @@ export class RegisterEmployerComponent {
     else return;
     if (pass != cpass) {console.log(pass, cpass); return;}
 
-    const url = 'https://localhost:7184/api/Accounts/v1/employer/register';
+    const url = 'https://localhost:7184/api/accounts/v1/employer/register';
     const user = new UserObj(
       this.employerForm.get("email")!.value,
       this.employerForm.get("fname")!.value,
@@ -103,7 +103,7 @@ export class RegisterEmployerComponent {
 
     const createCompany = localStorage.getItem("createCompany");
     if (createCompany != null) {
-      const company_url = 'https://localhost:7184/api/Company/v1/company/register';
+      const company_url = 'https://localhost:7184/api/company/v1/register';
       const jsn = JSON.parse(createCompany);
       var company = new CompanyObj(
         jsn.Name,
