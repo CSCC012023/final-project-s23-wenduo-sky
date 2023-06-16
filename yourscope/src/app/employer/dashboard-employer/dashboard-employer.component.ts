@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard-employer',
@@ -7,5 +6,9 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./dashboard-employer.component.scss']
 })
 export class DashboardEmployerComponent {
-  
+  jobs = [
+    {title: "Software Engineer", url: "employer/posting/1"},
+    {title: "Data Scientist", url: "employer/posting/2"},
+    {title: "Fullstack Developer", url: "employer/posting/3"}
+  ];
 }
