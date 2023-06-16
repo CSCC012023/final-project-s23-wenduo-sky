@@ -87,12 +87,6 @@ namespace yourscope_api.service
             if (CheckEmailRegistered(userInfo.Email))
                 return new BadRequestObjectResult($"{userInfo.Email} has already been registered!");
 
-            CompanyService exists = new (userInfo.Affiliation);
-            if (!exists.CheckCompanyExists(exists.name))
-            {
-                return new BadRequestObjectResult($"{exists.name} does not exist!");
-            }
-
             userInfo.Role = UserRole.Employer;
 
             string uid = (await FirebaseRegister(userInfo)).User.Uid;

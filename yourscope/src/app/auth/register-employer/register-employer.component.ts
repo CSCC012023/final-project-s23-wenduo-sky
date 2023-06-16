@@ -5,7 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { APIService } from '../../services/api.service';
 import { Router } from '@angular/router';
 
-class userObj {
+class UserObj {
   Email!: string;
   FirstName!: string;
   MiddleName!: string | null;
@@ -26,6 +26,30 @@ class userObj {
     this.Affiliation = g;
     this.Grade = h;
     this.Password = i;
+  }
+}
+
+class CompanyObj {
+  CompanyName!: string;
+  Country!: string;
+  City!: string;
+  Address!: string;
+  UnitNumber!: number | null;
+  Phone!: string | null;
+  Fax!: string | null;
+  Email!: string;
+  Type!: string | null;
+
+  constructor(a: string, b: string, c: string, d: string, e: number | null, f: string | null, g: string | null, h: string, i: string | null) {
+    this.CompanyName = a;
+    this.Country = b;
+    this.City = c;
+    this.Address = d;
+    this.UnitNumber = e;
+    this.Phone = f;
+    this.Fax = g;
+    this.Email = h;
+    this.Type = i;
   }
 }
 
@@ -55,17 +79,17 @@ export class RegisterEmployerComponent {
   handleEmployerRegistration() {
     let pass, cpass;
 
-    if (this.employerForm.get("fname")!.value == "") return;
-    if (this.employerForm.get("lname")!.value == "") return;
-    if (this.employerForm.get("email")!.value == "") return;
-    if (this.employerForm.get("pass")!.value != "" && (this.employerForm.get("pass")!.value as string).length > 5) pass = this.employerForm.get("pass")!.value;
+    if (this.employerForm.get("fname")!.value == null) return;
+    if (this.employerForm.get("lname")!.value == null) return;
+    if (this.employerForm.get("email")!.value == null) return;
+    if (this.employerForm.get("pass")!.value != null && (this.employerForm.get("pass")!.value as string).length > 5) pass = this.employerForm.get("pass")!.value;
     else return;
-    if (this.employerForm.get("cpass")!.value != "" && (this.employerForm.get("cpass")!.value as string).length > 5) cpass = this.employerForm.get("cpass")!.value;
+    if (this.employerForm.get("cpass")!.value != null && (this.employerForm.get("cpass")!.value as string).length > 5) cpass = this.employerForm.get("cpass")!.value;
     else return;
     if (pass != cpass) {console.log(pass, cpass); return;}
 
     const url = 'https://localhost:7184/api/Accounts/v1/employer/register';
-    const user = new userObj(
+    const user = new UserObj(
       this.employerForm.get("email")!.value,
       this.employerForm.get("fname")!.value,
       this.employerForm.get("mname")!.value,
@@ -76,10 +100,38 @@ export class RegisterEmployerComponent {
       null,
       this.employerForm.get("pass")!.value
     );
-    this.api.post(url, user).subscribe(res => {
-      console.log(res);
-      localStorage.removeItem("companyName");
-      this.router.navigate(['/dashboardEmployer']);
-    });
+
+    const createCompany = localStorage.getItem("createCompany");
+    if (createCompany != null) {
+      const company_url = 'https://localhost:7184/api/Company/v1/company/register';
+      const jsn = JSON.parse(createCompany);
+      var company = new CompanyObj(
+        jsn.Name,
+        jsn.Country,
+        jsn.City,
+        jsn.Address,
+        jsn.UnitNumber,
+        jsn.Phone,
+        jsn.Fax,
+        jsn.Email,
+        jsn.Type
+      );
+      this.api.post(company_url, company).subscribe(res => {
+        console.log(res);
+        localStorage.removeItem("createCompany");
+        this.api.post(url, user).subscribe(res => {
+          console.log(res);
+          localStorage.removeItem("companyName");
+          this.router.navigate(['/dashboardEmployer']);
+        });
+      });
+    }
+    else {
+      this.api.post(url, user).subscribe(res => {
+        console.log(res);
+        localStorage.removeItem("companyName");
+        this.router.navigate(['/dashboardEmployer']);
+      });
+    }
   }
 }
