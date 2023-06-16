@@ -9,5 +9,6 @@ namespace yourscope_api.service
         public Task<IActionResult> RegisterStudentMethod(UserRegistrationDto userInfo);
         public Task<IActionResult> RegisterEmployerMethod(UserRegistrationDto userInfo);
         public Task<IActionResult> LoginMethod(UserLoginDto loginInfo);
+        public Task<IActionResult> SendPasswordResetEmailMethod(string email);
     }
 }
