@@ -7,10 +7,8 @@ import { JwtService } from '../services/jwt.service';
   providedIn: 'root'
 })
 
-@Injectable({
-  providedIn: 'root'
-})
 export class AuthService {
+
   constructor(private router : Router, private service : APIService, private jwtService : JwtService)  { }
 
   login(email: string, password: string) {
@@ -26,6 +24,18 @@ export class AuthService {
         else{
           this.router.navigate(['/dashboardEmployer']);
         }
+      }, 
+      error: err => {
+        alert(err.error);
+      }
+    });
+  }
+  
+  passwordReset(email: string) {
+    this.service.passwordReset(email).subscribe({
+      next: res => {
+        alert("Email sent");
+        this.router.navigate(['/login']);
       }, 
       error: err => {
         alert(err.error);

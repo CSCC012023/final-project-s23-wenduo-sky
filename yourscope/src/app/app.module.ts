@@ -12,13 +12,16 @@ import { AdminModule } from './admin/admin.module';
 import { EmployerModule } from './employer/employer.module';
 import { StudentModule } from './student/student.module';
 import { CommonModule } from '@angular/common';
-import {AngularFireModule} from '@angular/fire/compat';
 import { JwtService } from './services/jwt.service';
-
+import { PasswordResetComponent } from './auth/password-reset/password-reset.component';
+import { FormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularFireModule } from '@angular/fire/compat';
 
 @NgModule({
   declarations: [
     AppComponent,
+    PasswordResetComponent,
   ],
   imports: [
     BrowserModule,
@@ -31,8 +34,10 @@ import { JwtService } from './services/jwt.service';
     AdminModule,
     StudentModule,
     EmployerModule,
+    CommonModule,
+    NgbModule,
     AngularFireModule.initializeApp(environment.firebase),
-    CommonModule
+    FormsModule
   ],
   providers: [JwtService],
   bootstrap: [AppComponent]
