@@ -29,14 +29,14 @@ export class DashboardStudentComponent implements OnInit {
     {code: 'CSCC01', name: 'Introduction to Software Engineering'},
     {code: 'CSCC01', name: 'Introduction to Software Engineering'},
     {code: 'CSCC01', name: 'Introduction to Software Engineering'},
-    {code: 'CSCC01', name: 'Introduction to Software Engineering'},
+    {code: 'CSCC01', name: 'Introduction to Software Engineering'}
   ];
   previousCourses = [
     {code: 'CSCC01', name: 'Introduction to Software Engineering'},
     {code: 'CSCC01', name: 'Introduction to Software Engineering'},
     {code: 'CSCC01', name: 'Introduction to Software Engineering'},
     {code: 'CSCC01', name: 'Introduction to Software Engineering'},
-    {code: 'CSCC01', name: 'Introduction to Software Engineering'},
+    {code: 'CSCC01', name: 'Introduction to Software Engineering'}
   ];
   eventsWidth = 323;
   jobsWidth = 323;
