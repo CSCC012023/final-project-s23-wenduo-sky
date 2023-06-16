@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using yourscope_api.Models.DbModels;
 using yourscope_api.service;
 
 namespace yourscope_api.Controllers
@@ -23,6 +24,20 @@ namespace yourscope_api.Controllers
             try
             {
                 return Ok(service.CheckCompanyExists(company));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("company/register")]
+        public async Task<IActionResult> RegisterCompany([FromBody] Company companyInfo)
+        {
+            try
+            {
+                return await service.RegisterCompanyMethod(companyInfo);
             }
             catch (Exception ex)
             {
