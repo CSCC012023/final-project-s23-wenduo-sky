@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { APIService } from '../../services/api.service';
+import { Router } from '@angular/router';
 
 class userObj {
   Email!: string;
@@ -40,7 +41,7 @@ class userObj {
 })
 export class RegisterEmployerComponent {
 
-  constructor(private api: APIService) { }
+  constructor(private api: APIService, private router: Router) { }
 
   public employerForm = new FormGroup({
     fname: new FormControl(),
@@ -77,7 +78,8 @@ export class RegisterEmployerComponent {
     );
     this.api.post(url, user).subscribe(res => {
       console.log(res);
-      if (res) localStorage.removeItem("companyName");
+      localStorage.removeItem("companyName");
+      this.router.navigate(['/dashboardEmployer']);
     });
   }
 }
