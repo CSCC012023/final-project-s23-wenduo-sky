@@ -6,5 +6,51 @@ import { Component } from '@angular/core';
   styleUrls: ['./dashboard-admin.component.scss']
 })
 export class DashboardAdminComponent {
+  events = [
+    {title: 'Event', url: '#'},
+    {title: 'Event', url: '#'},
+    {title: 'Event', url: '#'},
+    {title: 'Event', url: '#'},
+    {title: 'Event', url: '#'},
+    {title: 'Event', url: '#'},
+    {title: 'Event', url: '#'},
+    {title: 'Event', url: '#'},
+    {title: 'Event', url: '#'},
+    {title: 'Event', url: '#'},
+    {title: 'Event', url: '#'},
+    {title: 'Event', url: '#'},
+    {title: 'Event', url: '#'},
+    {title: 'Event', url: '#'},
+    {title: 'Event', url: '#'},
+    {title: 'Event', url: '#'},
+    {title: 'Event', url: '#'},
+    {title: 'Event', url: '#'},
+    {title: 'Event', url: '#'},
+    {title: 'Event', url: '#'},
+    {title: 'Event', url: '#'},
+    {title: 'Event', url: '#'},
+    {title: 'Event', url: '#'},
+    {title: 'Event', url: '#'},
+  ];
 
+  courses = [
+    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
+    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
+    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
+    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
+    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
+    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
+    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
+    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
+    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
+    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
+    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
+    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
+    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
+    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
+    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
+    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
+    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
+    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
+  ];
 }
