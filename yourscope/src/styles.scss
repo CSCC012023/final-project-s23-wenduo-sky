@@ -5,3 +5,43 @@
 body{
     margin: 0
 }
+
+.mdc-line-ripple{
+    visibility: hidden;
+}
+
+.mat-mdc-form-field-bottom-align {
+    height: 0;
+    visibility: hidden;
+}
+
+.ng-trigger-transformPanel {
+    background-color: white;
+    border: 1px solid #0d6efd;
+    color: #0d6efd !important;
+}
+
+.contains-mat-select-search {
+    background-color: white;
+    
+    input::placeholder {
+        content: "Search..." !important;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: white; 
+}
+   
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: #888;
+}
+  
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
