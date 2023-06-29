@@ -72,7 +72,7 @@ namespace yourscope_api.Services
 
                 if (company != null)
                 {
-                result.Add(new JobPostingDetails(posting, user, company));
+                    result.Add(new JobPostingDetails(posting, user, company));
                 }
 
                 else
