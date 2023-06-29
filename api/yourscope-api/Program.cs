@@ -7,7 +7,12 @@ using FirebaseAdmin;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using yourscope_api.authentication;
+<<<<<<< HEAD
 using Newtonsoft.Json.Serialization;
+=======
+using yourscope_api.ServiceInterfaces;
+using yourscope_api.Services;
+>>>>>>> 13f8b45... Added endpoints for job postings
 
 string YourScopePolicy = "YourScopePolicy";
 
@@ -44,6 +49,7 @@ builder.Services.AddRouting(builder => { builder.LowercaseUrls = true; });
 #region dependency injection
 builder.Services.AddTransient<IAccountsService, AccountsService>();
 builder.Services.AddTransient<ICompanyService, CompanyService>();
+builder.Services.AddTransient<IJobService, JobService>();
 builder.Services.AddSingleton(FirebaseApp.Create());
 #endregion
 
