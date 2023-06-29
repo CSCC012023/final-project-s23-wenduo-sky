@@ -1,4 +1,5 @@
 ﻿using Google.Api.Gax;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using yourscope_api.Models.DbModels;
 using yourscope_api.Models.Reponse;
@@ -60,15 +61,25 @@ namespace yourscope_api.Services
             }
 
             this.QueryJobPostings(filters, context)
+                .Include(q => q.User)
                 .Skip((int)filters.Offset)
                 .Take((int)filters.Count)
                 .ToList()
                 .ForEach(posting =>
             {
                 var user = posting.User;
-                var company = companies.Where(q => q.CompanyName == user.Affiliation).First();
+                var company = companies.Where(q => q.CompanyName == user.Affiliation).FirstOrDefault();
 
-                result.Add(new JobPostingDetails(posting, user, company));
+                if (company != null)
+                {
+                    result.Add(new JobPostingDetails(posting, user, company));
+                }
+
+                else
+                {
+                    throw new Exception(String.Format("Job Posting with id {0} created by non-employer", posting.JobPostingId));
+                }
+                
             });
 
             return result;
