@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { APIService } from '../services/api.service';
 import { JwtService } from '../services/jwt.service';
+import { CookieService } from 'ngx-cookie-service'
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import { JwtService } from '../services/jwt.service';
 
 export class AuthService {
 
-  constructor(private router : Router, private service : APIService, private jwtService : JwtService)  { }
+  constructor(private router : Router, private service : APIService, private jwtService : JwtService, private cookieService: CookieService)  { }
 
   login(email: string, password: string) {
     this.service.getLogin(email, password).subscribe({
@@ -24,6 +25,8 @@ export class AuthService {
         else{
           this.router.navigate(['/dashboardEmployer']);
         }
+
+        this.cookieService.set('loginToken', res.toString());
       }, 
       error: err => {
         alert(err.error);
