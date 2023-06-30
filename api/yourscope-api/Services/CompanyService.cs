@@ -44,5 +44,11 @@ namespace yourscope_api.service
             }
             return true;
         }
+
+        public List<Company> GetCompanyList()
+        {
+            using var context = new YourScopeContext();
+            return context.Company.ToList();
+        }
     }
 }
