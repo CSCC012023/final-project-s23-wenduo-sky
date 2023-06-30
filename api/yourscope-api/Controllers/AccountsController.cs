@@ -4,6 +4,7 @@ using yourscope_api.Models;
 using yourscope_api.entities;
 using yourscope_api.service;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
 
 namespace yourscope_api.Controllers
 {
@@ -80,13 +81,16 @@ namespace yourscope_api.Controllers
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginDto userInfo)
         {
+            ApiResponse response;
             try
             {
-                return await service.LoginMethod(userInfo);
+                response = await service.LoginMethod(userInfo);
+                return StatusCode(response.StatusCode, response);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                response = new(StatusCodes.Status500InternalServerError, ex.Message, success: false, exception: ex);
+                return StatusCode(response.StatusCode, response);
             }
         }
     }

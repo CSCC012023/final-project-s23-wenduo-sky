@@ -130,7 +130,7 @@ namespace yourscope_api.service
             await context.SaveChangesAsync();
         }
 
-        public async Task<IActionResult> LoginMethod(UserLoginDto loginInfo)
+        public async Task<ApiResponse> LoginMethod(UserLoginDto loginInfo)
         {
             UserCredential userLogin;
             
@@ -140,10 +140,10 @@ namespace yourscope_api.service
             }
             catch (Firebase.Auth.FirebaseAuthException)
             {
-                return new UnauthorizedObjectResult("Incorrect email or password.");
+                return new ApiResponse(StatusCodes.Status401Unauthorized, "Incorrect email or password.");
             }
 
-            return new OkObjectResult(userLogin.User.Credential.IdToken);
+            return new ApiResponse(StatusCodes.Status201Created, data: userLogin.User.Credential.IdToken, success: true);
         }
 
         public async Task<IActionResult> SendPasswordResetEmailMethod(string email)
