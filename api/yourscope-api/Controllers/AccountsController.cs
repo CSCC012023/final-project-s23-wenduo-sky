@@ -38,14 +38,16 @@ namespace yourscope_api.Controllers
         [Route("{email}/send-password-reset-email")]
         public async Task<IActionResult> SendPasswordResetEmail(string email)
         {
+            ApiResponse response;
             try
             {
-                return await service.SendPasswordResetEmailMethod(email);
+                response = await service.SendPasswordResetEmailMethod(email);
             }
             catch(Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                response = new(StatusCodes.Status500InternalServerError, exception: ex);
             }
+            return StatusCode(response.StatusCode, response);
         }
 
         [HttpPost]

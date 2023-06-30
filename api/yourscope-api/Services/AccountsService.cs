@@ -146,10 +146,10 @@ namespace yourscope_api.service
             return new OkObjectResult(userLogin.User.Credential.IdToken);
         }
 
-        public async Task<IActionResult> SendPasswordResetEmailMethod(string email)
+        public async Task<ApiResponse> SendPasswordResetEmailMethod(string email)
         {
             if (!CheckEmailRegistered(email))
-                return new NotFoundObjectResult("Email is not registered.");
+                return new ApiResponse(StatusCodes.Status404NotFound, "Email is not registered.", success: false);
 
             #region sending the api call to firebase api
             using (var client = new HttpClient())
@@ -166,7 +166,7 @@ namespace yourscope_api.service
             }
             #endregion
 
-            return new OkObjectResult(true);
+            return new ApiResponse(StatusCodes.Status201Created, data: true, success: true);
         }
     }
 }
