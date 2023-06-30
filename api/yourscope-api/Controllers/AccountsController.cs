@@ -52,14 +52,16 @@ namespace yourscope_api.Controllers
         [Route("student/register")]
         public async Task<IActionResult> RegisterStudent([FromBody] UserRegistrationDto userInfo)
         {
+            ApiResponse response;
             try
             {
-                return await service.RegisterStudentMethod(userInfo);
+                response = await service.RegisterStudentMethod(userInfo);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                response = new(StatusCodes.Status500InternalServerError, exception: ex);
             }
+            return StatusCode(response.StatusCode, response);
         }
 
         [HttpPost]
