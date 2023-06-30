@@ -7,12 +7,9 @@ using FirebaseAdmin;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using yourscope_api.authentication;
-<<<<<<< HEAD
 using Newtonsoft.Json.Serialization;
-=======
 using yourscope_api.ServiceInterfaces;
 using yourscope_api.Services;
->>>>>>> 13f8b45... Added endpoints for job postings
 
 string YourScopePolicy = "YourScopePolicy";
 
