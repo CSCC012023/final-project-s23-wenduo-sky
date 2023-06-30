@@ -71,10 +71,10 @@ namespace yourscope_api.service
             return users.Count > 0;
         }
 
-        public async Task<IActionResult> RegisterStudentMethod(UserRegistrationDto userInfo)
+        public async Task<ApiResponse> RegisterStudentMethod(UserRegistrationDto userInfo)
         {
             if (CheckEmailRegistered(userInfo.Email))
-                return new BadRequestObjectResult($"{userInfo.Email} has already been registered!");
+                return new ApiResponse(StatusCodes.Status400BadRequest, $"{userInfo.Email} has already been registered!", data: false, success: false);
 
             userInfo.Role = UserRole.Student;
 
@@ -88,7 +88,7 @@ namespace yourscope_api.service
 
             InsertUserIntoDb(userInfo);
 
-            return new CreatedResult("User successfully registered.", true);
+            return new ApiResponse(StatusCodes.Status201Created, "User successfully registered.", data: true, success: true);
         }
 
         public async Task<IActionResult> RegisterEmployerMethod(UserRegistrationDto userInfo)
@@ -146,10 +146,10 @@ namespace yourscope_api.service
             return new ApiResponse(StatusCodes.Status201Created, data: userLogin.User.Credential.IdToken, success: true);
         }
 
-        public async Task<IActionResult> SendPasswordResetEmailMethod(string email)
+        public async Task<ApiResponse> SendPasswordResetEmailMethod(string email)
         {
             if (!CheckEmailRegistered(email))
-                return new NotFoundObjectResult("Email is not registered.");
+                return new ApiResponse(StatusCodes.Status404NotFound, "Email is not registered.", success: false);
 
             #region sending the api call to firebase api
             using (var client = new HttpClient())
@@ -166,7 +166,7 @@ namespace yourscope_api.service
             }
             #endregion
 
-            return new OkObjectResult(true);
+            return new ApiResponse(StatusCodes.Status201Created, data: true, success: true);
         }
     }
 }

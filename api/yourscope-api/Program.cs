@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using yourscope_api.authentication;
 using Newtonsoft.Json.Serialization;
+using yourscope_api.ServiceInterfaces;
+using yourscope_api.Services;
 
 string YourScopePolicy = "YourScopePolicy";
 
@@ -44,6 +46,7 @@ builder.Services.AddRouting(builder => { builder.LowercaseUrls = true; });
 #region dependency injection
 builder.Services.AddTransient<IAccountsService, AccountsService>();
 builder.Services.AddTransient<ICompanyService, CompanyService>();
+builder.Services.AddTransient<IJobService, JobService>();
 builder.Services.AddSingleton(FirebaseApp.Create());
 #endregion
 

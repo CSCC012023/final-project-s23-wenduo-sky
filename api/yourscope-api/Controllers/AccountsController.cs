@@ -25,42 +25,50 @@ namespace yourscope_api.Controllers
         [Route("check-registered/{email}")]
         public IActionResult CheckEmailRegistered(string email)
         {
+            ApiResponse response;
             try
             {
-                return Ok(service.CheckEmailRegistered(email));
+                bool registered = service.CheckEmailRegistered(email);
+
+                response = new(StatusCodes.Status200OK, data: registered);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                response = new(StatusCodes.Status500InternalServerError, exception: ex);
             }
+            return StatusCode(response.StatusCode, response);
         }
 
         [HttpPost]
         [Route("{email}/send-password-reset-email")]
         public async Task<IActionResult> SendPasswordResetEmail(string email)
         {
+            ApiResponse response;
             try
             {
-                return await service.SendPasswordResetEmailMethod(email);
+                response = await service.SendPasswordResetEmailMethod(email);
             }
             catch(Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                response = new(StatusCodes.Status500InternalServerError, exception: ex);
             }
+            return StatusCode(response.StatusCode, response);
         }
 
         [HttpPost]
         [Route("student/register")]
         public async Task<IActionResult> RegisterStudent([FromBody] UserRegistrationDto userInfo)
         {
+            ApiResponse response;
             try
             {
-                return await service.RegisterStudentMethod(userInfo);
+                response = await service.RegisterStudentMethod(userInfo);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                response = new(StatusCodes.Status500InternalServerError, exception: ex);
             }
+            return StatusCode(response.StatusCode, response);
         }
 
         [HttpPost]
