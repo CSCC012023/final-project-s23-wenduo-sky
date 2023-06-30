@@ -51,7 +51,7 @@ export class RegisterStudentComponent {
     cpass: new FormControl(),
     school: new FormControl(),
     grade: new FormControl(),
-    birthday: new FormControl(),
+    birthday: new FormControl()
   })
 
   handleStudentRegistration() {
