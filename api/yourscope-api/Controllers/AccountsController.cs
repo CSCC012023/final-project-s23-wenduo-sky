@@ -24,14 +24,18 @@ namespace yourscope_api.Controllers
         [Route("check-registered/{email}")]
         public IActionResult CheckEmailRegistered(string email)
         {
+            ApiResponse response;
             try
             {
-                return Ok(service.CheckEmailRegistered(email));
+                bool registered = service.CheckEmailRegistered(email);
+
+                response = new(StatusCodes.Status200OK, data: registered);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                response = new(StatusCodes.Status500InternalServerError, exception: ex);
             }
+            return StatusCode(response.StatusCode, response);
         }
 
         [HttpPost]
