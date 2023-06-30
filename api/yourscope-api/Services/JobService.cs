@@ -24,6 +24,22 @@ namespace yourscope_api.Services
             return this.QueryJobPostings(filters, context).Count();
         }
 
+        public void CreateJobApplication(JobApplicationCreation application)
+        {
+            using var context = new YourScopeContext();
+
+
+            JobApplication newApplication = new JobApplication
+            {
+                User = context.Users.Where(q => q.UserId == application.userId).First(),
+                JobPosting = context.JobPostings.Where(q => q.JobPostingId == application.jobPostingId).First()
+            };
+
+            context.JobApplications.Add(newApplication);
+            context.SaveChanges();
+
+        }
+
         public void CreateJobPosting(JobPostingCreation posting)
         {
             using var context = new YourScopeContext();
@@ -47,6 +63,35 @@ namespace yourscope_api.Services
             var posting = context.JobPostings.Where(q => q.JobPostingId == postingId).First();
             context.JobPostings.Remove(posting);
             context.SaveChanges();
+        }
+
+        public List<JobApplicationDetails> GetJobApplications(int jobPostingId)
+        {
+            using var context = new YourScopeContext();
+
+            List<JobApplicationDetails> jobApplications = new List<JobApplicationDetails>();
+
+            context.JobApplications
+                .Include(q => q.User)
+                .Include(q => q.JobPosting)
+                .Where(q => q.JobPosting.JobPostingId == jobPostingId)
+                .ToList()
+                .ForEach(application =>
+            {
+                var user = application.User;
+                jobApplications.Add(new JobApplicationDetails
+                {
+                    Birthday = user.Birthday,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    MiddleName = user.MiddleName,
+                    LastName = user.LastName,
+                    Grade = user.Grade,
+                    School = user.Affiliation
+                });
+            });
+
+            return jobApplications;
         }
 
         public List<JobPostingDetails> GetJobPostings(JobFilter filters)

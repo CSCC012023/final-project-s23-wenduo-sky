@@ -1,6 +1,7 @@
 ﻿using Firebase.Auth;
 using Microsoft.AspNetCore.Mvc;
 using yourscope_api.Models.DbModels;
+using yourscope_api.Models.Reponse;
 using yourscope_api.Models.Request;
 using yourscope_api.service;
 using yourscope_api.ServiceInterfaces;
@@ -93,5 +94,34 @@ namespace yourscope_api.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("application")]
+        public IActionResult CreateJobApplication([FromBody] JobApplicationCreation application)
+        {
+            try
+            {
+                service.CreateJobApplication(application);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("application/{id}")]
+        public IActionResult GetJobApplications(int id)
+        {
+            try
+            {
+                var applications = service.GetJobApplications(id);
+                return Ok(applications);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }

@@ -10,6 +10,7 @@ namespace yourscope_api.ServiceInterfaces
         public int CountJobPostings(JobFilter filters);
         public List<JobPostingDetails> GetJobPostings(JobFilter filters);
         public void DeleteJobPosting(int postingId);
-
+        public void CreateJobApplication(JobApplicationCreation application);
+        public List<JobApplicationDetails> GetJobApplications(int postingId);
     }
 }
