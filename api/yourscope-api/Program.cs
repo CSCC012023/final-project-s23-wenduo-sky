@@ -7,6 +7,7 @@ using FirebaseAdmin;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using yourscope_api.authentication;
+using Newtonsoft.Json.Serialization;
 
 string YourScopePolicy = "YourScopePolicy";
 
@@ -20,7 +21,10 @@ builder.Configuration.AddEnvironmentVariables();
 
 #region Services Configuration
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
