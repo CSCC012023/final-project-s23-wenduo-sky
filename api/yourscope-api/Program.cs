@@ -46,6 +46,7 @@ builder.Services.AddRouting(builder => { builder.LowercaseUrls = true; });
 #region dependency injection
 builder.Services.AddTransient<IAccountsService, AccountsService>();
 builder.Services.AddTransient<ICompanyService, CompanyService>();
+builder.Services.AddTransient<IEventsService, EventsService>();
 builder.Services.AddTransient<IJobService, JobService>();
 builder.Services.AddSingleton(FirebaseApp.Create());
 #endregion
