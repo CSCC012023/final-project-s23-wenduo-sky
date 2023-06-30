@@ -57,7 +57,7 @@ namespace yourscope_api.Services
 
             if (filters.Offset == null || filters.Count == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Offset and count must be specefied");
             }
 
             this.QueryJobPostings(filters, context)
