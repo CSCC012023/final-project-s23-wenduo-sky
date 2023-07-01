@@ -51,6 +51,19 @@ Authorization: Bearer <token>
 
 In order to obtain a JWT, you must first register and log in to an account using the respective endpoints. The log-in endpoint will then respond with a JWT that the client may then place in the header of subsequent requests to other endpoints requiring authentication.
 
+If a request is missing the Authorization header or has an incorrectly formatted Authorization header, then the following will be returned in the response body:
+
+```json
+{
+  "statusCode": 401,
+  "data": null,
+  "errors": null,
+  "message": "Authentication failure.",
+  "successful": false,
+  "exception": null
+}
+```
+
 ### User Accounts
 
 <details>
