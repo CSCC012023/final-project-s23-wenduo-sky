@@ -10,6 +10,8 @@ using yourscope_api.authentication;
 using Newtonsoft.Json.Serialization;
 using yourscope_api.ServiceInterfaces;
 using yourscope_api.Services;
+using Microsoft.AspNetCore.Authorization;
+using yourscope_api.Authentication;
 
 string YourScopePolicy = "YourScopePolicy";
 
@@ -49,6 +51,7 @@ builder.Services.AddTransient<ICompanyService, CompanyService>();
 builder.Services.AddTransient<IEventsService, EventsService>();
 builder.Services.AddTransient<IJobService, JobService>();
 builder.Services.AddSingleton(FirebaseApp.Create());
+builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, YourScopeAuthorizationMiddleware>();
 #endregion
 
 #endregion
@@ -64,6 +67,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
