@@ -15,7 +15,8 @@ export class AuthService {
   login(email: string, password: string) {
     this.service.getLogin(email, password).subscribe({
       next: res => {
-        let loginToken = this.jwtService.DecodeToken(res.toString());
+        let loginData = JSON.parse(JSON.stringify(res));
+        let loginToken = this.jwtService.DecodeToken(loginData.data);
         if(loginToken.role === 0){
           this.router.navigate(['/dashboardStudent']);
         }
@@ -26,7 +27,7 @@ export class AuthService {
           this.router.navigate(['/dashboardEmployer']);
         }
 
-        this.cookieService.set('loginToken', res.toString());
+        this.cookieService.set('loginToken', loginData.data);
       }, 
       error: err => {
         alert(err.error);
@@ -36,7 +37,7 @@ export class AuthService {
   
   passwordReset(email: string) {
     this.service.passwordReset(email).subscribe({
-      next: res => {
+      next: () => {
         alert("Email sent");
         this.router.navigate(['/login']);
       }, 
