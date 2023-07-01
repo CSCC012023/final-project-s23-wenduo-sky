@@ -9,7 +9,8 @@ using yourscope_api.ServiceInterfaces;
 
 namespace yourscope_api.Services
 {
-    public class JobService : IJobService {
+    public class JobService : IJobService
+    {
 
         #region Fields and Constructor
         private readonly ICompanyService companyService;
@@ -24,7 +25,7 @@ namespace yourscope_api.Services
             return this.QueryJobPostings(filters, context).Count();
         }
 
-        public void CreateJobApplication(JobApplicationCreation application)
+        public int CreateJobApplication(JobApplicationCreation application)
         {
             using var context = new YourScopeContext();
 
@@ -38,9 +39,11 @@ namespace yourscope_api.Services
             context.JobApplications.Add(newApplication);
             context.SaveChanges();
 
+            return newApplication.JobApplicationId;
+
         }
 
-        public void CreateJobPosting(JobPostingCreation posting)
+        public int CreateJobPosting(JobPostingCreation posting)
         {
             using var context = new YourScopeContext();
 
@@ -55,6 +58,8 @@ namespace yourscope_api.Services
 
             context.JobPostings.Add(newPosting);
             context.SaveChanges();
+
+            return newPosting.JobPostingId;
         }
 
         public void DeleteJobPosting(int postingId)
