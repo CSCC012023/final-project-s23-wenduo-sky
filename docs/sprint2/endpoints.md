@@ -1,4 +1,21 @@
 ## YourScope Backend REST API Documentation
+This is the documentation for the YourScope API created by Wenduo Sky. Within this document you will find information pertaining to the nature of the API (the structure of the response body, the nature of authentication, etc) as well as documentation on each of the endpoints that are exposed throuhgh this API.
+
+### Response Body
+
+All exposed endpoints within the API will return a consistent object which has the following structure:
+
+```csharp
+public class ApiResponse
+{
+    public int StatusCode;
+    public object? Data;
+    public IEnumerable<string>? Errors;
+    public string? Message;
+    public bool? Successful;
+    public Exception? Exception;
+}
+```
 
 ### User Accounts
 
