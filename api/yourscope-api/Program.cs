@@ -10,6 +10,7 @@ using yourscope_api.authentication;
 using Newtonsoft.Json.Serialization;
 using yourscope_api.ServiceInterfaces;
 using yourscope_api.Services;
+using yourscope_api.middleware;
 
 string YourScopePolicy = "YourScopePolicy";
 
@@ -23,10 +24,15 @@ builder.Configuration.AddEnvironmentVariables();
 
 #region Services Configuration
 
-builder.Services.AddControllers().AddNewtonsoftJson(options =>
-{
-    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-});
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(options =>
+        {
+            options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+        })
+    .ConfigureApiBehaviorOptions(options =>
+        {
+            options.SuppressModelStateInvalidFilter = true;
+        });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -70,6 +76,7 @@ app.MapControllers();
 
 #region Middleware Configuration
 app.UseCors(YourScopePolicy);
+app.UseMiddleware<YourScopeStatusCodeMiddleware>();
 #endregion
 
 app.Run();
