@@ -24,7 +24,7 @@ export class APIService {
           "Api-Key": environment.firebase.apiKey,
           'Accept': 'application/json' as const, 
           'Content-Type': 'application/json' as const, 
-          'Response-Type': 'text' as const
+          'Response-Type': 'JSON' as const
         }
         )
       };
@@ -40,7 +40,7 @@ export class APIService {
           "Api-Key": environment.firebase.apiKey,
           'Accept': 'application/json' as const, 
           'Content-Type': 'application/json' as const, 
-          'Response-Type': 'text' as const
+          'Response-Type': 'JSON' as const
         }
         )
       };
