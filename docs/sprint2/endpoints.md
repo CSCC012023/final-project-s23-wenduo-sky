@@ -69,19 +69,48 @@ If a request is missing the Authorization header or has an incorrectly formatted
 <details>
  <summary><code>GET</code> <code><b>/api/accounts/v1/check-registered/{email}</b></code> <code>(checks for the existence of an email in the database)</code></summary>
 
-##### Parameters
+#### Parameters
 
 > | Name      |  Type     | Data Type               | Description                                                           |
 > |-----------|-----------|-------------------------|-----------------------------------------------------------------------|
 > | email      |  required path parameter | string   | A path parameter representing the email to be searched for.  |
 
-##### Responses
+#### Responses
 
-> | Status Code     | content-type                      | Response                                                            |Description|
-> |---------------|-----------------------------------|-----------------------------------------------------------------|-----|
-> | `200`         | `application/json;charset=UTF-8`        | `false`                                |Response when email has not been registered yet.|
-> | `200`         | `application/json;charset=UTF-8`        | `true`                                |Response when email has already been registered.|
-> | `404`         | `application/json;charset=UTF-8`                | `None`                            |If the path parameter is not provided.|
+> | Status Code     | content-type                      | Data Value             | Success Value | Description |
+> |-----------------|-----------------------------------|----------------------|---------------|-------------|
+> | `200`         | `application/json;charset=UTF-8`        | `false`          | `null`                      |Response when email has not been registered yet.|
+> | `200`         | `application/json;charset=UTF-8`        | `true`           | `null`                    |Response when email has already been registered.|
+> | `404`         | `application/json;charset=UTF-8`                | `None`   | `null`                        |If the path parameter is not provided.|
+
+#### Sample Response Body
+
+Email not registered.
+
+```json
+{
+  "statusCode": 200,
+  "data": false,
+  "errors": null,
+  "message": null,
+  "successful": null,
+  "exception": null
+}
+```
+
+Path parameter not provided.
+
+```json
+{
+  "statusCode": 404,
+  "data": null,
+  "errors": null,
+  "message": "The resource you are looking for does not exist.",
+  "successful": null,
+  "exception": null
+}
+```
+
 </details>
 
 <details>
@@ -100,7 +129,7 @@ If a request is missing the Authorization header or has an incorrectly formatted
 > |grade|required in the request body|integer between 8 and 13|The student's current grade.|
 > |password|required in the request body|string|The user's password.|
 
-##### Sample Request Body
+#### Sample Request Body
 
 ```json
 {
@@ -127,49 +156,72 @@ If a request is missing the Authorization header or has an incorrectly formatted
 }
 ```
 
-##### Responses
+#### Responses
 
-> | Status Code     | content-type                      | Response                                                            |Description|
-> |---------------|-----------------------------------|-----------------------------------------------------------------|-----|
-> | `200`         | `application/json;charset=UTF-8`        | `true`                                |The registration was successful and encountered no errors.|
-> | `400`         | `text/plain;charset=UTF-8`        | `{email} has already been registered!`                                |If the passed-in email has already been registered.|
-> | `400`         | `application/json;charset=UTF-8`                |             `{"errors": {"$": ["JSON deserialization for type 'yourscope_api.entities.UserRegistrationDto' was missing required properties, including the following: property"]}}`                |If any required parameters are missing.|
 
-##### Sample Response Body
-Missing required parameters.
+> | Status Code | content-type | Data Value | Success Value | Errors Value | Description |
+> |------------|-----------|-----------|----------|----------|-------|
+> | 200 | application/json;charset=UTF-8 | `true` | `true` | `null` |The registration was successful and encountered no errors. |
+> | 400 | application/json;charset=UTF-8 | `'{email} has already been registered!'` | `false` | `null` | If the passed-in email has already been registered. |
+> | 400 | application/json;charset=UTF-8 | `null` | `false` | `<An array of error messages containing indicating missing parameters>` | If any required parameters are missing. |
+
+#### Sample Response Body
+
+Email already registered.
+
 ```json
 {
-  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-  "title": "One or more validation errors occurred.",
-  "status": 400,
-  "traceId": "00-f253f8dee6ddc5946118c738276965c6-80c2ce8979e338b1-00",
-  "errors": {
-    "$": [
-      "JSON deserialization for type 'yourscope_api.entities.UserRegistrationDto' was missing required properties, including the following: email"
-    ],
-    "userInfo": [
-      "The userInfo field is required."
-    ]
-  }
+  "statusCode": 400,
+  "data": false,
+  "errors": null,
+  "message": "{email} has already been registered!",
+  "successful": false,
+  "exception": null
 }
 ```
-Registration successful.
+
+Missing required parameters.
+
 ```json
-true
+{
+  "statusCode": 400,
+  "data": null,
+  "errors": [
+    "The Email field is required.",
+    "The Password field is required."
+  ],
+  "message": "{email} has already been registered!",
+  "successful": false,
+  "exception": null
+}
 ```
+
+Registration successful.
+
+```json
+{
+  "statusCode": 201,
+  "data": true,
+  "errors": null,
+  "message": "User successfully registered.",
+  "successful": true,
+  "exception": null
+}
+```
+
 </details>
 
 <details>
  <summary><code>POST</code> <code><b>/api/accounts/v1/login</b></code> <code>(Used to log in an existing user and generate a JWT auth token)</code></summary>
 
-##### Parameters
+#### Parameters
 
 > | Name      |  Type     | Data Type               | Description                                                           |
 > |-----------|-----------|-------------------------|-----------------------------------------------------------------------|
 > | email      |  required in request body | string   | The user's email address.  |
 > |password|required in the request body|string|The user's password.|
 
-##### Sample Request Body
+#### Sample Request Body
 
 ```json
 {
@@ -178,12 +230,40 @@ true
 }
 ```
 
-##### Responses
+#### Responses
 
-> | Status Code     | content-type                      | Response                                                            |Description|
-> |---------------|-----------------------------------|-----------------------------------------------------------------|-----|
-> | `200`         | `text/plain;charset=UTF-8`        | `JWT token`                                |The login was successful and a JWT token is returned which is needed for future authentication.|
-> | `401`         | `text/plain;charset=UTF-8`        | `Incorrect email or password.`                                |Either the passed-in email or the passed-in password was incorrect.|
+> | Status Code | content-type | Data Value | Success Value | Errors Value | Message Value | Description |
+> |------------|------------|------------|------------|------------|------------|------------|
+> | `201`         | `application/json;charset=UTF-8`        | `JWT token`           | `true` | `null`                   | `null` | The login was successful and a JWT token is returned which is needed for future authentication.|
+> | `401`         | `application/json;charset=UTF-8`        | `null` | `null` | `null` |  `'Incorrect email or password.'`                              |Either the passed-in email or the passed-in password was incorrect.|
+
+### Sample Response Body
+Successful login.
+
+```json
+{
+  "statusCode": 201,
+  "data": "<JWT>",
+  "errors": null,
+  "message": null,
+  "successful": true,
+  "exception": null
+}
+```
+
+Incorrect credentials.
+
+```json
+{
+  "statusCode": 401,
+  "data": null,
+  "errors": null,
+  "message": "Incorrect email or password.",
+  "successful": null,
+  "exception": null
+}
+```
+
 </details>
 
 <details>
@@ -197,8 +277,36 @@ true
 
 ##### Responses
 
-> | Status Code     | content-type                      | Response                                                            |Description|
-> |---------------|-----------------------------------|-----------------------------------------------------------------|-----|
-> | `200`         | `application/json;charset=UTF-8`        | `true`                                |The email was sent successfully to the user's email address.|
-> | `404`         | `text/plain;charset=UTF-8`        | `Email is not registered.`                                |The provided email address is not registered under any account.|
+> | Status Code | content-type | Data Value | Message Value | Description |
+> |-----|-----|-----|-----|-----|
+> | `201`         | `application/json;charset=UTF-8`        | `true`         | `null`                        |The email was sent successfully to the user's email address.|
+> | `404`         | `application/json;charset=UTF-8`        | `null` | `'Email is not registered.'`                                |The provided email address is not registered under any account.|
+
+#### Sample Response Body
+Successful email sent.
+
+```json
+{
+  "statusCode": 201,
+  "data": true,
+  "errors": null,
+  "message": null,
+  "successful": true,
+  "exception": null
+}
+```
+
+Email not registered.
+
+```json
+{
+  "statusCode": 404,
+  "data": null,
+  "errors": null,
+  "message": "Email is not registered.",
+  "successful": false,
+  "exception": null
+}
+```
+
 </details>
