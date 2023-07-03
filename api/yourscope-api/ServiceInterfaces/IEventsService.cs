@@ -1,4 +1,5 @@
 ﻿using yourscope_api.entities;
+using yourscope_api.Models.Request;
 
 namespace yourscope_api.service
 {
@@ -6,5 +7,6 @@ namespace yourscope_api.service
     {
         public Task<ApiResponse> CreateEventMethod(EventCreationDto eventDetails);
         public Task<ApiResponse> DeleteEventMethod(int id);
+        public Task<ApiResponse> GetEventsMethod(EventFilter filter);
     }
 }

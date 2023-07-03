@@ -4,6 +4,8 @@ using FirebaseAdmin;
 using yourscope_api.entities;
 using yourscope_api.Models.DbModels;
 using User = yourscope_api.Models.DbModels.User;
+using yourscope_api.Models.Request;
+using Microsoft.EntityFrameworkCore;
 
 namespace yourscope_api.service
 {
@@ -48,7 +50,7 @@ namespace yourscope_api.service
             await context.SaveChangesAsync();
             
 
-            return new ApiResponse(StatusCodes.Status201Created, "Event successfully created!", true);
+            return new ApiResponse(StatusCodes.Status201Created, "Event successfully created!", true, true);
         }
 
         public async Task<ApiResponse> DeleteEventMethod(int id)
@@ -64,11 +66,28 @@ namespace yourscope_api.service
             context.Events.Remove(toDelete);
             await context.SaveChangesAsync();
 
-            return new ApiResponse(StatusCodes.Status200OK, "Event sucessfully deleted.", data: true, success: true);
+            return new ApiResponse(StatusCodes.Status200OK, "Event successfully deleted.", data: true, success: true);
+        }
+
+        public async Task<ApiResponse> GetEventsMethod(EventFilter filter)
+        {
+            using var context = new YourScopeContext();
+
+            List<Event> events = await context.Events.Where(e =>
+                (filter.SchoolId == null || (e.SchoolId != null && e.SchoolId == filter.SchoolId)) // SchoolId filter.
+                && (filter.UserId == null || (e.UserId != null && e.UserId == filter.UserId)) // UserId filter.
+            )
+            .Include(e => e.User)
+            .Include(e => e.School)
+            .Skip(filter.Offset)
+            .Take(filter.Count)
+            .ToListAsync();
+
+            return new ApiResponse(StatusCodes.Status200OK, data: events, success: true);
         }
 
         #region helper methods
-        private Event? GetEventById(int id)
+        private static Event? GetEventById(int id)
         {
             using var context = new YourScopeContext();
 
