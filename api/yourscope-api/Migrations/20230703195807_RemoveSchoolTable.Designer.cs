@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using yourscope_api;
 
@@ -10,9 +11,11 @@ using yourscope_api;
 namespace yourscope_api.Migrations
 {
     [DbContext(typeof(YourScopeContext))]
-    partial class YourScopeDataContextModelSnapshot : ModelSnapshot
+    [Migration("20230703195807_RemoveSchoolTable")]
+    partial class RemoveSchoolTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -161,24 +164,6 @@ namespace yourscope_api.Migrations
                     b.HasIndex("JobPostingId");
 
                     b.ToTable("JobQuestions");
-                });
-
-            modelBuilder.Entity("yourscope_api.Models.DbModels.School", b =>
-                {
-                    b.Property<int>("SchoolId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("SchoolId");
-
-                    b.ToTable("Schools");
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.User", b =>
