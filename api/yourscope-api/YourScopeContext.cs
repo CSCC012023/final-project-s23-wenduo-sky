@@ -13,10 +13,9 @@ namespace yourscope_api
         public DbSet<Event> Events { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Company> Company { get; set; }
-        public DbSet<School> School { get; set; }
+        public DbSet<School> Schools { get; set; }
         public DbSet<JobApplication> JobApplications { get; set; }
         public DbSet<JobPosting> JobPostings { get; set; }
-        public DbSet<JobQuestion> JobQuestions { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string? connectionString = config.GetConnectionString("db");

@@ -1,11 +1,14 @@
 ﻿using Firebase.Auth;
+using Google.Api.Gax;
 using Microsoft.AspNetCore.Mvc;
 using yourscope_api.entities;
 using yourscope_api.Models.DbModels;
+using yourscope_api.Models.Reponse;
 using yourscope_api.Models.Request;
 using yourscope_api.service;
 using yourscope_api.ServiceInterfaces;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace yourscope_api.Controllers
 {
@@ -31,12 +34,12 @@ namespace yourscope_api.Controllers
 
             try
             {
-                service.CreateJobPosting(posting);
-                return StatusCode(201);
+                var jobId = service.CreateJobPosting(posting);
+                return StatusCode(201, new ApiResponse(201, data : jobId, success : true));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                return StatusCode(500, new ApiResponse(500, ex.Message, success : false));
             }
         }
 
@@ -54,11 +57,12 @@ namespace yourscope_api.Controllers
                     Offset = offset
                 };
 
-                return Ok(service.GetJobPostings(filters));
+                var jobPostings = service.GetJobPostings(filters);
+                return Ok(new ApiResponse(200, data: jobPostings, success: true));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                return StatusCode(500, new ApiResponse(500, ex.Message, success: false));
             }
         }
 
@@ -69,11 +73,11 @@ namespace yourscope_api.Controllers
             try
             {
                 service.DeleteJobPosting(id);
-                return Ok();
+                return Ok(new ApiResponse(200, success: true));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                return StatusCode(500, new ApiResponse(500, ex.Message, success: false));
             }
         }
 
@@ -89,14 +93,45 @@ namespace yourscope_api.Controllers
 
             try
             {
-                return Ok(service.CountJobPostings(filters));
+                var numJobPostings = service.CountJobPostings(filters);
+                return Ok(new ApiResponse(200, data: numJobPostings, success: true));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                return StatusCode(500, new ApiResponse(500, ex.Message, success: false));
+            }
+        }
+        
+        [HttpPost]
+        [Route("application")]
+        public IActionResult CreateJobApplication([FromBody] JobApplicationCreation application)
+        {
+            try
+            {
+                var jobId = service.CreateJobApplication(application);
+                return Ok(new ApiResponse(200, data: jobId, success: true));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ApiResponse(500, ex.Message, success: false));
             }
         }
 
+        [HttpGet]
+        [Route("application/{id}")]
+        public IActionResult GetJobApplications(int id)
+        {
+            try
+            {
+                var applications = service.GetJobApplications(id);
+                return Ok(new ApiResponse(200, data: applications, success: true));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ApiResponse(500, ex.Message, success: false));
+            }
+        }
+        
         #region helpers
         private ApiResponse GenerateMissingFieldsResponse()
         {
@@ -112,5 +147,6 @@ namespace yourscope_api.Controllers
             return response;
         }
         #endregion
+        
     }
 }
