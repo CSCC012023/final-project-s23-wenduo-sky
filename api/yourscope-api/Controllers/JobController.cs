@@ -106,6 +106,9 @@ namespace yourscope_api.Controllers
         [Route("application")]
         public IActionResult CreateJobApplication([FromBody] JobApplicationCreation application)
         {
+            if (!ModelState.IsValid)
+                return StatusCode(StatusCodes.Status400BadRequest, GenerateMissingFieldsResponse());
+
             try
             {
                 var jobId = service.CreateJobApplication(application);
