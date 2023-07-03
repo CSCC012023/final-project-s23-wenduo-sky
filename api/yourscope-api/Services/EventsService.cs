@@ -44,7 +44,7 @@ namespace yourscope_api.service
             await context.SaveChangesAsync();
             
 
-            return new ApiResponse(StatusCodes.Status201Created, "Event successfully created!", true);
+            return new ApiResponse(StatusCodes.Status201Created, "Event successfully created!", true, true);
         }
 
         public async Task<ApiResponse> DeleteEventMethod(int id)
@@ -60,13 +60,7 @@ namespace yourscope_api.service
             context.Events.Remove(toDelete);
             await context.SaveChangesAsync();
 
-            return new ApiResponse(StatusCodes.Status200OK, "Event sucessfully deleted.", data: true, success: true);
-        }
-
-        private bool FilterEvent(Event e, EventFilter filter)
-        {
-            return (filter.SchoolId is null || e.SchoolId is null || e.SchoolId == filter.SchoolId)
-                && (filter.UserId is null || e.UserId is null || e.UserId == filter.UserId);
+            return new ApiResponse(StatusCodes.Status200OK, "Event successfully deleted.", data: true, success: true);
         }
 
         public async Task<ApiResponse> GetEventsMethod(EventFilter filter)
@@ -87,7 +81,7 @@ namespace yourscope_api.service
         }
 
         #region helper methods
-        private Event? GetEventById(int id)
+        private static Event? GetEventById(int id)
         {
             using var context = new YourScopeContext();
 
