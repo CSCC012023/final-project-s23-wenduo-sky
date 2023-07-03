@@ -16,7 +16,6 @@ namespace yourscope_api
         public DbSet<School> Schools { get; set; }
         public DbSet<JobApplication> JobApplications { get; set; }
         public DbSet<JobPosting> JobPostings { get; set; }
-        public DbSet<JobQuestion> JobQuestions { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string? connectionString = config.GetConnectionString("db");

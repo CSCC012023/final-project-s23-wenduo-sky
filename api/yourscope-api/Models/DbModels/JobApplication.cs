@@ -8,6 +8,5 @@ namespace yourscope_api.Models.DbModels
         public int JobApplicationId { get; set; }
         public required JobPosting JobPosting { get; set; } = null!;
         public required User User { get; set; } = null!;
-        public required string responses { get; set; }
     }
 }
