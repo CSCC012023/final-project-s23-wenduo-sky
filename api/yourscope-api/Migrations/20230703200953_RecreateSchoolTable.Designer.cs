@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using yourscope_api;
 
@@ -10,9 +11,11 @@ using yourscope_api;
 namespace yourscope_api.Migrations
 {
     [DbContext(typeof(YourScopeContext))]
-    partial class YourScopeDataContextModelSnapshot : ModelSnapshot
+    [Migration("20230703200953_RecreateSchoolTable")]
+    partial class RecreateSchoolTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,19 +77,14 @@ namespace yourscope_api.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("SchoolId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("EventId");
-
-                    b.HasIndex("SchoolId");
 
                     b.HasIndex("UserId");
 
@@ -104,6 +102,10 @@ namespace yourscope_api.Migrations
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
+
+                    b.Property<string>("responses")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("JobApplicationId");
 
@@ -139,6 +141,29 @@ namespace yourscope_api.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("JobPostings");
+                });
+
+            modelBuilder.Entity("yourscope_api.Models.DbModels.JobQuestion", b =>
+                {
+                    b.Property<int>("JobQuestionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("JobPostingId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaxWords")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Question")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("JobQuestionId");
+
+                    b.HasIndex("JobPostingId");
+
+                    b.ToTable("JobQuestions");
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.School", b =>
@@ -200,15 +225,11 @@ namespace yourscope_api.Migrations
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.Event", b =>
                 {
-                    b.HasOne("yourscope_api.Models.DbModels.School", "School")
-                        .WithMany()
-                        .HasForeignKey("SchoolId");
-
                     b.HasOne("yourscope_api.Models.DbModels.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("School");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -241,6 +262,17 @@ namespace yourscope_api.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("yourscope_api.Models.DbModels.JobQuestion", b =>
+                {
+                    b.HasOne("yourscope_api.Models.DbModels.JobPosting", "JobPosting")
+                        .WithMany()
+                        .HasForeignKey("JobPostingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("JobPosting");
                 });
 #pragma warning restore 612, 618
         }

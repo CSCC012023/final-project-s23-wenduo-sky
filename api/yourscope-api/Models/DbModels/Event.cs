@@ -10,6 +10,9 @@ namespace yourscope_api.Models.DbModels
         public required string Description { get; set; }
         public required DateTime Date { get; set; }
         public required string Location { get; set; }
-        public User User { get; set; } = null!;
+        public int? UserId { get; set; }
+        public User? User { get; set; } = null!;
+        public int? SchoolId { get; set; }
+        public School? School { get; set; } = null!;
     }
 }

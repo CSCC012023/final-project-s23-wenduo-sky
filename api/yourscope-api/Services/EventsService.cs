@@ -26,6 +26,11 @@ namespace yourscope_api.service
             if (user is null)
                 return new ApiResponse(StatusCodes.Status404NotFound, $"User with id {eventDetails.UserId} does not exist.", success: false);
 
+            // Retrieving associated school object.
+            School? school = context.Schools.Where(school => school.Name == user.Affiliation).FirstOrDefault();
+            // Commented for now until creation of schools is implemented.
+            //if (school is null)
+            //    return new ApiResponse(StatusCodes.Status404NotFound, $"School with name {user.Affiliation} does not exist.", success: false);
 
             // Convert dto to Event object.
             Event createdEvent = new()
@@ -34,7 +39,8 @@ namespace yourscope_api.service
                 Description = eventDetails.Description,
                 Date = eventDetails.Date,
                 Location = eventDetails.Location,
-                User = user
+                User = user,
+                School = school
             };
 
             // Insert into db.

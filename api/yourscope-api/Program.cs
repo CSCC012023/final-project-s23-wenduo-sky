@@ -7,11 +7,11 @@ using FirebaseAdmin;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using yourscope_api.authentication;
-using Newtonsoft.Json.Serialization;
 using yourscope_api.ServiceInterfaces;
 using yourscope_api.Services;
 using Microsoft.AspNetCore.Authorization;
 using yourscope_api.Authentication;
+using Newtonsoft.Json.Serialization;
 
 string YourScopePolicy = "YourScopePolicy";
 
