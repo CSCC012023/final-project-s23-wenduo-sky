@@ -1,43 +1,49 @@
-import { Component } from '@angular/core';
+import { JsonPipe } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
+import { APIService } from 'src/app/services/api.service';
+import { JwtService } from 'src/app/services/jwt.service';
 
 @Component({
   selector: 'app-admin-events',
   templateUrl: './admin-events.component.html',
   styleUrls: ['./admin-events.component.scss']
 })
-export class AdminEventsComponent {
-  events = [
-    {title: 'Event1', url: '#', details: 'details', collapsed: true},
-    {title: 'Event2', url: '#', details: 'details', collapsed: true},
-    {title: 'Event3', url: '#', details: 'details', collapsed: true},
-    {title: 'Event4', url: '#', details: 'details', collapsed: true},
-    {title: 'Event5', url: '#', details: 'details', collapsed: true},
-    {title: 'Event6', url: '#', details: 'details', collapsed: true},
-    {title: 'Event7', url: '#', details: 'details', collapsed: true},
-    {title: 'Event8', url: '#', details: 'details', collapsed: true},
-    {title: 'Event9', url: '#', details: 'details', collapsed: true},
-    {title: 'Event10', url: '#', details: 'details', collapsed: true},
-    {title: 'Event11', url: '#', details: 'details', collapsed: true},
-    {title: 'Event12', url: '#', details: 'details', collapsed: true},
-    {title: 'Event13', url: '#', details: 'details', collapsed: true},
-    {title: 'Event14', url: '#', details: 'details', collapsed: true},
-    {title: 'Event15', url: '#', details: 'details', collapsed: true},
-    {title: 'Event16', url: '#', details: 'details', collapsed: true},
-    {title: 'Event17', url: '#', details: 'details', collapsed: true},
-    {title: 'Event18', url: '#', details: 'details', collapsed: true},
-    {title: 'Event19', url: '#', details: 'details', collapsed: true},
-    {title: 'Event20', url: '#', details: 'details', collapsed: true},
-    {title: 'Event21', url: '#', details: 'details', collapsed: true},
-    {title: 'Event22', url: '#', details: 'details', collapsed: true},
-    {title: 'Event23', url: '#', details: 'details', collapsed: true},
-    {title: 'Event24', url: '#', details: 'details', collapsed: true},
-    {title: 'Event25', url: '#', details: 'details', collapsed: true},
-    {title: 'Event26', url: '#', details: 'details', collapsed: true},
-    {title: 'Event27', url: '#', details: 'details', collapsed: true},
-    {title: 'Event28', url: '#', details: 'details', collapsed: true},
-    {title: 'Event29', url: '#', details: 'details', collapsed: true},
-    {title: 'Event30', url: '#', details: 'details', collapsed: true},
-  ];
+export class AdminEventsComponent implements OnInit {
 
+  constructor(private hc: APIService, private cookie: CookieService, private jwtService: JwtService) { }
+  
+  events = <any> [];
 
+  ngOnInit(): void {
+    let loginToken = this.cookie.get("loginToken");
+    let decodedToken = this.jwtService.DecodeToken(loginToken);
+    this.hc.getEvents(0,10, undefined, decodedToken.userId).subscribe({
+      next: res => {
+        this.events = JSON.parse(JSON.stringify(res)).data;
+
+        for (let event in this.events){
+            let date = this.events[event].date;
+            date = new Date(date).toLocaleDateString('en-US'); 
+            this.events[event].date = date;
+        }
+      }, 
+      error: err => {
+        alert("Couldn't retrieve events" );
+      }
+    });
+  }
+
+  deleteEvent(id: number){
+    this.hc.deleteEvent(id).subscribe({
+      next: res => {
+        alert("Successfully deleted event" + id);
+        location.reload();
+      }, 
+      error: err => {
+        alert("Couldn't delete event" + id);
+      }
+    });
+  }
 }
+

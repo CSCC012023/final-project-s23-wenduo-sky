@@ -20,21 +20,23 @@
                 <div data-spy="scroll" data-offset="0">
                     <div class="column" *ngFor="let event of events">
                         <mat-card class="card ">
-                            <mat-card-header>
-                              <mat-card-title>{{event.title}}</mat-card-title>
+                            <mat-card-header class="card-container">
+                              <mat-card-title>Title: {{event.title}}</mat-card-title>
+                              <mat-card-subtitle>Location: {{event.location}}</mat-card-subtitle>
+                              <mat-card-subtitle>Date: {{event.date}}</mat-card-subtitle>
                             </mat-card-header>
-                            <mat-card-content style="text-align: left" *ngIf="!event.collapsed">
-                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                            <mat-card-content style="text-align: center" *ngIf="event.expanded">
+                                <p>Description: {{event.description}}</p>
                             </mat-card-content>
-                            <mat-card-footer>
-                                <mat-card-actions>
-                                    <mat-card-content *ngIf="!event.collapsed">
-                                         <button mat-raised-button (click)="event.collapsed=true">Collapse</button>
-                                         <button mat-raised-button href="">Delete</button>
+                            <mat-card-footer >
+                                <mat-card-actions class="card-container">
+                                    <mat-card-content *ngIf="event.expanded">
+                                        <a class="button-lg" (click)="event.expanded=false">Collapse</a>
+                                         <a class="button-lg" (click)="deleteEvent(event.eventId)">Delete</a>
                                     </mat-card-content>
-                                    <mat-card-content *ngIf="event.collapsed">
-                                         <button mat-raised-button (click)="event.collapsed=false">Expand</button>
-                                         <button mat-raised-button href="">Delete</button>
+                                    <mat-card-content *ngIf="!event.expanded">
+                                        <a class="button-lg" (click)="event.expanded=true">Expand</a>
+                                        <a class="button-lg" (click)="deleteEvent(event.eventId)">Delete</a>
                                     </mat-card-content>
                                  </mat-card-actions>
                             </mat-card-footer> 

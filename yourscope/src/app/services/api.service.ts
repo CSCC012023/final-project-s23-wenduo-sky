@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { JwtService } from '../services/jwt.service';
+import { CookieService } from 'ngx-cookie-service'
 
 @Injectable({
   providedIn: 'root'
 })
 export class APIService {
-  constructor(private hc: HttpClient) { }
+  constructor(private hc: HttpClient, private cookie: CookieService, private jwtService : JwtService ) { }
 
   public get(url: string, options?: any) {
     return this.hc.get(url, options);
@@ -49,4 +51,120 @@ export class APIService {
       url = url.concat(email, '/send-password-reset-email')
       return this.hc.post(url, body, options);
   }
+
+  public getEvents(offSet: number, count : number, schoolId? : number, userId? : number){
+    let loginToken = this.cookie.get("loginToken");
+    let decodedToken = this.jwtService.DecodeToken(loginToken);
+
+    if(schoolId && userId){
+      const options = {
+        headers: new HttpHeaders(
+        {
+          "userId":decodedToken.userId, 
+          "schoolId": schoolId, 
+          "offset":offSet, 
+          "count":count,
+          "Api-Key": environment.firebase.apiKey,
+          "Authorization": loginToken,
+          'Accept': 'application/json' as const, 
+          'Content-Type': 'application/json' as const, 
+          'Response-Type': 'JSON' as const
+        }
+        )
+      };
+      
+      return this.hc.get('https://localhost:7184/api/events/v1', options);
+
+    } else if (schoolId){
+        const options = {
+          headers: new HttpHeaders(
+          {
+            "schoolId": schoolId, 
+            "offset":offSet, 
+            "count":count,
+            "Api-Key": environment.firebase.apiKey,
+            "Authorization": loginToken,
+            'Accept': 'application/json' as const, 
+            'Content-Type': 'application/json' as const, 
+            'Response-Type': 'JSON' as const
+          }
+          )
+      };
+      
+      return this.hc.get('https://localhost:7184/api/events/v1', options);
+
+    } else if (schoolId){
+      const options = {
+        headers: new HttpHeaders(
+        {
+          "userId": decodedToken.userId, 
+          "offset":offSet, 
+          "count":count,
+          "Api-Key": environment.firebase.apiKey,
+          "Authorization": loginToken,
+          'Accept': 'application/json' as const, 
+          'Content-Type': 'application/json' as const, 
+          'Response-Type': 'JSON' as const
+        }
+        )
+      };
+      
+      return this.hc.get('https://localhost:7184/api/events/v1', options);
+    } else {
+      const options = {
+        headers: new HttpHeaders(
+        {
+          "offset":offSet, 
+          "count":count,
+          "Api-Key": environment.firebase.apiKey,
+          "Authorization": loginToken,
+          'Accept': 'application/json' as const, 
+          'Content-Type': 'application/json' as const, 
+          'Response-Type': 'JSON' as const
+        }
+        )
+      };
+      
+      return this.hc.get('https://localhost:7184/api/events/v1', options);
+    }
+  }
+
+
+  public createEvent(title : string, description : string, eventDate : Date, location : string){
+    let loginToken = this.cookie.get("loginToken");
+    let decodedToken = this.jwtService.DecodeToken(loginToken);
+    const body = JSON.stringify({"title":title, "description":description, "date": eventDate, "location": location, "userId":decodedToken.userId})
+    const options = {
+        headers: new HttpHeaders(
+        {
+          "Api-Key": environment.firebase.apiKey,
+          "Authorization": loginToken,
+          'Accept': 'application/json' as const, 
+          'Content-Type': 'application/json' as const, 
+          'Response-Type': 'JSON' as const
+        }
+        )
+      };
+     
+    return this.hc.post('https://localhost:7184/api/events/v1', body, options);
+  }
+
+  public deleteEvent(id : number){
+    let loginToken = this.cookie.get("loginToken");
+    const options = {
+        headers: new HttpHeaders(
+        {
+          "Api-Key": environment.firebase.apiKey,
+          "Authorization": loginToken,
+          'Accept': 'application/json' as const, 
+          'Content-Type': 'application/json' as const, 
+          'Response-Type': 'JSON' as const
+        }
+        )
+      };
+     
+    return this.hc.delete('https://localhost:7184/api/events/v1/'+id, options);
+  }
+
+
 }

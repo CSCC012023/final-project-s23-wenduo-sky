@@ -22,7 +22,7 @@ import { FormsModule } from '@angular/forms';
     AdminRoutingModule,
     MatButtonModule,
     MatCardModule, 
-    FormsModule
+    FormsModule,
   ],
   exports: [RouterModule],
   bootstrap: [AdminEventsComponent] 
