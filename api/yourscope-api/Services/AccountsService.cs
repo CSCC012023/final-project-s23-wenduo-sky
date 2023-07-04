@@ -80,13 +80,16 @@ namespace yourscope_api.service
 
             // Adding the extra roles claim to the Firebase user.
             string uid = (await FirebaseRegister(userInfo)).User.Uid;
+
+            int userID = await InsertUserIntoDb(userInfo);
+
             var claims = new Dictionary<string, object>()
             {
-                { "role", UserRole.Student }
+                { "role", UserRole.Student },
+                { "userID", userID }
             };
-            await FirebaseAuth.GetAuth(FirebaseApp).SetCustomUserClaimsAsync(uid, claims);
 
-            InsertUserIntoDb(userInfo);
+            await FirebaseAuth.GetAuth(FirebaseApp).SetCustomUserClaimsAsync(uid, claims);
 
             return new ApiResponse(StatusCodes.Status201Created, "User successfully registered.", data: true, success: true);
         }
@@ -99,13 +102,15 @@ namespace yourscope_api.service
             userInfo.Role = UserRole.Employer;
 
             string uid = (await FirebaseRegister(userInfo)).User.Uid;
+
+            int userID = await InsertUserIntoDb(userInfo);
+
             var claims = new Dictionary<string, object>()
             {
-                { "role", UserRole.Employer }
+                { "role", UserRole.Employer },
+                { "userID", userID }
             };
             await FirebaseAuth.GetAuth(FirebaseApp).SetCustomUserClaimsAsync(uid, claims);
-
-            InsertUserIntoDb(userInfo);
 
             return new CreatedResult("User successfully registered.", true);
         }
@@ -122,12 +127,14 @@ namespace yourscope_api.service
             return await firebase.CreateUserWithEmailAndPasswordAsync(userInfo.Email, userInfo.Password, displayName);
         }
 
-        private static async void InsertUserIntoDb(User user)
+        private static async Task<int> InsertUserIntoDb(User user)
         {
             using var context = new YourScopeContext();
 
             context.Users.Add(user);
             await context.SaveChangesAsync();
+
+            return user.UserId;
         }
 
         public async Task<ApiResponse> LoginMethod(UserLoginDto loginInfo)
