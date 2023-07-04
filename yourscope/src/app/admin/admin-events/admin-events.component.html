@@ -18,7 +18,7 @@
 
         <div id="main-card" class=" margin-30 shadow mb-5 rounded ">
             <div class="scrollspy-container">
-                <div data-spy="scroll" data-offset="0">
+                <div data-spy="scroll" data-offset="0" *ngIf=!empty>
                     <div class="column" *ngFor="let event of events">
                         <mat-card class="card ">
                             <mat-card-header class="card-container">
@@ -43,6 +43,13 @@
                             </mat-card-footer> 
                           </mat-card>
                     </div>
+                </div>
+                <div *ngIf=empty>
+                    <mat-card class="card ">
+                        <mat-card-header class="card-container">
+                            <mat-card-title>You have no scheduled events.</mat-card-title>
+                        </mat-card-header>
+                    </mat-card>
                 </div>
             </div>
         </div>

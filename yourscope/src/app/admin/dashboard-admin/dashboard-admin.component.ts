@@ -14,16 +14,21 @@ export class DashboardAdminComponent implements OnInit{
   events = <any> [];
   loginToken = this.cookie.get("loginToken");
   decodedToken = this.jwtService.DecodeToken(this.loginToken);
-
+  empty = false;
+  
   ngOnInit(): void {
-    this.hc.getEvents(0,10, undefined, this.decodedToken.userId).subscribe({
+    this.hc.getEvents(0,10, undefined, this.decodedToken.userID).subscribe({
       next: res => {
         this.events = JSON.parse(JSON.stringify(res)).data;
 
-        for (let event in this.events){
+        if (this.events.length != 0){
+          for (let event in this.events){
             let date = this.events[event].date;
             date = new Date(date).toLocaleDateString('en-US'); 
             this.events[event].date = date;
+          }
+        } else {
+          this.empty = true;
         }
       }, 
       error: err => {

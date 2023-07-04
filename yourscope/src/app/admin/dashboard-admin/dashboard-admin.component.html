@@ -20,11 +20,20 @@
               <a class="button-sm" href="admin/events">Manage</a>
             </h5>
             <div class="scrollspy-container">
-              <div data-spy="scroll" data-offset="0">
+              <div data-spy="scroll" data-offset="0" *ngIf="!empty">
                 <div class="card item-card shadow bg-white rounded" *ngFor="let event of events">
                   <div class="card-body">
                     <a class="card-text">
                       {{event.title}} - {{event.date}}, {{event.location}}
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="empty">
+                <div class="card item-card shadow bg-white rounded">
+                  <div class="card-body">
+                    <a class="card-text">
+                       You have no scheduled events.
                     </a>
                   </div>
                 </div>

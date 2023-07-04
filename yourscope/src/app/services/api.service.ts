@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { JwtService } from '../services/jwt.service';
 import { CookieService } from 'ngx-cookie-service'
@@ -52,56 +52,17 @@ export class APIService {
       return this.hc.post(url, body, options);
   }
 
-  public getEvents(offSet: number, count : number, schoolId? : number, userId? : number){
+  public getEvents(offSet: number, count : number, schoolId? : number, userID? : number){
     let loginToken = this.cookie.get("loginToken");
     let decodedToken = this.jwtService.DecodeToken(loginToken);
 
-    if(schoolId && userId){
+    if(userID != undefined){
       const options = {
+        params: {'offset': offSet, 'userId': decodedToken.userID, 'count': count},
         headers: new HttpHeaders(
         {
-          "userId":decodedToken.userId, 
-          "schoolId": schoolId, 
-          "offset":offSet, 
-          "count":count,
-          "Api-Key": environment.firebase.apiKey,
-          "Authorization": loginToken,
-          'Accept': 'application/json' as const, 
-          'Content-Type': 'application/json' as const, 
-          'Response-Type': 'JSON' as const
-        }
-        )
-      };
-      
-      return this.hc.get('https://localhost:7184/api/events/v1', options);
-
-    } else if (schoolId){
-        const options = {
-          headers: new HttpHeaders(
-          {
-            "schoolId": schoolId, 
-            "offset":offSet, 
-            "count":count,
-            "Api-Key": environment.firebase.apiKey,
-            "Authorization": loginToken,
-            'Accept': 'application/json' as const, 
-            'Content-Type': 'application/json' as const, 
-            'Response-Type': 'JSON' as const
-          }
-          )
-      };
-      
-      return this.hc.get('https://localhost:7184/api/events/v1', options);
-
-    } else if (schoolId){
-      const options = {
-        headers: new HttpHeaders(
-        {
-          "userId": decodedToken.userId, 
-          "offset":offSet, 
-          "count":count,
-          "Api-Key": environment.firebase.apiKey,
-          "Authorization": loginToken,
+          'Api-Key': environment.firebase.apiKey,
+          'Authorization': loginToken,
           'Accept': 'application/json' as const, 
           'Content-Type': 'application/json' as const, 
           'Response-Type': 'JSON' as const
@@ -112,12 +73,11 @@ export class APIService {
       return this.hc.get('https://localhost:7184/api/events/v1', options);
     } else {
       const options = {
+        params: {'offset': offSet, 'count': count},
         headers: new HttpHeaders(
         {
-          "offset":offSet, 
-          "count":count,
-          "Api-Key": environment.firebase.apiKey,
-          "Authorization": loginToken,
+          'Api-Key': environment.firebase.apiKey,
+          'Authorization': loginToken,
           'Accept': 'application/json' as const, 
           'Content-Type': 'application/json' as const, 
           'Response-Type': 'JSON' as const
@@ -133,7 +93,8 @@ export class APIService {
   public createEvent(title : string, description : string, eventDate : Date, location : string){
     let loginToken = this.cookie.get("loginToken");
     let decodedToken = this.jwtService.DecodeToken(loginToken);
-    const body = JSON.stringify({"title":title, "description":description, "date": eventDate, "location": location, "userId":decodedToken.userId})
+    console.log(decodedToken);
+    const body = JSON.stringify({"title":title, "description":description, "date": eventDate, "location": location, "userId":decodedToken.userID})
     const options = {
         headers: new HttpHeaders(
         {
