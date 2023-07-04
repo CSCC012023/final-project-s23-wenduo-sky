@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using yourscope_api.authentication;
 using yourscope_api.ServiceInterfaces;
 using yourscope_api.Services;
+using Microsoft.AspNetCore.Authorization;
+using yourscope_api.Authentication;
 using yourscope_api.middleware;
 using Newtonsoft.Json.Serialization;
 
@@ -55,6 +57,7 @@ builder.Services.AddTransient<ICompanyService, CompanyService>();
 builder.Services.AddTransient<IEventsService, EventsService>();
 builder.Services.AddTransient<IJobService, JobService>();
 builder.Services.AddSingleton(FirebaseApp.Create());
+builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, YourScopeAuthorizationMiddleware>();
 #endregion
 
 #endregion
@@ -70,6 +73,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
