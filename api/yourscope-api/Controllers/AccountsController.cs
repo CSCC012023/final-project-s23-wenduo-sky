@@ -59,6 +59,9 @@ namespace yourscope_api.Controllers
         [Route("student/register")]
         public async Task<IActionResult> RegisterStudent([FromBody] UserRegistrationDto userInfo)
         {
+            if (!ModelState.IsValid)
+                return StatusCode(StatusCodes.Status400BadRequest, GenerateMissingFieldsResponse());
+
             ApiResponse response;
             try
             {
@@ -75,6 +78,9 @@ namespace yourscope_api.Controllers
         [Route("employer/register")]
         public async Task<IActionResult> RegisterEmployer([FromBody] UserRegistrationDto userInfo)
         {
+            if (!ModelState.IsValid)
+                return StatusCode(StatusCodes.Status400BadRequest, GenerateMissingFieldsResponse());
+
             try
             {
                 return await service.RegisterEmployerMethod(userInfo);
@@ -89,6 +95,9 @@ namespace yourscope_api.Controllers
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginDto userInfo)
         {
+            if (!ModelState.IsValid)
+                return StatusCode(StatusCodes.Status400BadRequest, GenerateMissingFieldsResponse());
+
             ApiResponse response;
             try
             {
@@ -101,5 +110,21 @@ namespace yourscope_api.Controllers
                 return StatusCode(response.StatusCode, response);
             }
         }
+
+        #region helpers
+        private ApiResponse GenerateMissingFieldsResponse()
+        {
+            List<string> errors = new();
+            foreach (var field in ModelState)
+            {
+                if (field.Value.Errors.Any(e => e.ErrorMessage.Contains("is required")))
+                    errors.Add($"{field.Key} is a required field.");
+            }
+
+            ApiResponse response = new(StatusCodes.Status400BadRequest, "Bad request.", errors: errors);
+
+            return response;
+        }
+        #endregion
     }
 }
