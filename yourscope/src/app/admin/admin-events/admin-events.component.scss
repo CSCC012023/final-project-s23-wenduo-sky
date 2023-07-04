@@ -57,10 +57,8 @@
   }
 
   #bg {
-    background: rgb(110, 197, 239);
-    flex: 1 1 auto;
-    display: flex;
-    flex-flow: column;
+    background: rgb(2,0,36);
+    background: linear-gradient(333deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 30%, rgba(0,212,255,1) 100%);
   }
   
   .white {
@@ -80,12 +78,13 @@
     background-color: rgb(42, 61, 104);
     border-radius: 20px;
     padding: 6px 10px 6px 10px;
+    margin: 10px;
     text-decoration: none;
-    margin-left: 10px;
     font-size: 12px;
     font-size: large;
     text-align: center;
     text-justify: center;
+    display: inline-block;
   }
 
   .card-container {
