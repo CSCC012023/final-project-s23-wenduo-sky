@@ -190,7 +190,7 @@ Missing required parameters.
     "The Email field is required.",
     "The Password field is required."
   ],
-  "message": "{email} has already been registered!",
+  "message": null,
   "successful": false,
   "exception": null
 }
@@ -304,6 +304,196 @@ Email not registered.
   "data": null,
   "errors": null,
   "message": "Email is not registered.",
+  "successful": false,
+  "exception": null
+}
+```
+
+</details>
+
+### School Events
+
+<details>
+ <summary><code>GET</code> <code><b>/api/events/v1</b></code> <code>(gets a paginated list of events based on filters passed through as query parameters)</code></summary>
+
+#### Parameters
+
+> | Name      |  Type     | Data Type               | Description                                                           |
+> |-----------|-----------|-------------------------|-----------------------------------------------------------------------|
+> | userId      |  optional query parameter | int   | A query parameter representing the user ID of the user who created the event that is used for filtering.  |
+> | schoolId      |  optional query parameter | int   | A query parameter representing the school ID of the school that the event belongs to.  |
+> | offset     |  optional query parameter | int   | A query parameter representing the number of records to offset by.  |
+> | count     |  optional query parameter | int   | A query parameter representing the upper limit on the number of records to be returned.  |
+
+#### Responses
+
+> | Status Code     | content-type                      | Data Value             | Success Value | Description |
+> |-----------------|-----------------------------------|----------------------|---------------|-------------|
+> | `200`         | `application/json;charset=UTF-8`        | `<A list of events that match the filters provided>`          | `true`                      |A successful call to the endpoint will return a list of filtered events based on the filters that the user has provided.|
+
+#### Sample Response Body
+
+```json
+{
+  "statusCode": 200,
+  "data": [
+    {
+      "eventId": 4,
+      "title": "string",
+      "description": "string",
+      "date": "2023-07-01T15:50:59.635",
+      "location": "string",
+      "userId": 8,
+      "user": {
+        "userId": 8,
+        "email": "jasonsu894@gmail.com",
+        "firstName": "Jason",
+        "middleName": "string",
+        "lastName": "Su",
+        "birthday": "2023-06-14T22:05:32.011",
+        "role": 0,
+        "affiliation": "Wendat Village",
+        "grade": 11
+      },
+      "schoolId": null,
+      "school": null
+    },
+    {
+      "eventId": 5,
+      "title": "string",
+      "description": "string",
+      "date": "2023-07-01T13:56:56.191",
+      "location": "string",
+      "userId": 8,
+      "user": {
+        "userId": 8,
+        "email": "jasonsu894@gmail.com",
+        "firstName": "Jason",
+        "middleName": "string",
+        "lastName": "Su",
+        "birthday": "2023-06-14T22:05:32.011",
+        "role": 0,
+        "affiliation": "Wendat Village",
+        "grade": 11
+      },
+      "schoolId": null,
+      "school": null
+    }
+  ],
+  "errors": null,
+  "message": null,
+  "successful": true,
+  "exception": null
+}
+```
+
+</details>
+
+<details>
+ <summary><code>POST</code> <code><b>/api/events/v1</b></code> <code>(creates a new event)</code></summary>
+
+#### Parameters
+
+> | Name      |  Type     | Data Type               | Description                                                           |
+> |-----------|-----------|-------------------------|-----------------------------------------------------------------------|
+> | title      |  required body parameter | string   | The title of the event being created.  |
+> | description      |  required body parameter | string   | A description of the event being created.  |
+> | date     |  required body parameter | datetime   | The date when the event is being held.  |
+> | location     |  required body parameter | string   | The location of the event. This could be an address or the name of a building for example.  |
+> |userId | required body parameter | int   | The ID of the user creating the event.  |
+
+#### Responses
+
+> | Status Code | content-type | Data Value | Success Value | Errors Value | Description |
+> |------------|-----------|-----------|----------|----------|-------|
+> | `201` | application/json;charset=UTF-8 | `true` | `true` | `null` |The event was created with no errors. |
+> | `404` | application/json;charset=UTF-8 | `null` | `false` | `null` | If the passed-in userId does not correspond to any existing user within the system. |
+> | `400` | application/json;charset=UTF-8 | `null` | `false` | `<An array of error messages containing indicating missing parameters>` | If any required parameters are missing. |
+
+#### Sample Response Body
+
+Event created successfully.
+
+```json
+{
+  "statusCode": 201,
+  "data": true,
+  "errors": null,
+  "message": "Event successfully created!",
+  "successful": true,
+  "exception": null
+}
+```
+
+If the userId provided does not match any existing users.
+
+```json
+{
+  "statusCode": 404,
+  "data": null,
+  "errors": null,
+  "message": "User with id 0 does not exist.",
+  "successful": false,
+  "exception": null
+}
+```
+
+Missing required parameters.
+
+```json
+{
+  "statusCode": 400,
+  "data": null,
+  "errors": [
+    "The Location field is required."
+  ],
+  "message": null,
+  "successful": false,
+  "exception": null
+}
+```
+
+</details>
+
+<details>
+ <summary><code>DELETE</code> <code><b>/api/events/v1/{id}</b></code> <code>(deletes an event from the system)</code></summary>
+
+#### Parameters
+
+> | Name      |  Type     | Data Type               | Description                                                           |
+> |-----------|-----------|-------------------------|-----------------------------------------------------------------------|
+> | `id`     |  required path parameter | int   | The ID of the event to be deleted.  |
+
+#### Responses
+
+> | Status Code | content-type | Data Value | Success Value | Errors Value | Description |
+> |------------|-----------|-----------|----------|----------|-------|
+> | `200` | application/json;charset=UTF-8 | `true` | `true` | `null` |The event was removed with no errors. |
+> | `404` | application/json;charset=UTF-8 | `null` | `false` | `null` | If the passed in `id` does not correspond to any existing event within the system. |
+
+#### Sample Response Body
+
+Event deleted successfully.
+
+```json
+{
+  "statusCode": 200,
+  "data": true,
+  "errors": null,
+  "message": "Event successfully deleted.",
+  "successful": true,
+  "exception": null
+}
+```
+
+If the `id` provided does not match any existing events.
+
+```json
+{
+  "statusCode": 404,
+  "data": null,
+  "errors": null,
+  "message": "Event with id 3 does not exist.",
   "successful": false,
   "exception": null
 }

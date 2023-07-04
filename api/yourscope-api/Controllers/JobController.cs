@@ -29,6 +29,9 @@ namespace yourscope_api.Controllers
         [Route("posting")]
         public IActionResult CreateJobPosting([FromBody] JobPostingCreation posting)
         {
+            if (!ModelState.IsValid)
+                return StatusCode(StatusCodes.Status400BadRequest, GenerateMissingFieldsResponse());
+
             try
             {
                 var jobId = service.CreateJobPosting(posting);
@@ -98,11 +101,14 @@ namespace yourscope_api.Controllers
                 return StatusCode(500, new ApiResponse(500, ex.Message, success: false));
             }
         }
-
+        
         [HttpPost]
         [Route("application")]
         public IActionResult CreateJobApplication([FromBody] JobApplicationCreation application)
         {
+            if (!ModelState.IsValid)
+                return StatusCode(StatusCodes.Status400BadRequest, GenerateMissingFieldsResponse());
+
             try
             {
                 var jobId = service.CreateJobApplication(application);
@@ -128,5 +134,22 @@ namespace yourscope_api.Controllers
                 return StatusCode(500, new ApiResponse(500, ex.Message, success: false));
             }
         }
+        
+        #region helpers
+        private ApiResponse GenerateMissingFieldsResponse()
+        {
+            List<string> errors = new();
+            foreach (var field in ModelState)
+            {
+                if (field.Value.Errors.Any(e => e.ErrorMessage.Contains("is required")))
+                    errors.Add($"{field.Key} is a required field.");
+            }
+
+            ApiResponse response = new(StatusCodes.Status400BadRequest, "Bad request.", errors: errors);
+
+            return response;
+        }
+        #endregion
+        
     }
 }

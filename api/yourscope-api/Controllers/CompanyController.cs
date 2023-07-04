@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using yourscope_api.entities;
 using yourscope_api.Models.DbModels;
 using yourscope_api.service;
 
@@ -35,6 +36,9 @@ namespace yourscope_api.Controllers
         [Route("register")]
         public async Task<IActionResult> RegisterCompany([FromBody] Company companyInfo)
         {
+            if (!ModelState.IsValid)
+                return StatusCode(StatusCodes.Status400BadRequest, GenerateMissingFieldsResponse());
+
             try
             {
                 return await service.RegisterCompanyMethod(companyInfo);
@@ -44,5 +48,21 @@ namespace yourscope_api.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        #region helpers
+        private ApiResponse GenerateMissingFieldsResponse()
+        {
+            List<string> errors = new();
+            foreach (var field in ModelState)
+            {
+                if (field.Value.Errors.Any(e => e.ErrorMessage.Contains("is required")))
+                    errors.Add($"{field.Key} is a required field.");
+            }
+
+            ApiResponse response = new(StatusCodes.Status400BadRequest, "Bad request.", errors: errors);
+
+            return response;
+        }
+        #endregion
     }
 }
