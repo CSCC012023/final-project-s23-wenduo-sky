@@ -2,21 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { APIService } from 'src/app/services/api.service';
 import { JwtService } from 'src/app/services/jwt.service';
+
 @Component({
   selector: 'app-dashboard-admin',
   templateUrl: './dashboard-admin.component.html',
   styleUrls: ['./dashboard-admin.component.scss']
 })
 export class DashboardAdminComponent implements OnInit{
-  events = <any> [];
-
   constructor(private hc: APIService, private cookie: CookieService, private jwtService: JwtService) { }
 
+  events = <any> [];
+  loginToken = this.cookie.get("loginToken");
+  decodedToken = this.jwtService.DecodeToken(this.loginToken);
+
   ngOnInit(): void {
-    let loginToken = this.cookie.get("loginToken");
-    let decodedToken = this.jwtService.DecodeToken(loginToken);
-    
-    this.hc.getEvents(0,10, undefined, decodedToken.userId).subscribe({
+    this.hc.getEvents(0,10, undefined, this.decodedToken.userId).subscribe({
       next: res => {
         this.events = JSON.parse(JSON.stringify(res)).data;
 
