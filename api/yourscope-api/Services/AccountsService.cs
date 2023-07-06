@@ -76,18 +76,14 @@ namespace yourscope_api.service
             if (CheckEmailRegistered(userInfo.Email))
                 return new ApiResponse(StatusCodes.Status400BadRequest, $"{userInfo.Email} has already been registered!", data: false, success: false);
 
-            userInfo.Role = UserRole.Student;
+            User user = ConvertRegistrationDtoToUser(userInfo, UserRole.Student);
 
             // Adding the extra roles claim to the Firebase user.
             string uid = (await FirebaseRegister(userInfo)).User.Uid;
 
-            int userID = await InsertUserIntoDb(userInfo);
+            int userID = await InsertUserIntoDb(user);
 
-            var claims = new Dictionary<string, object>()
-            {
-                { "role", UserRole.Student },
-                { "userID", userID }
-            };
+            var claims = GenerateCustomClaims(UserRole.Student, userID, user);
 
             await FirebaseAuth.GetAuth(FirebaseApp).SetCustomUserClaimsAsync(uid, claims);
 
@@ -99,17 +95,14 @@ namespace yourscope_api.service
             if (CheckEmailRegistered(userInfo.Email))
                 return new BadRequestObjectResult($"{userInfo.Email} has already been registered!");
 
-            userInfo.Role = UserRole.Employer;
+            User user = ConvertRegistrationDtoToUser(userInfo, UserRole.Employer);
 
             string uid = (await FirebaseRegister(userInfo)).User.Uid;
 
-            int userID = await InsertUserIntoDb(userInfo);
+            int userID = await InsertUserIntoDb(user);
 
-            var claims = new Dictionary<string, object>()
-            {
-                { "role", UserRole.Employer },
-                { "userID", userID }
-            };
+            var claims = GenerateCustomClaims(UserRole.Employer, userID, user);
+
             await FirebaseAuth.GetAuth(FirebaseApp).SetCustomUserClaimsAsync(uid, claims);
 
             return new CreatedResult("User successfully registered.", true);
@@ -175,5 +168,52 @@ namespace yourscope_api.service
 
             return new ApiResponse(StatusCodes.Status201Created, data: true, success: true);
         }
+
+        #region helpers
+        private static User ConvertRegistrationDtoToUser(UserRegistrationDto userInfo, UserRole role)
+        {
+            User user = new()
+            {
+                Email = userInfo.Email,
+                FirstName = userInfo.FirstName,
+                MiddleName = userInfo.MiddleName,
+                LastName = userInfo.LastName,
+                Affiliation = userInfo.Affiliation,
+                Birthday = userInfo.Birthday,
+                Role = role,
+                Grade = userInfo.Grade
+            };
+
+            #region retrieving the affiliation ID
+            using var context = new YourScopeContext();
+
+            int? affiliationID = role switch
+            {
+                UserRole.Student => context.Schools.Where(school => school.Name == user.Affiliation).Select(result => result.SchoolId).FirstOrDefault(),
+                UserRole.Admin => context.Schools.Where(school => school.Name == user.Affiliation).Select(result => result.SchoolId).FirstOrDefault(),
+                UserRole.Employer => context.Company.Where(company => company.CompanyName == user.Affiliation).Select(result => result.CompanyID).FirstOrDefault(),
+                _ => null
+            };
+            if (affiliationID == 0) affiliationID = null;
+
+            user.AffiliationID = affiliationID;
+            #endregion
+
+            return user;
+        }
+
+        private Dictionary<string, object> GenerateCustomClaims(UserRole role, int userID, User user)
+        {
+            var claims = new Dictionary<string, object>()
+            {
+                { "role", role },
+                { "userID", userID }
+            };
+            if (user.AffiliationID is not null)
+                claims.Add("affiliationID", user.AffiliationID);
+
+            return claims;
+        }
+        #endregion
     }
 }
