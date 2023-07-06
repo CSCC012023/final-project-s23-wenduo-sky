@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using yourscope_api;
 
@@ -10,9 +11,11 @@ using yourscope_api;
 namespace yourscope_api.Migrations
 {
     [DbContext(typeof(YourScopeContext))]
-    partial class YourScopeDataContextModelSnapshot : ModelSnapshot
+    [Migration("20230706000846_UpdateCompanyTable")]
+    partial class UpdateCompanyTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -173,9 +176,6 @@ namespace yourscope_api.Migrations
                     b.Property<string>("Affiliation")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<int?>("AffiliationID")
-                        .HasColumnType("int");
 
                     b.Property<DateTime?>("Birthday")
                         .HasColumnType("datetime(6)");

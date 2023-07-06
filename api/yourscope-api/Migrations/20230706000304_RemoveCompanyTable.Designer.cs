@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using yourscope_api;
 
@@ -10,57 +11,16 @@ using yourscope_api;
 namespace yourscope_api.Migrations
 {
     [DbContext(typeof(YourScopeContext))]
-    partial class YourScopeDataContextModelSnapshot : ModelSnapshot
+    [Migration("20230706000304_RemoveCompanyTable")]
+    partial class RemoveCompanyTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("yourscope_api.Models.DbModels.Company", b =>
-                {
-                    b.Property<int>("CompanyID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("CompanyName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Fax")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Type")
-                        .HasColumnType("longtext");
-
-                    b.Property<int?>("UnitNumber")
-                        .HasColumnType("int");
-
-                    b.HasKey("CompanyID");
-
-                    b.ToTable("Company");
-                });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.Event", b =>
                 {
@@ -173,9 +133,6 @@ namespace yourscope_api.Migrations
                     b.Property<string>("Affiliation")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<int?>("AffiliationID")
-                        .HasColumnType("int");
 
                     b.Property<DateTime?>("Birthday")
                         .HasColumnType("datetime(6)");
