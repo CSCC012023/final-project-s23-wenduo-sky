@@ -80,7 +80,23 @@ namespace yourscope_api.Controllers
             }
             return StatusCode(response.StatusCode, response);
         }
-        
+
+        [HttpGet]
+        [Route("count")]
+        public async Task<IActionResult> CountEvents(int? userId, int? schoolId)
+        {
+            ApiResponse response;
+            try
+            {
+                response = await service.CountEventsMethod(userId, schoolId);
+            }
+            catch (Exception ex)
+            {
+                response = new(StatusCodes.Status500InternalServerError, exception: ex);
+            }
+            return StatusCode(response.StatusCode, response);
+        }
+
         #region helpers
         private ApiResponse GenerateMissingFieldsResponse()
         {
