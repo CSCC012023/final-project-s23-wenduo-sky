@@ -19,9 +19,9 @@
 	- This story has been completed and is functional within our application.
 - **Student Dashboard** `YS-13`: https://wenduosky.atlassian.net/browse/YS-13
 	- This story has been completed and is functional within our application.
-	- **Student View Events** `YS-14`: https://wenduosky.atlassian.net/browse/YS-14
+- **Student View Events** `YS-14`: https://wenduosky.atlassian.net/browse/YS-14
 	- This story has been completed and is functional within our application.
-	- **Student View Job Postings** `YS-18`: https://wenduosky.atlassian.net/browse/YS-18
+- **Student View Job Postings** `YS-18`: https://wenduosky.atlassian.net/browse/YS-18
 	- This story has been completed and is functional within our application.
 
 
