@@ -51,7 +51,7 @@ export class StudentEventsComponent implements OnInit {
   ngOnInit() {
     let loginToken = this.cookie.get("loginToken");
     let decodedToken = this.jwt.DecodeToken(loginToken);
-    this.api.getEvents(0,10, undefined, decodedToken.userId).subscribe({
+    this.api.getEvents(0,10, decodedToken.affiliationID, undefined).subscribe({
       next: res => {
         this.events = JSON.parse(JSON.stringify(res)).data;
         console.log(res);
