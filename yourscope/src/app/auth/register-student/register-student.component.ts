@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { APIService } from '../../services/api.service';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/auth/auth.service';
 
 class UserObj {
   Email!: string;
@@ -40,7 +41,7 @@ class UserObj {
   ]
 })
 export class RegisterStudentComponent {
-  constructor(private api: APIService, private router: Router) { }
+  constructor(private api: APIService, private router: Router, private auth: AuthService) { }
 
   public studentForm = new FormGroup({
     fname: new FormControl(),
@@ -64,7 +65,10 @@ export class RegisterStudentComponent {
     else return;
     if (this.studentForm.get("cpass")!.value != null && (this.studentForm.get("cpass")!.value as string).length > 5) cpass = this.studentForm.get("cpass")!.value;
     else return;
-    if (pass != cpass) {console.log(pass, cpass); return;}
+    if (pass != cpass) return;
+    if (this.studentForm.get("school")!.value == null) return;
+    if (this.studentForm.get("grade")!.value == null) return;
+    if (this.studentForm.get("birthday")!.value == null) return;
 
     const url = 'https://localhost:7184/api/accounts/v1/student/register';
     const user = new UserObj(
@@ -74,13 +78,13 @@ export class RegisterStudentComponent {
       this.studentForm.get("lname")!.value,
       this.studentForm.get("birthday")!.value,
       0,
-      "",
+      this.studentForm.get("school")!.value,
       this.studentForm.get("grade")!.value,
       this.studentForm.get("pass")!.value
     );
-    this.api.post(url, user).subscribe(res => {
-      console.log(res);
+    this.api.post(url, user).subscribe(() => {
       this.router.navigate(['/dashboardStudent']);
+      this.auth.login(this.studentForm.get("email")!.value, this.studentForm.get("pass")!.value);
     });
   }
 }
