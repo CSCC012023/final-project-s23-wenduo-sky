@@ -56,6 +56,17 @@ class School {
 
 export class RegisterStudentComponent {
   schools: School[] = [];
+  // Form validation
+  validFName: boolean = true;
+  validLName: boolean = true;
+  validEmail: boolean = true;
+  validPassword: boolean = true;
+  validCPassword: boolean = true;
+  validSchool: boolean = true;
+  validGrade: boolean = true;
+  validBirthday: boolean = true;
+  formErrorStr: string = "";
+
   constructor(private api: APIService, private router: Router, private auth: AuthService) { }
 
   public studentForm = new FormGroup({
@@ -74,21 +85,117 @@ export class RegisterStudentComponent {
     this.fetchAllSchools();
   }
 
-  handleStudentRegistration() {
+  validateAndSubmit(): void {
     let pass, cpass;
+    let checkExistsUrl = "https://localhost:7184/api/accounts/v1/check-registered/";
+    const emailRegEx: RegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
-    if (this.studentForm.get("fname")!.value == null) return;
-    if (this.studentForm.get("lname")!.value == null) return;
-    if (this.studentForm.get("email")!.value == null) return;
-    if (this.studentForm.get("pass")!.value != null && (this.studentForm.get("pass")!.value as string).length > 5) pass = this.studentForm.get("pass")!.value;
-    else return;
-    if (this.studentForm.get("cpass")!.value != null && (this.studentForm.get("cpass")!.value as string).length > 5) cpass = this.studentForm.get("cpass")!.value;
-    else return;
-    if (pass != cpass) return;
-    if (this.studentForm.get("school")!.value == null) return;
-    if (this.studentForm.get("grade")!.value == null) return;
-    if (this.studentForm.get("birthday")!.value == null) return;
+    // Required fields validation.
+    if (!this.studentForm.get("fname")!.value) {
+      if (!this.formErrorStr)
+        this.formErrorStr = "Missing highlighted required fields.";
+      this.validFName = false;
+    };
+    if (!this.studentForm.get("lname")!.value) {
+      if (!this.formErrorStr)
+        this.formErrorStr = "Missing highlighted required fields.";
+      this.validLName = false;
+    };
+    if (!this.studentForm.get("email")!.value) {
+      if (!this.formErrorStr)
+        this.formErrorStr = "Missing highlighted required fields.";
+      this.validEmail = false;
+    }
+    else {
+      checkExistsUrl += this.studentForm.get("email")!.value;
+    };
+    if (!this.studentForm.get("school")!.value) {
+      if (!this.formErrorStr)
+        this.formErrorStr = "Missing highlighted required fields.";
+      this.validSchool = false;
+    };
+    if (!this.studentForm.get("grade")!.value) {
+      if (!this.formErrorStr)
+        this.formErrorStr = "Missing highlighted required fields.";
+      this.validGrade = false;
+    };
+    if (!this.studentForm.get("birthday")!.value) {
+      if (!this.formErrorStr)
+        this.formErrorStr = "Missing highlighted required fields.";
+      this.validBirthday = false;
+    };
+    // Email validation.
+    if (!emailRegEx.test(this.studentForm.get("email")!.value)) {
+      this.validEmail = false;
+      if (!this.formErrorStr)
+        this.formErrorStr = "Please enter a valid email.";
+    }
+    // Password validation.
+    if (this.studentForm.get("pass")!.value && (this.studentForm.get("pass")!.value as string).length > 5)
+      pass = this.studentForm.get("pass")!.value;
+    else if (!this.studentForm.get("pass")!.value) {
+      if (!this.formErrorStr)
+        this.formErrorStr = "Missing highlighted required fields.";
+      this.validPassword = false;
+    }
+    else {
+      if (!this.formErrorStr)
+        this.formErrorStr = "Password must be longer than 5 characters.";
+      this.validPassword = false;
+    }
+    if (this.studentForm.get("cpass")!.value)
+      cpass = this.studentForm.get("cpass")!.value;
+    else {
+      if (!this.formErrorStr)
+        this.formErrorStr = "Missing highlighted required fields.";
+      this.validCPassword = false;
+    };
+    if (pass != cpass) {
+      if (!this.formErrorStr)
+        this.formErrorStr = "Passwords do not match.";
+      this.validPassword = false;
+      this.validCPassword = false;
+    };
 
+    if (!(this.validFName && this.validLName && this.validEmail && this.validPassword && this.validCPassword && this.validSchool && this.validGrade && this.validBirthday))
+      return;
+
+    this.api.get(checkExistsUrl).subscribe({
+      next: res => {
+        let response = JSON.parse(JSON.stringify(res));
+
+        if (response.data) {
+          this.validEmail = false;
+          this.formErrorStr = "Email has already been registered!";
+        }
+        else {
+          this.postStudentRegistration();
+        }
+      },
+      error: err => {
+        console.log(err);
+      }
+    })
+  }
+
+  clearFormNotifications() {
+    this.validFName = true;
+    this.validLName = true;
+    this.validEmail = true;
+    this.validPassword = true;
+    this.validCPassword = true;
+    this.validSchool = true;
+    this.validGrade = true;
+    this.validBirthday = true;
+    this.formErrorStr = "";
+  }
+
+  handleStudentRegistration() {
+    this.clearFormNotifications();
+    this.validateAndSubmit();
+  }
+
+  postStudentRegistration() {
     const url = 'https://localhost:7184/api/accounts/v1/student/register';
     const user = new UserObj(
       this.studentForm.get("email")!.value,
