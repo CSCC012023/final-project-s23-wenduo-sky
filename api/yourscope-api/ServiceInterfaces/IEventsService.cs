@@ -8,5 +8,6 @@ namespace yourscope_api.service
         public Task<ApiResponse> CreateEventMethod(EventCreationDto eventDetails);
         public Task<ApiResponse> DeleteEventMethod(int id);
         public Task<ApiResponse> GetEventsMethod(EventFilter filter);
+        public Task<ApiResponse> CountEventsMethod(int? userId, int? schoolId);
     }
 }
