@@ -4,7 +4,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { APIService } from '../../services/api.service';
 import { Router } from '@angular/router';
-import { AfterViewInit } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
 
 class UserObj {
@@ -67,7 +66,7 @@ export class RegisterStudentComponent {
   validBirthday: boolean = true;
   formErrorStr: string = "";
 
-  constructor(private api: APIService, private router: Router, private auth: AuthService) { }
+  constructor(private api: APIService, private auth: AuthService) { }
 
   public studentForm = new FormGroup({
     fname: new FormControl(),
@@ -210,7 +209,6 @@ export class RegisterStudentComponent {
     );
 
     this.api.post(url, user).subscribe(() => {
-      this.router.navigate(['/dashboardStudent']);
       this.auth.login(this.studentForm.get("email")!.value, this.studentForm.get("pass")!.value);
     });
   }

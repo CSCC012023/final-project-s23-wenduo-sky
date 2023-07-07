@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { APIService } from '../../services/api.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 class UserObj {
   Email!: string;
@@ -72,7 +73,7 @@ export class RegisterEmployerComponent {
   validCPassword: boolean = true;
   formErrorStr: string = "";
 
-  constructor(private api: APIService, private router: Router) { }
+  constructor(private api: APIService, private auth: AuthService) { }
 
   public employerForm = new FormGroup({
     fname: new FormControl(),
@@ -200,7 +201,7 @@ export class RegisterEmployerComponent {
         localStorage.removeItem("createCompany");
         this.api.post(url, user).subscribe(res => {
           localStorage.removeItem("companyName");
-          this.router.navigate(['/dashboardEmployer']);
+          this.auth.login(this.employerForm.get("email")!.value, this.employerForm.get("pass")!.value);
         });
       });
     }
@@ -208,7 +209,7 @@ export class RegisterEmployerComponent {
       this.api.post(url, user).subscribe(res => {
         console.log(res);
         localStorage.removeItem("companyName");
-        this.router.navigate(['/dashboardEmployer']);
+        this.auth.login(this.employerForm.get("email")!.value, this.employerForm.get("pass")!.value);
       });
     }
   }
