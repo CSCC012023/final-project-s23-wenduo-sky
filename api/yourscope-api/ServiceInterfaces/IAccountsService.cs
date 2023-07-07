@@ -7,7 +7,7 @@ namespace yourscope_api.service
     {
         public bool CheckEmailRegistered(string email);
         public Task<ApiResponse> RegisterStudentMethod(UserRegistrationDto userInfo);
-        public Task<IActionResult> RegisterEmployerMethod(UserRegistrationDto userInfo);
+        public Task<ApiResponse> RegisterEmployerMethod(UserRegistrationDto userInfo);
         public Task<ApiResponse> LoginMethod(UserLoginDto loginInfo);
         public Task<ApiResponse> SendPasswordResetEmailMethod(string email);
     }

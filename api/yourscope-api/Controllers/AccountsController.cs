@@ -81,14 +81,16 @@ namespace yourscope_api.Controllers
             if (!ModelState.IsValid)
                 return StatusCode(StatusCodes.Status400BadRequest, GenerateMissingFieldsResponse());
 
+            ApiResponse response;
             try
             {
-                return await service.RegisterEmployerMethod(userInfo);
+                response = await service.RegisterEmployerMethod(userInfo);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                response = new(StatusCodes.Status500InternalServerError, exception: ex);
             }
+            return StatusCode(response.StatusCode, response);
         }
 
         [HttpPost]

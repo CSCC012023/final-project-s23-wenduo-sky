@@ -2,7 +2,7 @@
 {
     public class JobApplicationCreation
     {
-        public int jobPostingId;
-        public int userId;
+        public int jobPostingId { get; set; }
+        public int userId { get; set; }
     }
 }

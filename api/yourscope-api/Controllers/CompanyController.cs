@@ -22,14 +22,16 @@ namespace yourscope_api.Controllers
         [Route("check-company-exist/{company}")]
         public IActionResult CheckCompanyExists(string company)
         {
+            ApiResponse response;
             try
             {
-                return Ok(service.CheckCompanyExists(company));
+                response = service.CheckCompanyExistsMethod(company);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                response = new(StatusCodes.Status500InternalServerError, exception: ex);
             }
+            return StatusCode(response.StatusCode, response);
         }
 
         [HttpPost]
@@ -39,14 +41,31 @@ namespace yourscope_api.Controllers
             if (!ModelState.IsValid)
                 return StatusCode(StatusCodes.Status400BadRequest, GenerateMissingFieldsResponse());
 
+            ApiResponse response;
             try
             {
-                return await service.RegisterCompanyMethod(companyInfo);
+                response = await service.RegisterCompanyMethod(companyInfo);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                response = new(StatusCodes.Status500InternalServerError, exception: ex);
             }
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [HttpGet]
+        public IActionResult GetCompanies()
+        {
+            ApiResponse response;
+            try
+            {
+                response = service.GetCompaniesMethod();
+            }
+            catch(Exception ex)
+            {
+                response = new(StatusCodes.Status500InternalServerError, exception: ex);
+            }
+            return StatusCode(response.StatusCode, response);
         }
 
         #region helpers

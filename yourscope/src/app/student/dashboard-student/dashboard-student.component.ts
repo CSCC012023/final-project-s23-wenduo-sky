@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { APIService } from 'src/app/services/api.service';
+import { CookieService } from 'ngx-cookie-service';
+import { JwtService } from 'src/app/services/jwt.service';
 
 @Component({
   selector: 'app-dashboard-student',
@@ -9,14 +11,8 @@ import { APIService } from 'src/app/services/api.service';
 })
 export class DashboardStudentComponent implements OnInit {
   collapsed = true;
-  events = [
-    {title: 'Event', time: 'NOW', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'},
-    {title: 'Event', time: 'NOW', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'},
-    {title: 'Event', time: 'NOW', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'},
-    {title: 'Event', time: 'NOW', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'},
-    {title: 'Event', time: 'NOW', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'},
-    {title: 'Event', time: 'NOW', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'}
-  ];
+  name: string = "";
+  events: any = [];
   jobs: any = [];
   currentCourses = [
     {code: 'CSCC01', name: 'Introduction to Software Engineering'},
@@ -35,13 +31,17 @@ export class DashboardStudentComponent implements OnInit {
   eventsWidth = 323;
   jobsWidth = 323;
 
-  constructor(private api: APIService) { }
+  constructor(private api: APIService, private cookie: CookieService, private jwt: JwtService) { }
 
   ngOnInit() {
-    const url = 'https://localhost:7184/api/job/v1/posting?count=10';
-    this.api.get(url).subscribe(res => {
-      this.jobs = res;
+    const token = this.jwt.DecodeToken(this.cookie.get("loginToken"));
+    this.name = token.name;
+    this.api.getEvents(0, 10, token.affiliationID, undefined).subscribe((res: any) => {
+      this.events = res.data;
       this.eventsWidth = this.eventsWidth * this.events.length;
+    });
+    this.api.getJobs(10, 0, token.userID, undefined).subscribe((res: any) => {
+      this.jobs = res.data;
       this.jobsWidth = this.jobsWidth * this.jobs.length;
     });
   }
