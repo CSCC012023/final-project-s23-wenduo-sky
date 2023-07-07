@@ -19,14 +19,14 @@ namespace yourscope_api.service
         }
         #endregion
 
-        public async Task<IActionResult> RegisterCompanyMethod(Company companyInfo)
+        public async Task<ApiResponse> RegisterCompanyMethod(Company companyInfo)
         {
             if (CheckCompanyExists(companyInfo.CompanyName))
-                return new BadRequestObjectResult($"{companyInfo.CompanyName} already exists!");
+                return new ApiResponse(StatusCodes.Status400BadRequest, message: $"{companyInfo.CompanyName} already exists!", success: false);
 
             await InsertCompanyIntoDb(companyInfo);
 
-            return new CreatedResult("Company successfully registered.", true);
+            return new ApiResponse(StatusCodes.Status201Created, "Company successfully registered.", true, success: true);
         }
 
         private static async Task<bool> InsertCompanyIntoDb(Company company)
