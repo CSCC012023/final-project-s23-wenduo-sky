@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using yourscope_api.entities;
 using yourscope_api.Models.DbModels;
 
@@ -9,15 +9,15 @@ namespace yourscope_api.service
         #region constructors and class fields
 
         public CompanyService() { }
-        
-        public bool CheckCompanyExists(string company)
-        {
-            using var context = new YourScopeContext();
 
-            List<Company> exist = context.Company.Where(comp => comp.CompanyName == company).ToList();
-            return exist.Count > 0;
-        }
+
         #endregion
+
+        public ApiResponse CheckCompanyExistsMethod(string company)
+        {
+
+            return new ApiResponse(StatusCodes.Status200OK, data: CheckCompanyExists(company), success: true);
+        }
 
         public async Task<ApiResponse> RegisterCompanyMethod(Company companyInfo)
         {
@@ -55,6 +55,14 @@ namespace yourscope_api.service
         public ApiResponse GetCompaniesMethod()
         {
             return new ApiResponse(StatusCodes.Status200OK, data: GetCompanyList(), success: true);
+        }
+
+        private static bool CheckCompanyExists(string company)
+        {
+            using var context = new YourScopeContext();
+
+            List<Company> exist = context.Company.Where(comp => comp.CompanyName == company).ToList();
+            return exist.Count > 0;
         }
     }
 }
