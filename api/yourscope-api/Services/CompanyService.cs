@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using yourscope_api.entities;
 using yourscope_api.Models.DbModels;
 
 namespace yourscope_api.service
@@ -49,6 +50,11 @@ namespace yourscope_api.service
         {
             using var context = new YourScopeContext();
             return context.Company.ToList();
+        }
+
+        public ApiResponse GetCompaniesMethod()
+        {
+            return new ApiResponse(StatusCodes.Status200OK, data: GetCompanyList(), success: true);
         }
     }
 }

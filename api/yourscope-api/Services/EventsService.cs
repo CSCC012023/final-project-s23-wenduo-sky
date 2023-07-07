@@ -86,6 +86,18 @@ namespace yourscope_api.service
             return new ApiResponse(StatusCodes.Status200OK, data: events, success: true);
         }
 
+        public async Task<ApiResponse> CountEventsMethod(int? userId, int? schoolId)
+        {
+            using var context = new YourScopeContext();
+
+            int count = (await context.Events.Where(e =>
+                (schoolId == null || (e.SchoolId != null && e.SchoolId == schoolId))
+                && (userId == null || (e.UserId != null && e.UserId == userId))
+            ).ToListAsync()).Count;
+
+            return new ApiResponse(StatusCodes.Status200OK, data: count, success: true);
+        }
+
         #region helper methods
         private static Event? GetEventById(int id)
         {
