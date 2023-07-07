@@ -93,6 +93,21 @@ export class APIService {
       };
       
       return this.hc.get('https://localhost:7184/api/events/v1', options);
+    } else if (schoolId != undefined) {
+      const options = {
+        params: {'offset': offSet, 'count': count, 'schoolId': decodedToken.affiliationID},
+        headers: new HttpHeaders(
+        {
+          'Api-Key': environment.firebase.apiKey,
+          'Authorization': loginToken,
+          'Accept': 'application/json' as const, 
+          'Content-Type': 'application/json' as const, 
+          'Response-Type': 'JSON' as const
+        }
+        )
+      };
+
+      return this.hc.get('https://localhost:7184/api/events/v1', options);
     } else {
       const options = {
         params: {'offset': offSet, 'count': count},
@@ -108,6 +123,58 @@ export class APIService {
       };
       
       return this.hc.get('https://localhost:7184/api/events/v1', options);
+    }
+  }
+
+  public getEventCount(schoolId? : number, userID? : number){
+    let loginToken = this.cookie.get("loginToken");
+    let decodedToken = this.jwtService.DecodeToken(loginToken);
+
+    if (userID != undefined && schoolId != undefined) {
+      const options = {
+        params: {'userId': decodedToken.userID, 'schoolId': decodedToken.affiliationID},
+        headers: new HttpHeaders(
+        {
+          'Api-Key': environment.firebase.apiKey,
+          'Authorization': loginToken,
+          'Accept': 'application/json' as const, 
+          'Content-Type': 'application/json' as const, 
+          'Response-Type': 'JSON' as const
+        }
+        )
+      };
+      
+      return this.hc.get('https://localhost:7184/api/events/v1/count', options);
+    } else if (schoolId != undefined) {
+      const options = {
+        params: {'userId': decodedToken.affiliationID},
+        headers: new HttpHeaders(
+        {
+          'Api-Key': environment.firebase.apiKey,
+          'Authorization': loginToken,
+          'Accept': 'application/json' as const, 
+          'Content-Type': 'application/json' as const, 
+          'Response-Type': 'JSON' as const
+        }
+        )
+      };
+
+      return this.hc.get('https://localhost:7184/api/events/v1/count', options);
+    } else {
+      const options = {
+        params: {'schoolId': decodedToken.affiliationID},
+        headers: new HttpHeaders(
+        {
+          'Api-Key': environment.firebase.apiKey,
+          'Authorization': loginToken,
+          'Accept': 'application/json' as const, 
+          'Content-Type': 'application/json' as const, 
+          'Response-Type': 'JSON' as const
+        }
+        )
+      };
+      
+      return this.hc.get('https://localhost:7184/api/events/v1/count', options);
     }
   }
 

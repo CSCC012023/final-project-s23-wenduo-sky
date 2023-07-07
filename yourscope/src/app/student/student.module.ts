@@ -6,6 +6,7 @@ import { DashboardStudentComponent } from './dashboard-student/dashboard-student
 import { StudentCoursesComponent } from './student-courses/student-courses.component';
 import { StudentPostingsComponent } from './student-postings/student-postings.component';
 import { StudentEventsComponent } from './student-events/student-events.component';
+import { StudentEventDetailsComponent } from './student-event-details/student-event-details.component';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TruncatePipe } from '../pipes/truncate.pipe';
 import { StudentPostingDetailsComponent } from './student-posting-details/student-posting-details.component';
@@ -15,6 +16,7 @@ import { StudentPostingDetailsComponent } from './student-posting-details/studen
     DashboardStudentComponent,
     StudentPostingsComponent,
     StudentEventsComponent,
+    StudentEventDetailsComponent,
     StudentCoursesComponent,
     TruncatePipe,
     StudentPostingDetailsComponent,

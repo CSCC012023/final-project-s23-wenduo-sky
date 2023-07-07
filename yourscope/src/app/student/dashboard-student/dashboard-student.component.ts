@@ -36,13 +36,11 @@ export class DashboardStudentComponent implements OnInit {
   ngOnInit() {
     const token = this.jwt.DecodeToken(this.cookie.get("loginToken"));
     this.name = token.name;
-    let url = 'https://localhost:7184/api/events/v1?count=10';
-    this.api.get(url).subscribe((res: any) => {
+    this.api.getEvents(0, 10, token.affiliationID, undefined).subscribe((res: any) => {
       this.events = res.data;
       this.eventsWidth = this.eventsWidth * this.events.length;
     });
-    url = 'https://localhost:7184/api/job/v1/posting?count=10';
-    this.api.get(url).subscribe((res: any) => {
+    this.api.getJobs(10, 0, token.userID, undefined).subscribe((res: any) => {
       this.jobs = res.data;
       this.jobsWidth = this.jobsWidth * this.jobs.length;
     });
