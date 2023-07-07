@@ -45,12 +45,15 @@ export class StudentPostingsComponent implements OnInit {
   }
 
   onPageMove(increment: boolean) {
-    if (this.currentPage == 1 || this.currentPage == this.totalPages) {
-      return;
-    }
     if (increment) {
+      if (this.currentPage == this.totalPages) {
+        return;
+      }
       this.currentPage++;
     } else {
+      if (this.currentPage == 1) {
+        return;
+      }
       this.currentPage--;
     }
     this.updatePage();
