@@ -56,6 +56,7 @@ builder.Services.AddTransient<IAccountsService, AccountsService>();
 builder.Services.AddTransient<ICompanyService, CompanyService>();
 builder.Services.AddTransient<IEventsService, EventsService>();
 builder.Services.AddTransient<IJobService, JobService>();
+builder.Services.AddTransient<ISchoolService, SchoolService>();
 builder.Services.AddSingleton(FirebaseApp.Create());
 builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, YourScopeAuthorizationMiddleware>();
 #endregion
