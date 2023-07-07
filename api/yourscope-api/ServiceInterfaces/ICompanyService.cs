@@ -9,6 +9,6 @@ namespace yourscope_api.service
         public ApiResponse CheckCompanyExistsMethod(string company);
         public ApiResponse GetCompaniesMethod();
         public List<Company> GetCompanyList();
-        public Task<IActionResult> RegisterCompanyMethod(Company companyInfo);
+        public Task<ApiResponse> RegisterCompanyMethod(Company companyInfo);
     }
 }

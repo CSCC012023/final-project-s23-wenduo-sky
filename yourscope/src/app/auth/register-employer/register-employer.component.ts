@@ -117,10 +117,8 @@ export class RegisterEmployerComponent {
         jsn.Type
       );
       this.api.post(company_url, company).subscribe(res => {
-        console.log(res);
         localStorage.removeItem("createCompany");
         this.api.post(url, user).subscribe(res => {
-          console.log(res);
           localStorage.removeItem("companyName");
           this.router.navigate(['/dashboardEmployer']);
         });
