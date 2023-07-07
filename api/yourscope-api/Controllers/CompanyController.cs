@@ -22,14 +22,16 @@ namespace yourscope_api.Controllers
         [Route("check-company-exist/{company}")]
         public IActionResult CheckCompanyExists(string company)
         {
+            ApiResponse response;
             try
             {
-                return Ok(service.CheckCompanyExists(company));
+                response = service.CheckCompanyExistsMethod(company);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                response = new(StatusCodes.Status500InternalServerError, exception: ex);
             }
+            return StatusCode(response.StatusCode, response);
         }
 
         [HttpPost]
