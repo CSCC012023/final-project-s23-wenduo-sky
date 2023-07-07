@@ -10,5 +10,6 @@ namespace yourscope_api.service
         public Task<ApiResponse> RegisterEmployerMethod(UserRegistrationDto userInfo);
         public Task<ApiResponse> LoginMethod(UserLoginDto loginInfo);
         public Task<ApiResponse> SendPasswordResetEmailMethod(string email);
+        public ApiResponse GetUserByIdMethod(int id);
     }
 }

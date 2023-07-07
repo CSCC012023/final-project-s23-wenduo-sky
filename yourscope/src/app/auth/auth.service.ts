@@ -47,3 +47,30 @@ export class AuthService {
     });
   }
 }
+
+
+export class User {
+  userId: number;
+  email: string;
+  firstName: string;
+  middleName: string | undefined;
+  lastName: string;
+  birthday: Date;
+  role: number;
+  affiliation: string;
+  affiliationID: number | undefined;
+  grade: number;
+
+  constructor(id: number, email: string, firstName: string, middleName: string | undefined, lastName: string, birthday: Date, role: number, affiliation: string, affiliationID: number, grade: number) {
+    this.userId = id;
+    this.email = email;
+    this.firstName = firstName;
+    this.middleName = middleName;
+    this.lastName = lastName;
+    this.birthday = birthday;
+    this.role = role;
+    this.affiliation = affiliation;
+    this.affiliationID = affiliationID;
+    this.grade = grade;
+  }
+}

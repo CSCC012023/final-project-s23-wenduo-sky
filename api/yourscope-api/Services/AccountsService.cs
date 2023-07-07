@@ -169,6 +169,16 @@ namespace yourscope_api.service
             return new ApiResponse(StatusCodes.Status201Created, data: true, success: true);
         }
 
+        public ApiResponse GetUserByIdMethod(int id)
+        {
+            User? user = GetUserById(id);
+
+            if (user is null)
+                return new ApiResponse(StatusCodes.Status404NotFound, $"User with ID {id} doers not exist.", success: false);
+
+            return new ApiResponse(StatusCodes.Status200OK, data: user, success: true);
+        }
+
         #region helpers
         private static User ConvertRegistrationDtoToUser(UserRegistrationDto userInfo, UserRole role)
         {
@@ -214,6 +224,16 @@ namespace yourscope_api.service
 
             return claims;
         }
+
+        private static User? GetUserById(int id)
+        {
+            using var context = new YourScopeContext();
+
+            User? user = context.Users.Where(user => user.UserId == id).FirstOrDefault();
+
+            return user;
+        }
         #endregion
+
     }
 }
