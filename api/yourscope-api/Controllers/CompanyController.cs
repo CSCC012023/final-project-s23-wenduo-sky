@@ -49,6 +49,21 @@ namespace yourscope_api.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult GetCompanies()
+        {
+            ApiResponse response;
+            try
+            {
+                response = service.GetCompaniesMethod();
+            }
+            catch(Exception ex)
+            {
+                response = new(StatusCodes.Status500InternalServerError, exception: ex);
+            }
+            return StatusCode(response.StatusCode, response);
+        }
+
         #region helpers
         private ApiResponse GenerateMissingFieldsResponse()
         {
