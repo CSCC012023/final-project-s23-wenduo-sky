@@ -28,22 +28,20 @@
         <div class="col-6">
             <label for="inputSchool">School</label>
             <select formControlName="school" id="inputSchool" class="form-control">
-                <option selected>Choose...</option>
-                <option>School A</option>
-                <option>School B</option>
-                <option>School C</option>
+              <option selected value="">Choose a school...</option>
+              <option *ngFor="let school of schools">{{school.name}}</option>
             </select>
         </div>
         <div class="col-2">
-            <label for="inputGrade"> Grade</label>
-            <select formControlName="grade" id="inputSchool" class="form-control">
-                <option selected>...</option>
-                <option>8 Or Lower</option>
+            <label for="inputGrade">Grade</label>
+            <select formControlName="grade" id="inputGrade" class="form-control">
+                <option selected value="">...</option>
+                <option value="8">8 Or Lower</option>
                 <option>9</option>
                 <option>10</option>
                 <option>11</option>
                 <option>12</option>
-                <option>13+</option>
+                <option value="13">13+</option>
             </select>
         </div>
         <div class="col-4">

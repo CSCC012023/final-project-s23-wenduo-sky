@@ -22,7 +22,7 @@ namespace yourscope_api.Controllers
         #endregion
 
         [HttpGet]
-        public async Task<IActionResult> GetSchools()
+        public IActionResult GetSchools()
         {
             ApiResponse response;
             try
