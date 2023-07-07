@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { APIService } from '../../services/api.service';
 import { Router } from '@angular/router';
+import { AfterViewInit } from '@angular/core';
 
 class UserObj {
   Email!: string;
@@ -29,6 +30,18 @@ class UserObj {
   }
 }
 
+class School {
+  schoolId: number;
+  name: string;
+  address: string | undefined;
+
+  constructor(id: number, name: string, address: string | undefined) {
+    this.schoolId = id;
+    this.name = name;
+    this.address = address;
+  }
+}
+
 @Component({
   standalone: true,
   selector: 'app-register-student',
@@ -39,7 +52,8 @@ class UserObj {
     ReactiveFormsModule
   ]
 })
-export class RegisterStudentComponent {
+export class RegisterStudentComponent implements AfterViewInit {
+  schools: School[] = [];
   constructor(private api: APIService, private router: Router) { }
 
   public studentForm = new FormGroup({
@@ -53,6 +67,10 @@ export class RegisterStudentComponent {
     grade: new FormControl(),
     birthday: new FormControl()
   })
+
+  ngAfterViewInit(): void {
+    this.fetchAllSchools();
+  }
 
   handleStudentRegistration() {
     let pass, cpass;
@@ -78,9 +96,29 @@ export class RegisterStudentComponent {
       this.studentForm.get("grade")!.value,
       this.studentForm.get("pass")!.value
     );
+
     this.api.post(url, user).subscribe(res => {
       console.log(res);
       this.router.navigate(['/dashboardStudent']);
+    });
+  }
+
+  populateSchoolList(schools : School[]): void {
+    this.schools = schools;
+  }
+
+  fetchAllSchools() : void {
+    const url = 'https://localhost:7184/api/schools/v1';
+    var component = this;
+
+    this.api.get(url).subscribe({
+      next: res => {
+        let response = JSON.parse(JSON.stringify(res));
+        component.populateSchoolList(response.data);
+      },
+      error: err => {
+        console.log(err.error);
+      }
     });
   }
 }
