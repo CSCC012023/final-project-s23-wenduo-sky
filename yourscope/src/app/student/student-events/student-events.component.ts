@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { APIService } from '../../services/api.service';
 import { CookieService } from 'ngx-cookie-service';
 import { JwtService } from 'src/app/services/jwt.service';
-import { NumberInput } from '@angular/cdk/coercion';
 
 interface event {
   eventId: number,
@@ -26,6 +25,8 @@ export class StudentEventsComponent implements OnInit {
   collapsed : boolean = false;
   popup : boolean = false; 
   selected : event = {eventId: -1, title: "", date: "", description: "", location: "", userId:  null, user:  null, schoolId:  null, school:  null};
+  currentPage: number = 1;
+  totalPages: number = 0;
 
   constructor(private api: APIService, private cookie: CookieService, private jwt: JwtService) {}
 
@@ -43,32 +44,43 @@ export class StudentEventsComponent implements OnInit {
   }
 
   events: event[] = [];
-  col1: event[] = [];
-  col2: event[] = [];
-  col3: event[] = [];
-  col4: event[] = [];
 
   ngOnInit() {
-    let loginToken = this.cookie.get("loginToken");
-    let decodedToken = this.jwt.DecodeToken(loginToken);
-    this.api.getEvents(0,10, decodedToken.affiliationID, undefined).subscribe({
-      next: res => {
-        this.events = JSON.parse(JSON.stringify(res)).data;
-        console.log(res);
+    const token = this.jwt.DecodeToken(this.cookie.get("loginToken"));
+    this.api.getEventCount(token.affiliationID, token.userID).subscribe((res: any) => {
+      this.totalPages = Math.ceil(res.data / 12);
+    });
+    this.updatePage();
+  }
 
-        for (let event in this.events){
-            let date = this.events[event].date;
-            date = new Date(date).toLocaleDateString('en-US'); 
-            this.events[event].date = date;
-        }
+  onPageChange(page: number) {
+    this.currentPage = page;
+    this.updatePage();
+  }
 
-        this.col1 = this.events.filter((v, i) => i % 4 == 0);
-        this.col2 = this.events.filter((v, i) => i % 4 == 1);
-        this.col3 = this.events.filter((v, i) => i % 4 == 2);
-        this.col4 = this.events.filter((v, i) => i % 4 == 3);
-      }, 
+  onPageMove(increment: boolean) {
+    if (increment) {
+      if (this.currentPage == this.totalPages) {
+        return;
+      }
+      this.currentPage++;
+    } else {
+      if (this.currentPage == 1) {
+        return;
+      }
+      this.currentPage--;
+    }
+    this.updatePage();
+  }
+
+  updatePage() {
+    const token = this.jwt.DecodeToken(this.cookie.get("loginToken"));
+    this.api.getEvents((this.currentPage - 1) * 12, 12, token.affiliationID, undefined).subscribe({
+      next: (res: any) => {
+        this.events = res.data;
+      },
       error: err => {
-        alert("Couldn't retrieve events" );
+        alert("Unable to retrieve events.");
       }
     });
   }
