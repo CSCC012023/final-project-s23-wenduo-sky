@@ -52,6 +52,28 @@ export class APIService {
       return this.hc.post(url, body, options);
   }
 
+  public getJobs(count: number, offset: number, userID?: number, applied?: boolean) {
+    let parameters = {};
+    if (userID == undefined && applied == undefined) {
+      parameters = {'count': count, 'offset': offset};
+    } else if (userID == undefined) {
+      parameters = {'applied': applied, 'count': count, 'offset': offset};
+    } else {
+      parameters = {'userId': userID, 'count': count, 'offset': offset};
+    }
+    const options = {
+      params: parameters,
+      headers: new HttpHeaders({
+        'Api-Key': environment.firebase.apiKey,
+        'Authorization': this.cookie.get("loginToken"),
+        'Accept': 'application/json' as const, 
+        'Content-Type': 'application/json' as const, 
+        'Response-Type': 'JSON' as const
+      })
+    };
+    return this.hc.get('https://localhost:7184/api/job/v1/posting', options);
+  }
+
   public getEvents(offSet: number, count : number, schoolId? : number, userID? : number){
     let loginToken = this.cookie.get("loginToken");
     let decodedToken = this.jwtService.DecodeToken(loginToken);

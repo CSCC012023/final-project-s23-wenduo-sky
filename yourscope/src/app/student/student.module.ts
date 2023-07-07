@@ -8,6 +8,7 @@ import { StudentPostingsComponent } from './student-postings/student-postings.co
 import { StudentEventsComponent } from './student-events/student-events.component';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TruncatePipe } from '../pipes/truncate.pipe';
+import { StudentPostingDetailsComponent } from './student-posting-details/student-posting-details.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { TruncatePipe } from '../pipes/truncate.pipe';
     StudentEventsComponent,
     StudentCoursesComponent,
     TruncatePipe,
+    StudentPostingDetailsComponent,
   ],
   imports: [
     CommonModule,
