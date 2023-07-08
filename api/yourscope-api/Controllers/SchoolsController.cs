@@ -21,6 +21,12 @@ namespace yourscope_api.Controllers
         }
         #endregion
 
+        /// <summary>
+        /// Gets the number of registered schools in the system.
+        /// </summary>
+        /// <returns>The number of registered schools in the system.</returns>
+        [ProducesResponseType(typeof(int), 200)]
+        [ProducesResponseType(500)]
         [HttpGet]
         public IActionResult GetSchools()
         {

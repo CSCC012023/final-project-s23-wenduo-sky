@@ -18,6 +18,13 @@ namespace yourscope_api.Controllers
         }
         #endregion
 
+        /// <summary>
+        /// Used to check whether or not a company with a given name has been registered yet.
+        /// </summary>
+        /// <param name="company">A required path parameter representing the name of the company to be searched for.</param>
+        /// <returns>true if the company name has already been registered and false if it has not.</returns>
+        [ProducesResponseType(typeof(bool), 200)]
+        [ProducesResponseType(500)]
         [HttpGet]
         [Route("check-company-exist/{company}")]
         public IActionResult CheckCompanyExists(string company)
@@ -34,6 +41,14 @@ namespace yourscope_api.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        /// <summary>
+        /// Registers a company with the YourScope system.
+        /// </summary>
+        /// <param name="companyInfo">The information of the company to be registered.</param>
+        /// <returns>true is the registration was successful, 400 status if required information is missing and 500 otherwise.</returns>
+        [ProducesResponseType(typeof(bool), 201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> RegisterCompany([FromBody] Company companyInfo)
@@ -53,6 +68,12 @@ namespace yourscope_api.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        /// <summary>
+        /// Gets a list of all the registered companies in the system.
+        /// </summary>
+        /// <returns>A list of all the registered companies in the system.</returns>
+        [ProducesResponseType(typeof(List<Company>), 200)]
+        [ProducesResponseType(500)]
         [HttpGet]
         public IActionResult GetCompanies()
         {
