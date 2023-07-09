@@ -1,6 +1,7 @@
 ﻿using Firebase.Auth;
 using Google.Api.Gax;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using yourscope_api.entities;
 using yourscope_api.Models.DbModels;
 using yourscope_api.Models.Reponse;
@@ -25,6 +26,14 @@ namespace yourscope_api.Controllers
         }
         #endregion
 
+        /// <summary>
+        /// Create Job Posting
+        /// </summary>
+        /// <param name="posting">Job Posting Details For Employer</param>
+        /// <returns>Returns the id of the newly created JobPosting</returns>
+        [ProducesResponseType(typeof(int), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         [HttpPost]
         [Route("posting")]
         public IActionResult CreateJobPosting([FromBody] JobPostingCreation posting)
@@ -43,6 +52,16 @@ namespace yourscope_api.Controllers
             }
         }
 
+        /// <summary>
+        /// Get Job Postings based on optional filters
+        /// </summary>
+        /// <param name="userId">User Id of student(only needed if applied is not null)</param>
+        /// <param name="applied">If provided, will filter based on whether or not the user has applied to the job</param>
+        /// <param name="count">Pagination count</param>
+        /// <param name="offset">Pagination offset</param>
+        /// <returns>List of job postings based on filters</returns>
+        [ProducesResponseType(typeof(List<JobPostingDetails>), 200)]
+        [ProducesResponseType(500)]
         [HttpGet]
         [Route("posting")]
         public IActionResult GetJobPostings(int? userId, bool? applied, int count, int offset)
@@ -66,6 +85,13 @@ namespace yourscope_api.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes job posting
+        /// </summary>
+        /// <param name="id">Id of job posting to delete</param>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(int), 200)]
+        [ProducesResponseType(500)]
         [HttpDelete]
         [Route("posting/{id}")]
         public IActionResult DeleteJobPostings(int id)
@@ -81,6 +107,15 @@ namespace yourscope_api.Controllers
             }
         }
 
+        /// <summary>
+        /// Get number of job postings based on optional filters
+        /// </summary>
+        /// <param name="userId">User Id of student(only needed if applied is not null)</param>
+        /// <param name="applied">If provided, will filter based on whether or not the user has applied to the job</param>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(int), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         [HttpGet]
         [Route("posting/count")]
         public IActionResult CountJobPosting(int? userId, bool? applied)
@@ -101,7 +136,15 @@ namespace yourscope_api.Controllers
                 return StatusCode(500, new ApiResponse(500, ex.Message, success: false));
             }
         }
-        
+
+        /// <summary>
+        /// Create Job Application
+        /// </summary>
+        /// <param name="application">Job Application details</param>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(int), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         [HttpPost]
         [Route("application")]
         public IActionResult CreateJobApplication([FromBody] JobApplicationCreation application)
@@ -120,6 +163,13 @@ namespace yourscope_api.Controllers
             }
         }
 
+        /// <summary>
+        /// Get Job Applications
+        /// </summary>
+        /// <param name="id">Job Posting Id of job applications</param>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(List<JobApplicationDetails>), 200)]
+        [ProducesResponseType(500)]
         [HttpGet]
         [Route("application/{id}")]
         public IActionResult GetJobApplications(int id)
@@ -127,7 +177,7 @@ namespace yourscope_api.Controllers
             try
             {
                 var applications = service.GetJobApplications(id);
-                return Ok(new ApiResponse(200, data: applications, success: true));
+                return StatusCode(200, new ApiResponse(200, data: applications, success: true));
             }
             catch (Exception ex)
             {

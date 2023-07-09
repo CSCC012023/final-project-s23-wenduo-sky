@@ -168,7 +168,6 @@ namespace yourscope_api.service
 
             return new ApiResponse(StatusCodes.Status201Created, data: true, success: true);
         }
-
         public ApiResponse GetUserByIdMethod(int id)
         {
             User? user = GetUserById(id);
@@ -178,7 +177,6 @@ namespace yourscope_api.service
 
             return new ApiResponse(StatusCodes.Status200OK, data: user, success: true);
         }
-
         #region helpers
         private static User ConvertRegistrationDtoToUser(UserRegistrationDto userInfo, UserRole role)
         {
@@ -224,7 +222,6 @@ namespace yourscope_api.service
 
             return claims;
         }
-
         private static User? GetUserById(int id)
         {
             using var context = new YourScopeContext();
@@ -234,6 +231,5 @@ namespace yourscope_api.service
             return user;
         }
         #endregion
-
     }
 }
