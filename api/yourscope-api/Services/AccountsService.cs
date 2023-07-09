@@ -173,7 +173,7 @@ namespace yourscope_api.service
             User? user = GetUserById(id);
 
             if (user is null)
-                return new ApiResponse(StatusCodes.Status404NotFound, $"User with ID {id} doers not exist.", success: false);
+                return new ApiResponse(StatusCodes.Status404NotFound, $"User with ID {id} does not exist.", success: false);
 
             return new ApiResponse(StatusCodes.Status200OK, data: user, success: true);
         }
