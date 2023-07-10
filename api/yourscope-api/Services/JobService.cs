@@ -145,6 +145,9 @@ namespace yourscope_api.Services
                 var applications = context.JobApplications.Where(q => q.User.UserId == filters.UserId).Select(q => q.JobPosting.JobPostingId);
                 allPostings = allPostings.Where(q => applications.Contains(q.JobPostingId) == filters.Applied);
             }
+            if (filters.EmployerId != null) {
+                allPostings = allPostings.Where(q => q.User.UserId == filters.EmployerId);
+            }
 
             return allPostings;
         }
