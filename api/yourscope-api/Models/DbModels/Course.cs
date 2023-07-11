@@ -1,4 +1,6 @@
-﻿namespace yourscope_api.Models.DbModels
+﻿using System.Text.Json.Serialization;
+
+namespace yourscope_api.Models.DbModels
 {
 
     public enum Credits : byte
@@ -11,6 +13,7 @@
 
     public class Course
     {
+        [JsonIgnore]
         public int CourseId { get; set; }
         public required string CourseCode { get; set; }
         public required string Name { get; set; }
@@ -20,6 +23,8 @@
         public byte Grade { get; set; }
         public Credits Credits { get; set; }
         public required string Prerequisites { get; set; } // Comma seperated list of ids
+        
+        [JsonIgnore]
         public List<SchoolCourse> SchoolCourses { get; set; } = new();
 
     }
