@@ -4,6 +4,7 @@ namespace yourscope_api.Models.Reponse
 {
     public class JobPostingDetails
     {
+        public int PostingID { get; set; }
         public string FirstName { get; set; }
         public string? MiddleName { get; set; }
         public string LastName { get; set; }
@@ -21,7 +22,7 @@ namespace yourscope_api.Models.Reponse
         public DateTime ApplicationDeadline { get; set; }
 
         public JobPostingDetails (JobPosting posting, User user, Company company) {
-
+            this.PostingID = posting.JobPostingId;
             this.FirstName = user.FirstName;
             this.MiddleName = user.MiddleName;
             this.LastName = user.LastName;
