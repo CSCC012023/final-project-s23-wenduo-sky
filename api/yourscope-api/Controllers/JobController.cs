@@ -57,6 +57,7 @@ namespace yourscope_api.Controllers
         /// <summary>
         /// Get Job Postings based on optional filters
         /// </summary>
+        /// <param name="employerId">Filter by jobs created by employer with given id</param>
         /// <param name="userId">User Id of student(only needed if applied is not null)</param>
         /// <param name="applied">If provided, will filter based on whether or not the user has applied to the job</param>
         /// <param name="count">Pagination count</param>
@@ -66,7 +67,7 @@ namespace yourscope_api.Controllers
         [ProducesResponseType(500)]
         [HttpGet]
         [Route("posting")]
-        public IActionResult GetJobPostings(int? userId, bool? applied, int count, int offset)
+        public IActionResult GetJobPostings(int? employerId, int? userId, bool? applied, int count, int offset)
         {
             try {
 
@@ -75,7 +76,8 @@ namespace yourscope_api.Controllers
                     UserId = userId,
                     Applied = applied,
                     Count = count,
-                    Offset = offset
+                    Offset = offset,
+                    EmployerId = employerId
                 };
 
                 var jobPostings = service.GetJobPostings(filters);
@@ -112,6 +114,7 @@ namespace yourscope_api.Controllers
         /// <summary>
         /// Get number of job postings based on optional filters
         /// </summary>
+        /// <param name="employerId">Filter by jobs created by employer with given id</param>
         /// <param name="userId">User Id of student(only needed if applied is not null)</param>
         /// <param name="applied">If provided, will filter based on whether or not the user has applied to the job</param>
         /// <returns></returns>
@@ -120,12 +123,13 @@ namespace yourscope_api.Controllers
         [ProducesResponseType(500)]
         [HttpGet]
         [Route("posting/count")]
-        public IActionResult CountJobPosting(int? userId, bool? applied)
+        public IActionResult CountJobPosting(int? employerId, int? userId, bool? applied)
         {
             JobFilter filters = new JobFilter
             {
                 UserId = userId,
-                Applied = applied
+                Applied = applied,
+                EmployerId = employerId
             };
 
             try
