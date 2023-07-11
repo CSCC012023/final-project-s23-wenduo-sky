@@ -210,7 +210,6 @@ export class RegisterStudentComponent {
     );
 
     this.api.post(url, user).subscribe(() => {
-      this.router.navigate(['/dashboardStudent']);
       this.auth.login(this.studentForm.get("email")!.value, this.studentForm.get("pass")!.value);
     });
   }

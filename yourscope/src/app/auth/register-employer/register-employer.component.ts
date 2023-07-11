@@ -200,7 +200,6 @@ export class RegisterEmployerComponent {
         localStorage.removeItem("createCompany");
         this.api.post(url, user).subscribe(res => {
           localStorage.removeItem("companyName");
-          this.router.navigate(['/dashboardEmployer']);
         });
       });
     }
@@ -208,7 +207,6 @@ export class RegisterEmployerComponent {
       this.api.post(url, user).subscribe(res => {
         console.log(res);
         localStorage.removeItem("companyName");
-        this.router.navigate(['/dashboardEmployer']);
       });
     }
   }
