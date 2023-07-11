@@ -12,6 +12,7 @@ import { JwtService } from 'src/app/services/jwt.service';
 export class DashboardStudentComponent implements OnInit {
   collapsed = true;
   name: string = "";
+  schoolName: string = "";
   events: any = [];
   jobs: any = [];
   currentCourses = [
@@ -34,8 +35,10 @@ export class DashboardStudentComponent implements OnInit {
   constructor(private api: APIService, private cookie: CookieService, private jwt: JwtService) { }
 
   ngOnInit() {
+    const user = JSON.parse(this.cookie.get('userObject'));
     const token = this.jwt.DecodeToken(this.cookie.get("loginToken"));
     this.name = token.name;
+    this.schoolName = user.affiliation;
     this.api.getEvents(0, 10, token.affiliationID, undefined).subscribe((res: any) => {
       this.events = res.data;
       this.eventsWidth = this.eventsWidth * this.events.length;
