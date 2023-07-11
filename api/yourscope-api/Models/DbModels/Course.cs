@@ -20,5 +20,7 @@
         public byte Grade { get; set; }
         public Credits Credits { get; set; }
         public required string Prerequisites { get; set; } // Comma seperated list of ids
+        public List<SchoolCourse> SchoolCourses { get; set; } = new();
+
     }
 }
