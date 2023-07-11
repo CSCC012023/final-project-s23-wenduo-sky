@@ -19,6 +19,7 @@ namespace yourscope_api
         public DbSet<Experience> Experiences { get; set; }
         public DbSet<CoverLetter> CoverLetters { get; set; }
         public DbSet<Profile> Profiles { get; set; }
+        public DbSet<Course> Courses { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
