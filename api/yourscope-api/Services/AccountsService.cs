@@ -12,6 +12,7 @@ using FirebaseAdmin.Auth;
 using Newtonsoft.Json;
 using System.Text;
 using Newtonsoft.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
 
 namespace yourscope_api.service
 {
@@ -169,6 +170,16 @@ namespace yourscope_api.service
             return new ApiResponse(StatusCodes.Status201Created, data: true, success: true);
         }
 
+        public async Task<ApiResponse> GetUserByIdMethod(int id)
+        {
+            User? user = await GetUserById(id);
+
+            if (user is null)
+                return new ApiResponse(StatusCodes.Status404NotFound, $"User with ID {id} does not exist");
+
+            return new ApiResponse(StatusCodes.Status200OK, data: user, success: true);
+        }
+
         #region helpers
         private static User ConvertRegistrationDtoToUser(UserRegistrationDto userInfo, UserRole role)
         {
@@ -213,6 +224,15 @@ namespace yourscope_api.service
                 claims.Add("affiliationID", user.AffiliationID);
 
             return claims;
+        }
+
+        private static async Task<User?> GetUserById(int id)
+        {
+            using var context = new YourScopeContext();
+
+            User? user = await context.Users.Where(u => u.UserId == id).FirstOrDefaultAsync();
+
+            return user;
         }
         #endregion
     }

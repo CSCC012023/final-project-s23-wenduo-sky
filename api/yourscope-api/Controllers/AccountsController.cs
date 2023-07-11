@@ -167,6 +167,27 @@ namespace yourscope_api.Controllers
             }
         }
 
+        /// <summary>
+        /// Retrieves a user given their user ID.
+        /// </summary>
+        /// <param name="id">The ID of the user to be retrieved.</param>
+        /// <returns>A user object containing information about the retrieved user, 404 status if the user does not exist, or 500 status otherwise.</returns>
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetUserById(int id)
+        {
+            ApiResponse response;
+            try
+            {
+                response = await service.GetUserByIdMethod(id);
+            }
+            catch (Exception ex)
+            {
+                response = new(StatusCodes.Status500InternalServerError, exception: ex);
+            }
+            return StatusCode(response.StatusCode, response);
+        }
+
         #region helpers
         private ApiResponse GenerateMissingFieldsResponse()
         {

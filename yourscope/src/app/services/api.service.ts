@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { JwtService } from '../services/jwt.service';
 import { CookieService } from 'ngx-cookie-service'
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -125,6 +126,27 @@ export class APIService {
       return this.hc.get('https://localhost:7184/api/events/v1', options);
     }
   }
+
+  public async getUser(id: number) {
+    let loginToken = this.cookie.get("loginToken");
+
+    const options = {
+      headers: new HttpHeaders (
+        {
+          "Api-Key": environment.firebase.apiKey,
+          "Authorization": loginToken,
+          'Accept': 'application/json' as const, 
+          'Content-Type': 'application/json' as const, 
+          'Response-Type': 'JSON' as const
+        }
+      )
+    };
+
+    let res = await firstValueFrom(this.hc.get('https://localhost:7184/api/accounts/v1/'+id, options));
+    
+    return JSON.parse(JSON.stringify(res)).data;
+  }
+
 
   public getEventCount(schoolId? : number, userID? : number){
     let loginToken = this.cookie.get("loginToken");
