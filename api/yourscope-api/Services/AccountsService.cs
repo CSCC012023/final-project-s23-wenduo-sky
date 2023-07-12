@@ -109,6 +109,24 @@ namespace yourscope_api.service
             return new ApiResponse(StatusCodes.Status201Created, "User successfully registered.", true, success: true);
         }
 
+        public async Task<ApiResponse> RegisterAdminMethod(UserRegistrationDto userInfo)
+        {
+            if (CheckEmailRegistered(userInfo.Email))
+                return new ApiResponse(StatusCodes.Status400BadRequest, $"{userInfo.Email} has already been registered!", success: false);
+
+            User user = ConvertRegistrationDtoToUser(userInfo, UserRole.Admin);
+
+            string uid = (await FirebaseRegister(userInfo)).User.Uid;
+
+            int userID = await InsertUserIntoDb(user);
+
+            var claims = GenerateCustomClaims(UserRole.Admin, userID, user);
+
+            await FirebaseAuth.GetAuth(FirebaseApp).SetCustomUserClaimsAsync(uid, claims);
+
+            return new ApiResponse(StatusCodes.Status201Created, "User successfully registered.", true, success: true);
+        }
+
         private async Task<UserCredential> FirebaseRegister(UserRegistrationDto userInfo)
         {
             var nameList = new List<string> { userInfo.FirstName.Trim() };
