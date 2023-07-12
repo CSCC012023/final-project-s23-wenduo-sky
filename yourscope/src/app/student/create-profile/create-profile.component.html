@@ -21,7 +21,7 @@
               </div>
             </form>
             <div class="form-group py-2">
-              <button (click)=addExperience() href="">Add experience?</button>
+              <button (click)=addExperience() href="" class="btn btn-primary">Add experience?</button>
             </div>
           </div>
           <div *ngIf="add_exp">
@@ -62,7 +62,10 @@
               </div>
             </form>
             <div class="form-group py-2">
-              <button (click)=addExperience() add_exp=true href="">Add another experience?</button>
+              <button (click)=addExperience() href="" class="btn btn-primary">Add another experience?</button>
+            </div>
+            <div class="form-group py-2">
+              <button (click)="add_exp=false" href="" class="btn btn-primary">Back</button>
             </div>
           </div>
         <div class="form-group py-2">
