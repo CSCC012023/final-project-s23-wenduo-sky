@@ -7,9 +7,9 @@ namespace yourscope_api.Models.DbModels
     {
         [Key]
         public int ScheduleId { get; set; }
-        public required int StudentId { get; set; }
+        public int StudentId { get; set; }
         [ForeignKey("StudentId")]
-        public required User Student { get; set; }
-        public List<Year>? Years { get; set; } = new List<Year>();
+        public required User Student { get; set; } = null!;
+        public List<Year> Years { get; set; } = new List<Year>();
     }
 }

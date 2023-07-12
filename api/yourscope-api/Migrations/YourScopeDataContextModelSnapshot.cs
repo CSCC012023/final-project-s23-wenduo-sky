@@ -59,7 +59,7 @@ namespace yourscope_api.Migrations
 
                     b.HasKey("CompanyID");
 
-                    b.ToTable("Company");
+                    b.ToTable("Company", (string)null);
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.Course", b =>
@@ -100,7 +100,7 @@ namespace yourscope_api.Migrations
 
                     b.HasKey("CourseId");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Courses", (string)null);
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.CourseYear", b =>
@@ -115,7 +115,7 @@ namespace yourscope_api.Migrations
 
                     b.HasIndex("YearId");
 
-                    b.ToTable("CourseYear");
+                    b.ToTable("CourseYear", (string)null);
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.CoverLetter", b =>
@@ -149,7 +149,7 @@ namespace yourscope_api.Migrations
 
                     b.HasIndex("ProfileId");
 
-                    b.ToTable("CoverLetters");
+                    b.ToTable("CoverLetters", (string)null);
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.Event", b =>
@@ -185,7 +185,7 @@ namespace yourscope_api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Events");
+                    b.ToTable("Events", (string)null);
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.Experience", b =>
@@ -225,7 +225,7 @@ namespace yourscope_api.Migrations
 
                     b.HasIndex("ProfileId");
 
-                    b.ToTable("Experiences");
+                    b.ToTable("Experiences", (string)null);
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.JobApplication", b =>
@@ -246,7 +246,7 @@ namespace yourscope_api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("JobApplications");
+                    b.ToTable("JobApplications", (string)null);
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.JobPosting", b =>
@@ -273,7 +273,7 @@ namespace yourscope_api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("JobPostings");
+                    b.ToTable("JobPostings", (string)null);
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.Profile", b =>
@@ -301,7 +301,7 @@ namespace yourscope_api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Profiles");
+                    b.ToTable("Profiles", (string)null);
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.Schedule", b =>
@@ -317,7 +317,7 @@ namespace yourscope_api.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("Schedules");
+                    b.ToTable("Schedules", (string)null);
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.School", b =>
@@ -335,7 +335,7 @@ namespace yourscope_api.Migrations
 
                     b.HasKey("SchoolId");
 
-                    b.ToTable("Schools");
+                    b.ToTable("Schools", (string)null);
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.SchoolCourse", b =>
@@ -350,7 +350,7 @@ namespace yourscope_api.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("SchoolCourse");
+                    b.ToTable("SchoolCourse", (string)null);
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.User", b =>
@@ -392,7 +392,7 @@ namespace yourscope_api.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.Year", b =>
@@ -411,7 +411,7 @@ namespace yourscope_api.Migrations
 
                     b.HasIndex("ScheduleId");
 
-                    b.ToTable("Years");
+                    b.ToTable("Years", (string)null);
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.CourseYear", b =>
