@@ -10,6 +10,9 @@ import { StudentEventDetailsComponent } from './student-event-details/student-ev
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TruncatePipe } from '../pipes/truncate.pipe';
 import { StudentPostingDetailsComponent } from './student-posting-details/student-posting-details.component';
+import { CreateProfileComponent } from './create-profile/create-profile.component';
+import { ProfileComponent } from './profile/profile.component';
+import { FormsModule,ReactiveFormsModule  } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -20,11 +23,15 @@ import { StudentPostingDetailsComponent } from './student-posting-details/studen
     StudentCoursesComponent,
     TruncatePipe,
     StudentPostingDetailsComponent,
+    ProfileComponent,
+    CreateProfileComponent
   ],
   imports: [
     CommonModule,
     StudentRoutingModule,
     NgbCollapse,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class StudentModule { }

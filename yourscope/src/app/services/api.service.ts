@@ -238,5 +238,41 @@ export class APIService {
     return this.hc.delete('https://localhost:7184/api/events/v1/'+id, options);
   }
 
+  public getProfile(userID : number){
+    let loginToken = this.cookie.get("loginToken");
+    const options = {
+        params: {'userId': userID},
+        headers: new HttpHeaders(
+        {
+          'Api-Key': environment.firebase.apiKey,
+          'Authorization': loginToken,
+          'Accept': 'application/json' as const, 
+          'Content-Type': 'application/json' as const, 
+          'Response-Type': 'JSON' as const
+        }
+        )
+      };
+     
+    return this.hc.get('https://localhost:7184/api/profile/v1/profile', options);
+  }
 
+  public createProfile(skills?: string | null, intrestsHobbies?:string | null, awards?:string | null){
+    console.log(skills + " " + intrestsHobbies + " " + awards);
+    let loginToken = this.cookie.get("loginToken");
+    let decodedToken = this.jwtService.DecodeToken(loginToken);
+    const body = JSON.stringify({"userId":decodedToken.userID, "skills":skills, "intrestsHobbies": intrestsHobbies, "awards": awards})
+    const options = {
+        headers: new HttpHeaders(
+        {
+          'Api-Key': environment.firebase.apiKey,
+          'Authorization': loginToken,
+          'Accept': 'application/json' as const, 
+          'Content-Type': 'application/json' as const, 
+          'Response-Type': 'JSON' as const
+        }
+        )
+      };
+     
+    return this.hc.post('https://localhost:7184/api/profile/v1/profile', body, options);
+  }
 }
