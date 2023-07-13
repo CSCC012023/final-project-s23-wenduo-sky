@@ -62,6 +62,7 @@ export class APIService {
     } else {
       parameters = {'userId': userID, 'count': count, 'offset': offset};
     }
+    
     const options = {
       params: parameters,
       headers: new HttpHeaders({
@@ -237,42 +238,35 @@ export class APIService {
     return this.hc.delete('https://localhost:7184/api/events/v1/'+id, options);
   }
 
-  public getJobPostings(offSet: number, count : number, userID? : number, applied? : boolean) {
+  public getJobPostings(offset: number, count : number, userID? : number, applied? : boolean, employerId?: number) {
     let loginToken = this.cookie.get("loginToken");
-    let decodedToken = this.jwtService.DecodeToken(loginToken);
-
-    if(userID != undefined)
-    {
-      const options =
-      {
-        params: {'offset': offSet, 'userId': decodedToken.userID, 'count': count},
-        headers: new HttpHeaders(
-        {
-          'Api-Key': environment.firebase.apiKey,
-          'Authorization': loginToken,
-          'Accept': 'application/json' as const, 
-          'Content-Type': 'application/json' as const, 
-          'Response-Type': 'JSON' as const
-        })
-      }
-      return this.hc.get('https://localhost:7184/api/job/v1/posting', options);
-    } else
-    {
-      const options =
-      {
-        params: {'offset': offSet, 'count': count},
-        headers: new HttpHeaders(
-        {
-          'Api-Key': environment.firebase.apiKey,
-          'Authorization': loginToken,
-          'Accept': 'application/json' as const, 
-          'Content-Type': 'application/json' as const, 
-          'Response-Type': 'JSON' as const
-        })
-      };
-      
-      return this.hc.get('https://localhost:7184/api/job/v1/posting', options);
+    
+    let parameters = {};
+    if (userID == undefined && applied == undefined) {
+      parameters = {'count': count, 'offset': offset};
+    } else if (userID == undefined) {
+      parameters = {'applied': applied, 'count': count, 'offset': offset};
+    } else {
+      parameters = {'userId': userID, 'count': count, 'offset': offset};
     }
+    if (employerId != undefined) {
+      parameters = {...parameters, employerId: employerId};
+    }
+
+    const options =
+    {
+      params: parameters,
+      headers: new HttpHeaders(
+      {
+        'Api-Key': environment.firebase.apiKey,
+        'Authorization': loginToken,
+        'Accept': 'application/json' as const, 
+        'Content-Type': 'application/json' as const, 
+        'Response-Type': 'JSON' as const
+      })
+    }
+    
+    return this.hc.get('https://localhost:7184/api/job/v1/posting', options);
   }
 
   public createJobPosting(title : string, description : string, applicationDeadline : Date){
@@ -308,7 +302,7 @@ export class APIService {
         )
       };
      
-    return this.hc.delete('https://localhost:7184/api/job/v1/'+id, options);
+    return this.hc.delete('https://localhost:7184/api/job/v1/posting/'+id, options);
   }
 
   public jobCount() {
