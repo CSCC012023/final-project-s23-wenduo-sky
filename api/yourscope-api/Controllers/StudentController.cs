@@ -26,7 +26,7 @@ namespace yourscope_api.Controllers
         /// <param name="studentID">The user ID of the student whose schedule is to be retrieved.</param>
         /// <returns>A schedule object containing all the required scheduling information, including courses added onto the schedule.</returns>
         [HttpGet]
-        [Route("{studentID}")]
+        [Route("schedule/{studentID}")]
         public async Task<IActionResult> GetStudentSchedule(int studentID)
         {
             ApiResponse response;
@@ -40,6 +40,28 @@ namespace yourscope_api.Controllers
             }
             return StatusCode(response.StatusCode, response);
         }
+
+        /// <summary>
+        /// Create a schedule for the a student given their user ID.
+        /// </summary>
+        /// <param name="studentID">The user ID of the student whose schedule is to be created.</param>
+        /// <returns>true if the creation was successful, 404 status if the user does not exist, 400 if the user is not a student, and 500 otherwise.</returns>
+        [HttpPost]
+        [Route("schedule/{studentID}")]
+        public async Task<IActionResult> CreateStudentSchedule(int studentID)
+        {
+            ApiResponse response;
+            try
+            {
+                response = await service.CreateStudentScheduleMethod(studentID);
+            }
+            catch(Exception ex)
+            {
+                response = new(StatusCodes.Status500InternalServerError, exception: ex);
+            }
+            return StatusCode(response.StatusCode, response);
+        }
+
     }
 }
 

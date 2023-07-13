@@ -6,6 +6,7 @@ namespace yourscope_api.service
     public interface IStudentService
     {
         public Task<ApiResponse> GetStudentScheduleMethod(int studentID);
+        public Task<ApiResponse> CreateStudentScheduleMethod(int studentID);
     }
 }
 

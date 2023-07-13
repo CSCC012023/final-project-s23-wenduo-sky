@@ -8,11 +8,11 @@ namespace yourscope_api.Models.DbModels
         [Key]
         public int YearId { get; set; }
         public required int YearNumber { get; set; }
-        public int ScheduleId { get; set; }
+        public required int ScheduleId { get; set; }
 
         // Navigation properties.
         [ForeignKey("ScheduleId")]
-        public required Schedule Schedule { get; set; } = null!;
+        public Schedule Schedule { get; set; } = null!;
         public List<CourseYear> CourseYears { get; set; } = new();
     }
 }
