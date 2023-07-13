@@ -14,20 +14,14 @@ export class AuthService {
 
   login(email: string, password: string) {
     this.service.getLogin(email, password).subscribe({
-      next: res => {
+      next: async res => {
         let loginData = JSON.parse(JSON.stringify(res));
         let loginToken = this.jwtService.DecodeToken(loginData.data);
-        if(loginToken.role === 0){
-          this.router.navigate(['/dashboardStudent']);
-        }
-        else if(loginToken.role === 1){
-          this.router.navigate(['/dashboardAdmin']);
-        }
-        else{
-          this.router.navigate(['/dashboardEmployer']);
-        }
+        this.cookieService.set('loginToken', `Bearer ${loginData.data}`);
 
-        this.cookieService.set('loginToken', loginData.data);
+        await this.setUserObject(loginToken);
+
+        this.redirectToDashboard(loginToken);
       }, 
       error: err => {
         alert(err.error);
@@ -45,5 +39,49 @@ export class AuthService {
         alert(err.error);
       }
     });
+  }
+
+  redirectToDashboard(loginToken: any) {
+    if(loginToken.role === 0){
+      this.router.navigate(['/dashboardStudent']);
+    }
+    else if(loginToken.role === 1){
+      this.router.navigate(['/dashboardAdmin']);
+    }
+    else{
+      this.router.navigate(['/dashboardEmployer']);
+    }
+  }
+
+  async setUserObject(loginToken: any): Promise<void> {
+    let user = await this.service.getUser(loginToken.userID);
+
+    this.cookieService.set('userObject',  JSON.stringify(user), loginToken.exp);
+  }
+}
+
+export class User {
+  userId: number;
+  email: string;
+  firstName: string;
+  middleName: string | undefined;
+  lastName: string;
+  birthday: Date;
+  role: number;
+  affiliation: string;
+  affiliationID: number | undefined;
+  grade: number;
+
+  constructor(id: number, email: string, firstName: string, middleName: string | undefined, lastName: string, birthday: Date, role: number, affiliation: string, affiliationID: number, grade: number) {
+    this.userId = id;
+    this.email = email;
+    this.firstName = firstName;
+    this.middleName = middleName;
+    this.lastName = lastName;
+    this.birthday = birthday;
+    this.role = role;
+    this.affiliation = affiliation;
+    this.affiliationID = affiliationID;
+    this.grade = grade;
   }
 }
