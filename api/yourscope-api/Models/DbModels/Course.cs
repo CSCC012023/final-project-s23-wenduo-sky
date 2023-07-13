@@ -26,6 +26,8 @@ namespace yourscope_api.Models.DbModels
         
         [JsonIgnore]
         public List<SchoolCourse> SchoolCourses { get; set; } = new();
+        [JsonIgnore]
+        public List<CourseYear> CourseYears { get; set; } = new();
 
     }
 }

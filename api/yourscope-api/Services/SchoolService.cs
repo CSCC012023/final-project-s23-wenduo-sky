@@ -67,6 +67,19 @@ namespace yourscope_api.service
 
             return new ApiResponse(StatusCodes.Status200OK, data: courses, success: true);
         }
+
+        public async Task<ApiResponse> DeleteCourseFromSchoolByIdMethod(int schoolId, int courseId)
+        {
+            SchoolCourse? link = await GetCourseLinkById(schoolId, courseId);
+
+            if (link is null)
+                return new ApiResponse(StatusCodes.Status404NotFound, $"School with ID {schoolId} does not have a course with ID {courseId}.");
+
+            bool result = await DeleteCourseFromSchool(link);
+
+            return new ApiResponse(StatusCodes.Status200OK, data: result, success: result);
+        }
+
         #region helpers
         private static List<School> GetAllSchools()
         {
@@ -121,6 +134,26 @@ namespace yourscope_api.service
             return courseDetails;
         }
 
+        private static async Task<SchoolCourse?> GetCourseLinkById(int schoolId, int courseId)
+        {
+            using var context = new YourScopeContext();
+
+            SchoolCourse? link = await context.SchoolCourse
+                .Where(entry => entry.SchoolId == schoolId && entry.CourseId == courseId)
+                .FirstOrDefaultAsync();
+
+            return link;
+        }
+
+        private static async Task<bool> DeleteCourseFromSchool(SchoolCourse link)
+        {
+            using var context = new YourScopeContext();
+
+            context.SchoolCourse.Remove(link);
+            await context.SaveChangesAsync();
+
+            return true;
+        }
         #endregion
     }
 }

@@ -14,6 +14,7 @@ using yourscope_api.Authentication;
 using yourscope_api.middleware;
 using Newtonsoft.Json.Serialization;
 using System.Reflection;
+using Newtonsoft.Json;
 
 string YourScopePolicy = "YourScopePolicy";
 
@@ -31,6 +32,7 @@ builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
         {
             options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
         })
     .ConfigureApiBehaviorOptions(options =>
         {

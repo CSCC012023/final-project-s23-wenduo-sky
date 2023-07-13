@@ -38,7 +38,7 @@ namespace yourscope_api.Controllers
             {
                 response = service.GetSchoolsMethod();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 response = new(StatusCodes.Status500InternalServerError, exception: ex);
             }
@@ -67,7 +67,6 @@ namespace yourscope_api.Controllers
                 return StatusCode(500, new ApiResponse(500, ex.Message, success: false));
             }
         }
-
 
         /// <summary>
         /// Gets a filtered list of courses.
@@ -98,7 +97,29 @@ namespace yourscope_api.Controllers
 
                 response = await service.GetCoursesMethod(filters);
             }
-            catch(Exception ex)
+            catch (Exception ex)
+            {
+                response = new(StatusCodes.Status500InternalServerError, exception: ex);
+            }
+            return StatusCode(response.StatusCode, response);
+        }
+
+        /// <summary>
+        /// Remove a course from a school. This will not remove the course from the Courses table.
+        /// </summary>
+        /// <param name="schoolID">A required path parameter (integer) representing the ID of the school with the course to be removed from.</param>
+        /// <param name="courseID">A required path parameter (integer) representing the ID of the course to be removed from the school.</param>
+        /// <returns>true if the course deletion was successful, 404 status if the schoolId-courseId pair was not found, and 500 status otherwise.</returns>
+        [HttpDelete]
+        [Route("{schoolID}/courses/{courseID}")]
+        public async Task<IActionResult> DeleteCourseFromSchoolById(int schoolID, int courseID)
+        {
+            ApiResponse response;
+            try
+            {
+                response = await service.DeleteCourseFromSchoolByIdMethod(schoolID, courseID);
+            }
+            catch (Exception ex)
             {
                 response = new(StatusCodes.Status500InternalServerError, exception: ex);
             }

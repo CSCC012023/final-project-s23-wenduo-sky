@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using yourscope_api;
 
@@ -10,9 +11,11 @@ using yourscope_api;
 namespace yourscope_api.Migrations
 {
     [DbContext(typeof(YourScopeContext))]
-    partial class YourScopeDataContextModelSnapshot : ModelSnapshot
+    [Migration("20230712185307_CreateScheduleAndYearTables")]
+    partial class CreateScheduleAndYearTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,7 +62,7 @@ namespace yourscope_api.Migrations
 
                     b.HasKey("CompanyID");
 
-                    b.ToTable("Company", (string)null);
+                    b.ToTable("Company");
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.Course", b =>
@@ -100,7 +103,7 @@ namespace yourscope_api.Migrations
 
                     b.HasKey("CourseId");
 
-                    b.ToTable("Courses", (string)null);
+                    b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.CourseYear", b =>
@@ -115,7 +118,7 @@ namespace yourscope_api.Migrations
 
                     b.HasIndex("YearId");
 
-                    b.ToTable("CourseYear", (string)null);
+                    b.ToTable("CourseYear");
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.CoverLetter", b =>
@@ -149,7 +152,7 @@ namespace yourscope_api.Migrations
 
                     b.HasIndex("ProfileId");
 
-                    b.ToTable("CoverLetters", (string)null);
+                    b.ToTable("CoverLetters");
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.Event", b =>
@@ -185,7 +188,7 @@ namespace yourscope_api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Events", (string)null);
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.Experience", b =>
@@ -225,7 +228,7 @@ namespace yourscope_api.Migrations
 
                     b.HasIndex("ProfileId");
 
-                    b.ToTable("Experiences", (string)null);
+                    b.ToTable("Experiences");
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.JobApplication", b =>
@@ -246,7 +249,7 @@ namespace yourscope_api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("JobApplications", (string)null);
+                    b.ToTable("JobApplications");
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.JobPosting", b =>
@@ -273,7 +276,7 @@ namespace yourscope_api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("JobPostings", (string)null);
+                    b.ToTable("JobPostings");
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.Profile", b =>
@@ -301,7 +304,7 @@ namespace yourscope_api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Profiles", (string)null);
+                    b.ToTable("Profiles");
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.Schedule", b =>
@@ -317,7 +320,7 @@ namespace yourscope_api.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("Schedules", (string)null);
+                    b.ToTable("Schedules");
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.School", b =>
@@ -335,7 +338,7 @@ namespace yourscope_api.Migrations
 
                     b.HasKey("SchoolId");
 
-                    b.ToTable("Schools", (string)null);
+                    b.ToTable("Schools");
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.SchoolCourse", b =>
@@ -350,7 +353,7 @@ namespace yourscope_api.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("SchoolCourse", (string)null);
+                    b.ToTable("SchoolCourse");
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.User", b =>
@@ -392,7 +395,7 @@ namespace yourscope_api.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.Year", b =>
@@ -411,7 +414,7 @@ namespace yourscope_api.Migrations
 
                     b.HasIndex("ScheduleId");
 
-                    b.ToTable("Years", (string)null);
+                    b.ToTable("Years");
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.CourseYear", b =>
