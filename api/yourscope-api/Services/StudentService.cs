@@ -10,10 +10,12 @@ namespace yourscope_api.service
     {
         #region class fields and constructor
         private readonly IConfiguration configuration;
+        private readonly ISchoolService schoolService;
 
-        public StudentService(IConfiguration configuration)
+        public StudentService(IConfiguration configuration, ISchoolService schoolService)
         {
             this.configuration = configuration;
+            this.schoolService = schoolService;
         }
         #endregion
 
@@ -44,6 +46,77 @@ namespace yourscope_api.service
                 return new ApiResponse(StatusCodes.Status400BadRequest, $"User with ID {studentID} is not a student.");
 
             bool result = await CreateStudentSchedule(student);
+
+            return new ApiResponse(StatusCodes.Status201Created, data: result, success: result);
+        }
+
+        public async Task<ApiResponse> AddCourseToStudentScheduleMethod(int studentID, int yearNumber, int courseID)
+        {
+            #region sanity checks
+            User? student = await GetStudentUserFromDB(studentID);
+
+            if (student is null)
+                return new ApiResponse(StatusCodes.Status404NotFound, $"User with ID {studentID} does not exist.");
+            if (student.Role != UserRole.Student)
+                return new ApiResponse(StatusCodes.Status400BadRequest, $"User with ID {studentID} is not a student.");
+
+            Schedule? schedule = await GetScheduleFromDB(studentID);
+
+            if (schedule is null)
+                return new ApiResponse(StatusCodes.Status404NotFound, $"Student with ID {studentID} does not have a schedule. Please call the schedule creation endpoint to create one.");
+
+            Year? year = schedule.Years.Where(year => year.YearNumber == yearNumber).FirstOrDefault();
+
+            if (year is null)
+                return new ApiResponse(StatusCodes.Status400BadRequest, $"Student with ID {studentID} does not have year #{yearNumber} in their schedule.");
+
+            Course? course = await schoolService.GetCourseById(courseID);
+
+            if (course is null)
+                return new ApiResponse(StatusCodes.Status404NotFound, $"Course with ID {courseID} does not exist.");
+            #endregion
+
+            CourseYear? link = await GetCourseYearLink(year.YearId, courseID);
+            if (link is not null)
+                return new ApiResponse(StatusCodes.Status200OK, $"Student with ID {studentID} already has course with ID {courseID} in their year #{yearNumber} schedule.");
+
+            bool result = await AddCourseToStudentSchedule(year.YearId, courseID);
+
+            return new ApiResponse(StatusCodes.Status201Created, data: result, success: result);
+        }
+
+        public async Task<ApiResponse> RemoveCourseFromStudentScheduleMethod(int studentID, int yearNumber, int courseID)
+        {
+            #region sanity checks
+            User? student = await GetStudentUserFromDB(studentID);
+
+            if (student is null)
+                return new ApiResponse(StatusCodes.Status404NotFound, $"User with ID {studentID} does not exist.");
+            if (student.Role != UserRole.Student)
+                return new ApiResponse(StatusCodes.Status400BadRequest, $"User with ID {studentID} is not a student.");
+
+            Schedule? schedule = await GetScheduleFromDB(studentID);
+
+            if (schedule is null)
+                return new ApiResponse(StatusCodes.Status404NotFound, $"Student with ID {studentID} does not have a schedule. Please call the schedule creation endpoint to create one.");
+
+            Year? year = schedule.Years.Where(year => year.YearNumber == yearNumber).FirstOrDefault();
+
+            if (year is null)
+                return new ApiResponse(StatusCodes.Status400BadRequest, $"Student with ID {studentID} does not have year #{yearNumber} in their schedule.");
+
+            Course? course = await schoolService.GetCourseById(courseID);
+
+            if (course is null)
+                return new ApiResponse(StatusCodes.Status404NotFound, $"Course with ID {courseID} does not exist.");
+            #endregion
+
+            CourseYear? link = await GetCourseYearLink(year.YearId, courseID);
+
+            if (link is null)
+                return new ApiResponse(StatusCodes.Status400BadRequest, $"Student with ID {studentID} does not have course with ID {courseID} in their year #{yearNumber} schedule.");
+
+            bool result = await RemoveCourseFromStudentSchedule(link);
 
             return new ApiResponse(StatusCodes.Status200OK, data: result, success: result);
         }
@@ -91,6 +164,39 @@ namespace yourscope_api.service
                 context.Years.Add(year);
             }
 
+            await context.SaveChangesAsync();
+
+            return true;
+        }
+
+        private static async Task<bool> AddCourseToStudentSchedule(int yearID, int courseID)
+        {
+            using var context = new YourScopeContext();
+
+            CourseYear link = new() { YearId = yearID, CourseId = courseID };
+
+            context.CourseYear.Add(link);
+            await context.SaveChangesAsync();
+
+            return true;
+        }
+
+        private static async Task<CourseYear?> GetCourseYearLink(int yearId, int courseID)
+        {
+            using var context = new YourScopeContext();
+
+            CourseYear? link = await context.CourseYear
+                .Where(cy => cy.YearId == yearId && cy.CourseId == courseID)
+                .FirstOrDefaultAsync();
+
+            return link;
+        }
+
+        private static async Task<bool> RemoveCourseFromStudentSchedule(CourseYear link)
+        {
+            using var context = new YourScopeContext();
+
+            context.CourseYear.Remove(link);
             await context.SaveChangesAsync();
 
             return true;

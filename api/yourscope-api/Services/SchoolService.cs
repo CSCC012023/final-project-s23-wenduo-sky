@@ -154,6 +154,17 @@ namespace yourscope_api.service
 
             return true;
         }
+
+        public async Task<Course?> GetCourseById(int courseId)
+        {
+            using var context = new YourScopeContext();
+
+            Course? course = await context.Courses
+                .Where(course => course.CourseId == courseId)
+                .FirstOrDefaultAsync();
+
+            return course;
+        }
         #endregion
     }
 }

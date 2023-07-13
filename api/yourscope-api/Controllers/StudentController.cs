@@ -62,6 +62,52 @@ namespace yourscope_api.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        /// <summary>
+        /// Adds a course to a student's schedule for the given year.
+        /// </summary>
+        /// <param name="studentID">The user ID of the student whose schedule will be added to.</param>
+        /// <param name="year">The year of study that the course should be added to.</param>
+        /// <param name="courseID">The course ID of the course that will be added to the student's schedule.</param>
+        /// <returns>true if the addition was successful, 404 if the student does not exist, the student does not have a schedule, the student does not have the selected year specified, or the course was not found, and 500 otherwise.</returns>
+        [HttpPost]
+        [Route("schedule/{studentID}/year/{year}/course/{courseID}")]
+        public async Task<IActionResult> AddCourseToStudentSchedule(int studentID, int year, int courseID)
+        {
+            ApiResponse response;
+            try
+            {
+                response = await service.AddCourseToStudentScheduleMethod(studentID, year, courseID);
+            }
+            catch(Exception ex)
+            {
+                response = new(StatusCodes.Status500InternalServerError, exception: ex);
+            }
+            return StatusCode(response.StatusCode, response);
+        }
+
+        /// <summary>
+        /// Removes a course from a student's schedule given the student's user ID, the year of study, and the course ID to be removed.
+        /// </summary>
+        /// <param name="studentID">The user ID of the student whose schedule will be removed from.</param>
+        /// <param name="year">The year of study that the course should be removed from.</param>
+        /// <param name="courseID">The course ID of the course that will be removed from the student's schedule.</param>
+        /// <returns>true if the removal was successful, 404 if the student does not exist, the student does not have a schedule, the student does not have the selected year specified, or the course was not found, and 500 otherwise.</returns>
+        [HttpDelete]
+        [Route("schedule/{studentID}/year/{year}/course/{courseID}")]
+        public async Task<IActionResult> RemoveCourseFromStudentSchedule(int studentID, int year, int courseID)
+        {
+            ApiResponse response;
+            try
+            {
+                response = await service.RemoveCourseFromStudentScheduleMethod(studentID, year, courseID);
+            }
+            catch (Exception ex)
+            {
+                response = new(StatusCodes.Status500InternalServerError, exception: ex);
+            }
+            return StatusCode(response.StatusCode, response);
+        }
+
     }
 }
 
