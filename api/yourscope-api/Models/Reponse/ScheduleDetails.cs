@@ -12,7 +12,7 @@ namespace yourscope_api.Models.Reponse
         public ScheduleDetails(Schedule schedule)
         {
             this.ScheduleId = schedule.ScheduleId;
-            this.ScheduleId = schedule.StudentId;
+            this.StudentId = schedule.StudentId;
             this.Years = schedule.Years.ConvertAll<YearDetails>(year => new(year));
         }
     }
