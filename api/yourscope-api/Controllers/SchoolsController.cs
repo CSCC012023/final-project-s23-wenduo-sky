@@ -49,7 +49,7 @@ namespace yourscope_api.Controllers
         /// Adds course(s) to a given school
         /// </summary>
         /// <param name="courses">List of course(s) to add, if a course already exists, it uses the data that's already in the table.</param>
-        /// <param name="schoolId">Id of school to add courses to</param>
+        /// <param name="schoolID">Id of school to add courses to</param>
         /// <returns></returns>
         [ProducesResponseType(201)]
         [ProducesResponseType(500)]
