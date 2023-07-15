@@ -306,5 +306,23 @@ export class APIService {
     return this.hc.delete('https://localhost:7184/api/events/v1/'+id, options);
   }
 
-
+  public createCourse(code: string, name: string, discipline: string, type: string, grade: number, credits: number, description: string, prerequisites: string){
+    let loginToken = this.cookie.get("loginToken");
+    let decodedToken = this.jwtService.DecodeToken(loginToken);
+    console.log(decodedToken);
+    const body = JSON.stringify([{"courseCode":code, "name":name, "description":description, "discipline":discipline, "type": type, "grade": grade, "credits":credits, "prerequisites":prerequisites}])
+    const options = {
+        headers: new HttpHeaders(
+        {
+          "Api-Key": environment.firebase.apiKey,
+          "Authorization": loginToken,
+          'Accept': 'application/json' as const, 
+          'Content-Type': 'application/json' as const, 
+          'Response-Type': 'JSON' as const
+        }
+        )
+      };
+     
+    return this.hc.post('https://localhost:7184/api/schools/v1/'+ decodedToken.affiliationID + '/courses', body, options);
+  }
 }

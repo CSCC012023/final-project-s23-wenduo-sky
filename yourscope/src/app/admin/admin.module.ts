@@ -12,13 +12,15 @@ import { FormsModule } from '@angular/forms';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../shared.module';
 
+import { CreateCourseComponent } from './create-course/create-course.component';
 
 @NgModule({
   declarations: [
     DashboardAdminComponent,
     AdminEventsComponent,
     AdminCoursesComponent,
-    CreateEventComponent,
+    CreateEventComponent, 
+    CreateCourseComponent,
     AdminEventDetailsComponent,
     AdminCourseDetailsComponent
   ],
