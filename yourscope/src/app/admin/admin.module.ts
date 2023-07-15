@@ -9,13 +9,15 @@ import { MatCardModule } from '@angular/material/card'
 import { MatButtonModule } from '@angular/material/button'
 import { CreateEventComponent } from './create-event/create-event.component';
 import { FormsModule } from '@angular/forms';
+import { CreateCourseComponent } from './create-course/create-course.component';
 
 @NgModule({
   declarations: [
     DashboardAdminComponent,
     AdminEventsComponent,
     AdminCoursesComponent,
-    CreateEventComponent
+    CreateEventComponent, 
+    CreateCourseComponent
   ],
   imports: [
     CommonModule,
