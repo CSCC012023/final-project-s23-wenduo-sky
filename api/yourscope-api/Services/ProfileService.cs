@@ -22,7 +22,7 @@ namespace yourscope_api.Services
             profile.CoverLetters.Add(coverLetter);
             context.SaveChanges();
 
-            return coverLetter.ResumeId;
+            return coverLetter.CoverLetterId;
 
         }
 
