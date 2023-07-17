@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Routes, RouterModule } from '@angular/router'; 
+import { RouterModule } from '@angular/router'; 
 import { AdminRoutingModule } from './admin-routing.module';
 import { DashboardAdminComponent } from './dashboard-admin/dashboard-admin.component';
 import { AdminEventsComponent } from './admin-events/admin-events.component';
 import { AdminCoursesComponent } from './admin-courses/admin-courses.component';
 import { CreateEventComponent } from './create-event/create-event.component';
 import { AdminEventDetailsComponent } from './admin-event-details/admin-event-details.component';
+import { AdminCourseDetailsComponent } from './admin-course-details/admin-course-details.component';
 import { FormsModule } from '@angular/forms';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../shared.module';
@@ -19,6 +20,7 @@ import { SharedModule } from '../shared.module';
     AdminCoursesComponent,
     CreateEventComponent,
     AdminEventDetailsComponent,
+    AdminCourseDetailsComponent
   ],
   imports: [
     CommonModule,
