@@ -59,8 +59,11 @@ export class StudentEventsComponent implements OnInit {
   }
 
   onPageMove(increment: boolean) {
+    if (this.totalPages == 0) {
+      return;
+    }
     if (increment) {
-      if (this.currentPage == this.totalPages) {
+      if (this.currentPage == this.totalPages ) {
         return;
       }
       this.currentPage++;

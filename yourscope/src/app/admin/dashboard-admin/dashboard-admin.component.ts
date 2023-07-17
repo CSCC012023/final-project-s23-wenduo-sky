@@ -9,34 +9,8 @@ import { JwtService } from 'src/app/services/jwt.service';
   styleUrls: ['./dashboard-admin.component.scss']
 })
 export class DashboardAdminComponent implements OnInit{
-  constructor(private hc: APIService, private cookie: CookieService, private jwtService: JwtService) { }
-
-  events = <any> [];
-  loginToken = this.cookie.get("loginToken");
-  decodedToken = this.jwtService.DecodeToken(this.loginToken);
-  empty = false;
-  
-  ngOnInit(): void {
-    this.hc.getEvents(0,10, undefined, this.decodedToken.userID).subscribe({
-      next: res => {
-        this.events = JSON.parse(JSON.stringify(res)).data;
-
-        if (this.events.length != 0){
-          for (let event in this.events){
-            let date = this.events[event].date;
-            date = new Date(date).toLocaleDateString('en-US'); 
-            this.events[event].date = date;
-          }
-        } else {
-          this.empty = true;
-        }
-      }, 
-      error: err => {
-        alert("Couldn't retrieve events" );
-      }
-    });
-  }
-
+  events: any[] = [];
+  eventStates: boolean[] = [];
   courses = [
     {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
     {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
@@ -57,4 +31,26 @@ export class DashboardAdminComponent implements OnInit{
     {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
     {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
   ];
+
+  constructor(private api: APIService, private cookie: CookieService, private jwt: JwtService) { }
+
+  token = this.jwt.DecodeToken(this.cookie.get("loginToken"));
+  
+  ngOnInit(): void {
+    this.api.getEvents(20, 0, this.token.affiliationID, undefined).subscribe({
+      next: res => {
+        this.events = JSON.parse(JSON.stringify(res)).data;
+        for (let i = 0; i < this.events.length; i++) {
+          this.eventStates.push(false);
+        }
+      }, 
+      error: err => {
+        alert("Unable retrieve events." );
+      }
+    });
+  }
+
+  toggleEventState(index: number): void {
+    this.eventStates[index] = !this.eventStates[index];
+  }
 }

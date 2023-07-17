@@ -5,24 +5,27 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { DashboardAdminComponent } from './dashboard-admin/dashboard-admin.component';
 import { AdminEventsComponent } from './admin-events/admin-events.component';
 import { AdminCoursesComponent } from './admin-courses/admin-courses.component';
-import { MatCardModule } from '@angular/material/card'
-import { MatButtonModule } from '@angular/material/button'
 import { CreateEventComponent } from './create-event/create-event.component';
+import { AdminEventDetailsComponent } from './admin-event-details/admin-event-details.component';
 import { FormsModule } from '@angular/forms';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
+import { SharedModule } from '../shared.module';
+
 
 @NgModule({
   declarations: [
     DashboardAdminComponent,
     AdminEventsComponent,
     AdminCoursesComponent,
-    CreateEventComponent
+    CreateEventComponent,
+    AdminEventDetailsComponent,
   ],
   imports: [
     CommonModule,
     AdminRoutingModule,
-    MatButtonModule,
-    MatCardModule, 
     FormsModule,
+    NgbCollapse,
+    SharedModule,
   ],
   exports: [RouterModule],
   bootstrap: [AdminEventsComponent] 

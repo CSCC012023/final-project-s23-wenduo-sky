@@ -75,13 +75,13 @@ export class APIService {
     return this.hc.get('https://localhost:7184/api/job/v1/posting', options);
   }
 
-  public getEvents(offSet: number, count : number, schoolId? : number, userID? : number){
+  public getEvents(count: number, offset: number, schoolId? : number, userID? : number){
     let loginToken = this.cookie.get("loginToken");
     let decodedToken = this.jwtService.DecodeToken(loginToken);
 
     if(userID != undefined){
       const options = {
-        params: {'offset': offSet, 'userId': decodedToken.userID, 'count': count},
+        params: {'offset': offset, 'userId': decodedToken.userID, 'count': count},
         headers: new HttpHeaders(
         {
           'Api-Key': environment.firebase.apiKey,
@@ -96,7 +96,7 @@ export class APIService {
       return this.hc.get('https://localhost:7184/api/events/v1', options);
     } else if (schoolId != undefined) {
       const options = {
-        params: {'offset': offSet, 'count': count, 'schoolId': decodedToken.affiliationID},
+        params: {'offset': offset, 'count': count, 'schoolId': decodedToken.affiliationID},
         headers: new HttpHeaders(
         {
           'Api-Key': environment.firebase.apiKey,
@@ -111,7 +111,7 @@ export class APIService {
       return this.hc.get('https://localhost:7184/api/events/v1', options);
     } else {
       const options = {
-        params: {'offset': offSet, 'count': count},
+        params: {'offset': offset, 'count': count},
         headers: new HttpHeaders(
         {
           'Api-Key': environment.firebase.apiKey,
