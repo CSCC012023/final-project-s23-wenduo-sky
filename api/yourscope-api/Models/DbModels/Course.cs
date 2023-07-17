@@ -8,7 +8,8 @@ namespace yourscope_api.Models.DbModels
         NoCredit = 0,       // 0.0 credits
         HalfCredit = 1,     // 0.5 credits
         FullCredit = 2,     // 1.0 credits
-        DoubleCredit = 3    // 2.0 credits
+        DoubleCredit = 3,   // 2.0 credits
+        QuadCredit = 4      // 2.0 credits
     }
 
     public class Course
@@ -26,6 +27,8 @@ namespace yourscope_api.Models.DbModels
         
         [JsonIgnore]
         public List<SchoolCourse> SchoolCourses { get; set; } = new();
+        [JsonIgnore]
+        public List<CourseYear> CourseYears { get; set; } = new();
 
     }
 }

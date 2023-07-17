@@ -7,7 +7,7 @@
   <div id="bg" class="vh-100">
     <div>
       <h2 class="pad-12 white">
-        Welcome back, {{decodedToken.name}}
+        Welcome back, {{token.name}}
       </h2>
     </div>
     <div id="main-card" class="card margin-30 shadow mb-5 rounded">
@@ -20,21 +20,26 @@
               <a class="button-sm" href="admin/events">Manage</a>
             </h5>
             <div class="scrollspy-container">
-              <div data-spy="scroll" data-offset="0" *ngIf="!empty">
-                <div class="card item-card shadow bg-white rounded" *ngFor="let event of events">
-                  <div class="card-body">
-                    <a class="card-text">
-                      {{event.title}} - {{event.date}}, {{event.location}}
-                    </a>
+              <div data-spy="scroll" data-offset="0" *ngIf="events.length > 0">
+                <div class="card item-card shadow bg-white rounded" *ngFor="let event of events; let i = index" (click)="toggleEventState(i)" >
+                  <h6 class="card-header">
+                    {{event.title | truncate:40}}
+                  </h6>
+                  <div *ngIf="eventStates[i]" class="card-body">
+                    <h6 class="card-title">{{event.date | date:'MM/dd/yyyy, h:mma'}}</h6>
+                    <h6 class="card-title">{{event.location | truncate:30}}</h6>
+                    <p class="card-text">
+                      {{event.description | truncate:200}}
+                    </p>
                   </div>
                 </div>
               </div>
-              <div *ngIf="empty">
+              <div *ngIf="events.length == 0">
                 <div class="card item-card shadow bg-white rounded">
                   <div class="card-body">
-                    <a class="card-text">
+                    <p class="card-text">
                        You have no scheduled events.
-                    </a>
+                    </p>
                   </div>
                 </div>
               </div>
