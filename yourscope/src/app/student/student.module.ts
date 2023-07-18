@@ -8,6 +8,9 @@ import { StudentEventsComponent } from './student-events/student-events.componen
 import { StudentEventDetailsComponent } from './student-event-details/student-event-details.component';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { StudentPostingDetailsComponent } from './student-posting-details/student-posting-details.component';
+import { CreateProfileComponent } from './create-profile/create-profile.component';
+import { ProfileComponent } from './profile/profile.component';
+import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { SharedModule } from '../shared.module';
 
 @NgModule({
@@ -18,12 +21,16 @@ import { SharedModule } from '../shared.module';
     StudentEventDetailsComponent,
     StudentCoursesComponent,
     StudentPostingDetailsComponent,
+    ProfileComponent,
+    CreateProfileComponent
   ],
   imports: [
     CommonModule,
     StudentRoutingModule,
     NgbCollapse,
-    SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
+    SharedModule
   ]
 })
 export class StudentModule { }
