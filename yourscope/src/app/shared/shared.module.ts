@@ -21,4 +21,4 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ConfirmationDialogComponent
   ]
 })
-export class SharedModule { }
+export class SharedModuleV2 { }

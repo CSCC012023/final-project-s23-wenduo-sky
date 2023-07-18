@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SharedModule } from '../shared/shared.module';
 import { StudentRoutingModule } from './student-routing.module';
 import { DashboardStudentComponent } from './dashboard-student/dashboard-student.component';
 import { StudentCoursesComponent } from './student-courses/student-courses.component';
@@ -16,6 +15,8 @@ import { AddCourseComponent } from './add-course/add-course.component';
 import { CreateProfileComponent } from './create-profile/create-profile.component';
 import { ProfileComponent } from './profile/profile.component';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
+import { SharedModule } from '../shared.module';
+import { SharedModuleV2 } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
     NgbCollapse,
     FormsModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    SharedModuleV2
   ]
 })
 export class StudentModule { }
