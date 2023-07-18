@@ -60,12 +60,21 @@ namespace yourscope_api.service
 
         public async Task<ApiResponse> GetCoursesMethod(CourseFilter filters)
         {
-            List<int> courseIDs = await GetCourseIDList(filters.SchoolID);
+            List<int>? courseIDs = await GetCourseIDList(filters.SchoolID);
             filters.CourseIDs = courseIDs;
 
             List<CourseDetails> courses = await GetFilteredCourses(filters);
 
             return new ApiResponse(StatusCodes.Status200OK, data: courses, success: true);
+        }
+
+        public async Task<ApiResponse> GetCourseCountMethod(int? schoolID, string? searchQuery, int? grade, string? disciplines)
+        {
+            List<int>? courseIDs = await GetCourseIDList(schoolID);
+
+            int count = await CountFilteredCourses(courseIDs, searchQuery, grade, disciplines);
+
+            return new ApiResponse(StatusCodes.Status200OK, data: count, success: true);
         }
 
         public async Task<ApiResponse> DeleteCourseFromSchoolByIdMethod(int schoolId, int courseId)
@@ -88,8 +97,11 @@ namespace yourscope_api.service
             return context.Schools.ToList();
         }
 
-        private static async Task<List<int>> GetCourseIDList(int? schoolID)
+        private static async Task<List<int>?> GetCourseIDList(int? schoolID)
         {
+            if (schoolID is null)
+                return null;
+
             using var context = new YourScopeContext();
 
             List<int> courseIDs = await context.SchoolCourse
@@ -133,7 +145,22 @@ namespace yourscope_api.service
 
             return courseDetails;
         }
+        private static async Task<int> CountFilteredCourses(List<int>? courseIDs, string? searchQuery, int? grade, string? disciplines)
+        {
+            List<string>? disciplineList = ParseDisciplineString(disciplines);
 
+            using var context = new YourScopeContext();
+
+            List<Course> courses = await context.Courses
+                .Where(course => courseIDs == null || courseIDs.Contains(course.CourseId))
+                .Where(course =>
+                (searchQuery == null || course.Name.ToLower().Contains(searchQuery) || course.CourseCode.ToLower().Contains(searchQuery)) // Name and course code filter.
+                && (grade == null || course.Grade == grade) // Grade filter.
+                && (disciplineList == null || disciplineList.Any(d => d == course.Discipline.ToLower()))) // Disciplines filter.
+                .ToListAsync();
+
+            return courses.Count;
+        }
         private static async Task<SchoolCourse?> GetCourseLinkById(int schoolId, int courseId)
         {
             using var context = new YourScopeContext();
@@ -153,6 +180,17 @@ namespace yourscope_api.service
             await context.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<Course?> GetCourseById(int courseId)
+        {
+            using var context = new YourScopeContext();
+
+            Course? course = await context.Courses
+                .Where(course => course.CourseId == courseId)
+                .FirstOrDefaultAsync();
+
+            return course;
         }
         #endregion
     }
