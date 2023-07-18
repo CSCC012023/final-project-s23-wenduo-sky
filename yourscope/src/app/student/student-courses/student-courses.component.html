@@ -36,16 +36,17 @@
 
   <!-- Schedule wrapper div -->
   <div id="studentSchedule">
-    <div class="scheduleYearWrapper" *ngFor="let year of schedule.years" id="{{this.scheduleYearPrefix+year.yearNumber}}">
-      <h4 class="scheduleYearHeading">{{"Year " + year.yearNumber}}</h4>
-      <div class="scheduleYear">
-        <table class="courseDisplay">
-          <tr class="courseWrapper" *ngFor="let i of courseIndices" [class.courseBottomBorder]="i != 7">
-            <td *ngIf="year.courses[i]">{{year.courses[i].courseCode+" - "+year.courses[i].name}}</td>
-            <td *ngIf="!(year.courses[i])">{{"Plus"}}</td>
-          </tr>
-        </table>
-      </div>
-    </div>
+    <!-- Loading gif for schedule -->
+    <div *ngIf="!scheduleLoaded" class="loadingGif"><img src="../../../assets/loading.gif"></div>
+    <app-year class="scheduleYearWrapper" *ngFor="let year of schedule.years" [year]="year" (onClickViewCourse)="onClickViewCourse($event)" (onClickAddCourse)="onClickAddCourse($event)"/>
+  </div>
+
+  <!-- Background for popups -->
+  <div class="overlayBackground" *ngIf="showAddCourse || showViewCourse" (click)="onClickBackground($event)">
+    <!-- View course overlay -->
+    <app-view-course *ngIf="showViewCourse" [course]="viewCourse" (onClickCloseEvent)="onClickClose()" [visible]="viewCourseDiv" [animationDuration]="animationDuration" (onCourseDeleted)="onCourseDeleted()"/>
+    <!-- Add course overlay -->
+    <app-add-course *ngIf="showAddCourse"/>
   </div>
 </div>
+

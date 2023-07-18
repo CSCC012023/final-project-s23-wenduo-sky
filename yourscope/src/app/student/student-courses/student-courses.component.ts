@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { APIService } from '../../services/api.service';
 import { CookieService } from 'ngx-cookie-service';
 import { JwtService } from 'src/app/services/jwt.service';
+import { YearCourse } from '../year/year.component';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -10,15 +11,20 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrls: ['./student-courses.component.scss']
 })
 export class StudentCoursesComponent {
-  collapsed: boolean = true;
   // Constants
-  scheduleYearPrefix: string = "scheduleYear";
-  courseIndices = Array(8).fill(0).map((_, i) => i);
+  animationDuration: number = 150;
+  collapsed: boolean = true;
   // Class fields
-  yearNumbers = [1, 2, 3, 4];
+  scheduleLoaded = false;
+  showAddCourse = false;
+  showViewCourse = false;
+  // For animations
+  viewCourseDiv = true;
   schedule: StudentSchedule = new StudentSchedule(-1, -1, []);
+  viewCourse: YearCourse | null = null;
   // Constructor
   constructor(private api: APIService, private cookie: CookieService, private jwt: JwtService) {}
+  // Initialization
   async ngOnInit(): Promise<void> {
     // Getting the user information.
     const user = JSON.parse(this.cookie.get('userObject'));
@@ -33,6 +39,36 @@ export class StudentCoursesComponent {
 
     // Setting the schedule object.
     this.schedule = result;
+    this.scheduleLoaded = true;
+  }
+  // Methods
+  onClickViewCourse(yearCourse: YearCourse) {
+    this.viewCourse = yearCourse;
+    this.showViewCourse = true;
+    this.viewCourseDiv = true;
+  }
+  onClickAddCourse(yearNumber: number) {
+    this.showAddCourse = true;
+  }
+  onClickBackground(event: any) {
+    if (event.target.classList.contains("overlayBackground")) {
+      this.viewCourseDiv = false;
+      setTimeout(() => this.closeOverlay(), this.animationDuration + 150);
+    }
+  }
+  onClickClose() {
+    this.viewCourseDiv = false;
+    setTimeout(() => this.closeOverlay(), this.animationDuration + 150);
+  }
+  closeOverlay() {
+    this.showAddCourse = false;
+    this.showViewCourse = false;
+  }
+  onCourseDeleted() {
+    this.closeOverlay();
+    this.schedule = new StudentSchedule(-1, -1, []);
+    this.scheduleLoaded = false;
+    this.ngOnInit();
   }
 }
 

@@ -77,64 +77,32 @@
   padding: 0 !important;
   -webkit-box-shadow: -8px 8px 0px -2px #3695B7;
   box-shadow: -8px 8px 0px -2px #3695B7;
-}
-
-.scheduleYearWrapper {
-  display: inline-block;
-  margin-left: 2%;
-  margin-top: 1%;
-  font-family: "Comic Sans MS", "Comic Sans", cursive;
-  height: 88%;
-  width: 20%;
-
-}
-
-.scheduleYear {
-  white-space: break-spaces;
-  background-color: #F5F5F5;
-  height: 100%;
-  width: 100%;
-  margin-top: 1%;
-  border-radius: 15px;
-  -webkit-box-shadow: inset 0px 9px 8px -2px #4D4D4D;
-  box-shadow: inset 0px 9px 8px -2px #4D4D4D;
-  padding-top: 5%;
-  overflow-y: hidden;
-}
-
-.courseDisplay {
-  padding-left: 5%;
-  font-size: 1em;
-  width: 100%;
-}
-
-.courseDisplay tr {
-  border-color: #E7E7E7;
-  border-style: solid;
-  border-width: 1px;
-  border-style: none;
-}
-
-.courseBottomBorder {
-  border-bottom-style: solid !important;
-}
-
-.courseDisplay td {
-  padding: 5%;
-  padding-top: 6%;
-  padding-bottom: 6%;
-}
-
-.courseDisplay td:hover {
-  cursor: pointer;
-}
-
-.scheduleYearHeading {
-  text-align: center;
+  position: relative;
 }
 
 .white {
   color: white;
+}
+
+.loadingGif {
+  width: 50px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loadingGif img {
+  width: inherit;
+}
+
+.overlayBackground {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .navy {

@@ -291,4 +291,27 @@ export class APIService {
 
     return response.data;
   }
+
+  public async deleteCourseFromSchedule(userID: number, year: number, courseID: number) {
+    const url = `https://localhost:7184/api/student/v1/schedule/${userID}/year/${year}/course/${courseID}`;
+
+    let loginToken = this.cookie.get("loginToken");
+    const options = {
+      headers: new HttpHeaders(
+      {
+        "Api-Key": environment.firebase.apiKey,
+        "Authorization": loginToken,
+        'Accept': 'application/json' as const,
+        'Content-Type': 'application/json' as const,
+        'Response-Type': 'JSON' as const
+      }
+      )
+    };
+
+    let res = await firstValueFrom(this.hc.delete(url, options));
+
+    let response = JSON.parse(JSON.stringify(res));
+
+    return response;
+  }
 }
