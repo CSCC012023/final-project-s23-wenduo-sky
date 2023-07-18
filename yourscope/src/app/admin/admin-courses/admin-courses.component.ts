@@ -28,6 +28,15 @@ export class AdminCoursesComponent {
   }
 
   deleteCourse(e: any){
+    this.api.deleteCourse(e.courseId).subscribe({
+      next: res => {
+        alert("Successfully deleted course.");
+        this.updatePage();
+      }, 
+      error: err => {
+        alert("Unable to delete event.");
+      }
+    });
   }
 
   loadPopup(e: any) {
