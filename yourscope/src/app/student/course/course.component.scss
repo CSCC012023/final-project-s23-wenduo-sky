@@ -17,12 +17,6 @@ td:hover {
   cursor: pointer;
 }
 
-.courseDisplay {
-  padding-left: 5%;
-  font-size: 1em;
-  width: 100%;
-}
-
 .courseDisplay tr {
   border-color: #E7E7E7;
   border-style: solid;
@@ -30,6 +24,8 @@ td:hover {
   border-style: none;
 }
 
-.courseBottomBorder {
-  border-bottom-style: solid !important;
+tr {
+  border-bottom-style: inherit;
+  border-width: inherit;
+  border-color: inherit;
 }

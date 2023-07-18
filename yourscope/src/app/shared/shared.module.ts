@@ -3,23 +3,22 @@ import { CommonModule } from '@angular/common';
 
 import { SharedRoutingModule } from './shared-routing.module';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
-import { ToasterComponent } from './components/toaster/toaster.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
   declarations: [
-    ConfirmationDialogComponent,
-    ToasterComponent
+    ConfirmationDialogComponent
   ],
   imports: [
     CommonModule,
     SharedRoutingModule,
-    NgbModule
+    NgbModule,
+    BrowserAnimationsModule
   ],
   exports: [
-    ConfirmationDialogComponent,
-    ToasterComponent
+    ConfirmationDialogComponent
   ]
 })
 export class SharedModule { }

@@ -10,11 +10,16 @@ export class YearComponent {
   // Constants
   scheduleYearPrefix: string = "scheduleYear";
   courseIndices = Array(8).fill(0).map((_, i) => i);
+  // Class fields.
+  grade: number = 0;
   // Properties
   @Input() year: any = undefined;
   @Output() onClickViewCourse = new EventEmitter<YearCourse>();
   @Output() onClickAddCourse = new EventEmitter<number>();
-
+  // Initialization
+  ngOnInit(): void {
+    this.grade = this.year.yearNumber + 8;
+  }
   onClickCourse(course: Course) {
     let result = new YearCourse(this.year.yearNumber, course);
 

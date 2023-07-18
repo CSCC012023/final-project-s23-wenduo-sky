@@ -3,7 +3,7 @@ import { APIService } from '../../services/api.service';
 import { CookieService } from 'ngx-cookie-service';
 import { JwtService } from 'src/app/services/jwt.service';
 import { YearCourse } from '../year/year.component';
-import { HttpErrorResponse } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-student-courses',
@@ -23,7 +23,7 @@ export class StudentCoursesComponent {
   schedule: StudentSchedule = new StudentSchedule(-1, -1, []);
   viewCourse: YearCourse | null = null;
   // Constructor
-  constructor(private api: APIService, private cookie: CookieService, private jwt: JwtService) {}
+  constructor(private api: APIService, private cookie: CookieService, private jwt: JwtService, private toastr: ToastrService) {}
   // Initialization
   async ngOnInit(): Promise<void> {
     // Getting the user information.
@@ -65,7 +65,11 @@ export class StudentCoursesComponent {
     this.showViewCourse = false;
   }
   onCourseDeleted() {
+    // Toasting.
+    this.toastr.success("Successfully dropped course!");
+    // Closing the overlay.
     this.closeOverlay();
+    // Reloading all the data.
     this.schedule = new StudentSchedule(-1, -1, []);
     this.scheduleLoaded = false;
     this.ngOnInit();
