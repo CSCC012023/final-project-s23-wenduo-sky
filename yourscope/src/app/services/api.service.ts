@@ -127,6 +127,74 @@ export class APIService {
     }
   }
 
+  public getCourses(schoolID?: number, searchQuery?: string, grade?: number, disciplines?: string, offset?: number, count?: number) {
+    let loginToken = this.cookie.get("loginToken");
+    let parameters: any = {};
+    if (schoolID != undefined) {
+      parameters.schoolID = schoolID;
+    }
+    if (searchQuery != undefined) {
+      parameters.searchQuery = searchQuery;
+    }
+    if (grade != undefined) {
+      parameters.grade = grade;
+    }
+    if (disciplines != undefined) {
+      parameters.disciplines = disciplines;
+    }
+    if (offset != undefined) {
+      parameters.offset = offset;
+    }
+    if (count != undefined) {
+      parameters.count = count;
+    }
+    const options = {
+      params: parameters,
+      headers: new HttpHeaders(
+      {
+        'Api-Key': environment.firebase.apiKey,
+        'Authorization': loginToken,
+        'Accept': 'application/json' as const, 
+        'Content-Type': 'application/json' as const, 
+        'Response-Type': 'JSON' as const
+      }
+      )
+    };
+    
+    return this.hc.get('https://localhost:7184/api/schools/v1/courses', options);
+  }
+
+  public getCourseCount(schoolID?: number, searchQuery?: string, grade?: number, disciplines?: string) {
+    let loginToken = this.cookie.get("loginToken");
+    let parameters: any = {};
+    if (schoolID != undefined) {
+      parameters.schoolID = schoolID;
+    }
+    if (searchQuery != undefined) {
+      parameters.searchQuery = searchQuery;
+    }
+    if (grade != undefined) {
+      parameters.grade = grade;
+    }
+    if (disciplines != undefined) {
+      parameters.disciplines = disciplines;
+    }
+    const options = {
+      params: parameters,
+      headers: new HttpHeaders(
+      {
+        'Api-Key': environment.firebase.apiKey,
+        'Authorization': loginToken,
+        'Accept': 'application/json' as const, 
+        'Content-Type': 'application/json' as const, 
+        'Response-Type': 'JSON' as const
+      }
+      )
+    };
+    
+    return this.hc.get('https://localhost:7184/api/schools/v1/courses/count', options);
+  }
+
   public async getUser(id: number) {
     let loginToken = this.cookie.get("loginToken");
 
