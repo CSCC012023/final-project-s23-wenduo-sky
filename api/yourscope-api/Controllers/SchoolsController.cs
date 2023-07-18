@@ -69,6 +69,30 @@ namespace yourscope_api.Controllers
         }
 
         /// <summary>
+        /// Gets the number of filtered courses.
+        /// </summary>
+        /// <param name="schoolID">An optional integer parameter representing the ID of a school used to filter courses by school.</param>
+        /// <param name="searchQuery" example="ICS2O">An optional string parameter used to filter courses by both course code and course title.</param>
+        /// <param name="grade" example="9">An optional integer between 9 and 12 inclusive used to filter courses by grade.</param>
+        /// <param name="disciplines" example="Math,Science,Geography">An optional comma seperated list of strings used to filter courses by discipline.</param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("courses/count")]
+        public async Task<IActionResult> GetCourseCount(int? schoolID, string? searchQuery, int? grade, string? disciplines)
+        {
+            ApiResponse response;
+            try
+            {
+                response = await service.GetCourseCountMethod(schoolID, searchQuery, grade, disciplines);
+            }
+            catch(Exception ex)
+            {
+                response = new ApiResponse(StatusCodes.Status500InternalServerError, exception: ex);
+            }
+            return StatusCode(response.StatusCode, response);
+        }
+
+        /// <summary>
         /// Gets a filtered list of courses.
         /// </summary>
         /// <param name="schoolID">An optional integer parameter representing the ID of a school used to filter courses by school.</param>
