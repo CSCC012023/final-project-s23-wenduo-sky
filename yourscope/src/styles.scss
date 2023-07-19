@@ -5,6 +5,16 @@
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
 
+// regular style toast
+@import 'ngx-toastr/toastr';
+
+// if you'd like to use it without importing all of bootstrap it requires
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/mixins';
+// boostrap 5
+@import 'ngx-toastr/toastr-bs5-alert';
+
 body{
     margin: 0
 }
@@ -26,7 +36,7 @@ body{
 
 .contains-mat-select-search {
     background-color: white;
-    
+
     input::placeholder {
         content: "Search..." !important;
     }
@@ -41,14 +51,14 @@ body{
 }
 
 ::-webkit-scrollbar-track {
-    background: white; 
+    background: white;
 }
-   
+
 ::-webkit-scrollbar-thumb {
     border-radius: 5px;
     background: #888;
 }
-  
+
 ::-webkit-scrollbar-thumb:hover {
-    background: #555; 
+    background: #555;
 }

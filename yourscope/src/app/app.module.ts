@@ -17,11 +17,12 @@ import { PasswordResetComponent } from './auth/password-reset/password-reset.com
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularFireModule } from '@angular/fire/compat';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 @NgModule({
   declarations: [
     AppComponent,
-    PasswordResetComponent,
+    PasswordResetComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +38,9 @@ import { AngularFireModule } from '@angular/fire/compat';
     CommonModule,
     NgbModule,
     AngularFireModule.initializeApp(environment.firebase),
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
   ],
   providers: [JwtService],
   bootstrap: [AppComponent]
