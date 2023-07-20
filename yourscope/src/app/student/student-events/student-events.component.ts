@@ -78,7 +78,7 @@ export class StudentEventsComponent implements OnInit {
 
   updatePage() {
     const token = this.jwt.DecodeToken(this.cookie.get("loginToken"));
-    this.api.getEvents((this.currentPage - 1) * 12, 12, token.affiliationID, undefined).subscribe({
+    this.api.getEvents(12, (this.currentPage - 1) * 12, token.affiliationID, undefined).subscribe({
       next: (res: any) => {
         this.events = res.data;
       },
