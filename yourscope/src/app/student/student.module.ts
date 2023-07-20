@@ -17,6 +17,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { SharedModule } from '../shared.module';
 import { SharedModuleV2 } from '../shared/shared.module';
+import { StudentApplicationComponent } from './student-application/student-application.component';
+import { TruncatePipe } from '../pipes/truncate.pipe';
 
 @NgModule({
   declarations: [
@@ -31,11 +33,14 @@ import { SharedModuleV2 } from '../shared/shared.module';
     ViewCourseComponent,
     AddCourseComponent,
     ProfileComponent,
-    CreateProfileComponent
+    CreateProfileComponent,
+    TruncatePipe,
+    StudentPostingDetailsComponent
   ],
   imports: [
     CommonModule,
     StudentRoutingModule,
+    StudentApplicationComponent,
     NgbCollapse,
     FormsModule,
     ReactiveFormsModule,
