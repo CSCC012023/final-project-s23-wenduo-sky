@@ -53,6 +53,10 @@ namespace yourscope_api.Services
             using var context = new YourScopeContext();
 
             var user = context.Users.Where(q => q.UserId == posting.UserId).First();
+            
+            // Validation for correct user type.
+            if (user.Role != UserRole.Employer)
+                throw new ApplicationException($"User with ID {posting.UserId} is not an employer.");
 
             var newPosting = new JobPosting
             {
@@ -133,16 +137,7 @@ namespace yourscope_api.Services
                 var user = posting.User;
                 var company = companies.Where(q => q.CompanyName == user.Affiliation).FirstOrDefault();
 
-                if (company != null)
-                {
-                    result.Add(new JobPostingDetails(posting, user, company));
-                }
-
-                else
-                {
-                    throw new Exception(String.Format("Job Posting with id {0} created by non-employer", posting.JobPostingId));
-                }
-                
+                result.Add(new JobPostingDetails(posting, user, company));
             });
 
             return result;
