@@ -374,6 +374,27 @@ export class APIService {
     return this.hc.delete('https://localhost:7184/api/job/v1/posting/'+id, options);
   }
 
+  public getJobApplicants(postingID: number) {
+    let loginToken = this.cookie.get("loginToken");
+    
+    let parameters = {};
+
+    const options =
+    {
+      params: parameters,
+      headers: new HttpHeaders(
+      {
+        'Api-Key': environment.firebase.apiKey,
+        'Authorization': loginToken,
+        'Accept': 'application/json' as const, 
+        'Content-Type': 'application/json' as const, 
+        'Response-Type': 'JSON' as const
+      })
+    }
+    
+    return this.hc.get('https://localhost:7184/api/job/v1/application/' + postingID, options);
+  }
+
   public async getStudentSchedule(userID: number) {
     const url = 'https://localhost:7184/api/student/v1/schedule/'+userID;
 

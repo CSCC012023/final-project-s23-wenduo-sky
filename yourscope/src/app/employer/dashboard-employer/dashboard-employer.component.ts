@@ -65,6 +65,12 @@ export class DashboardEmployerComponent implements OnInit {
     this.options = 1;
     this.selection = job;
   }
+  
+  loadJobPostingApplicants(job : posting) {
+    this.options = 5;
+    this.selection = job;
+  }
+
 
   loadCreatePosting() {
     this.options = 2;
@@ -115,6 +121,8 @@ export class DashboardEmployerComponent implements OnInit {
       this.options = 0;
     })
   }
+
+
 
   ngOnInit() {
     this.load = Math.ceil((window.innerHeight - 300) / 75);
