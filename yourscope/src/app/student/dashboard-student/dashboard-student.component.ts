@@ -46,6 +46,6 @@ export class DashboardStudentComponent implements OnInit {
     }
 
     this.currentCourses = result.years[this.user.grade-9].courses;
-    this.nextCourses = result.years[15-8].courses;
+    this.nextCourses = result.years[this.user.grade-8].courses;
   }
 }
