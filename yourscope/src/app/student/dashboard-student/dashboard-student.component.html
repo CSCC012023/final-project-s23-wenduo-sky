@@ -103,7 +103,6 @@
             <h5 class="card-header text-center">
               My Next Year Courses
             </h5>
-            <div *ngIf="user.grade < 12">
               <div *ngIf="nextCourses.length > 0">
                 <div class="card item-card-small shadow rounded flex" *ngFor="let course of nextCourses" >
                   <h5 class="card-header">
@@ -117,7 +116,6 @@
               <div *ngIf="nextCourses.length == 0">
                 <p> You have no courses planned for next year! </p>
               </div>
-            </div>
           </div>
         </div>
       </div>
