@@ -22,7 +22,7 @@ namespace yourscope_api.Services
             profile.CoverLetters.Add(coverLetter);
             context.SaveChanges();
 
-            return coverLetter.ResumeId;
+            return coverLetter.CoverLetterId;
 
         }
 
@@ -61,7 +61,7 @@ namespace yourscope_api.Services
         {
             using var context = new YourScopeContext();
 
-            var experience = context.CoverLetters.First(q => q.ResumeId == coverLetterId);
+            var experience = context.CoverLetters.First(q => q.CoverLetterId == coverLetterId);
 
             context.CoverLetters.Remove(experience);
             context.SaveChanges();

@@ -163,6 +163,14 @@ namespace yourscope_api.Controllers
                 var jobId = service.CreateJobApplication(application);
                 return Ok(new ApiResponse(200, data: jobId, success: true));
             }
+            catch (BadHttpRequestException ex)
+            {
+                return StatusCode(400, new ApiResponse(400, ex.Message, success: false));
+            }
+            catch (ArgumentNullException ex)
+            {
+                return StatusCode(400, new ApiResponse(400, "Cover Letter does not exist", success: false, exception: ex));
+            }
             catch (Exception ex)
             {
                 return StatusCode(500, new ApiResponse(500, ex.Message, success: false));

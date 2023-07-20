@@ -5,6 +5,7 @@ import { JwtService } from '../services/jwt.service';
 import { CookieService } from 'ngx-cookie-service'
 import { firstValueFrom, lastValueFrom } from 'rxjs';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -62,6 +63,7 @@ export class APIService {
     } else {
       parameters = {'userId': userID, 'count': count, 'offset': offset};
     }
+    
     const options = {
       params: parameters,
       headers: new HttpHeaders({
@@ -215,7 +217,6 @@ export class APIService {
     return JSON.parse(JSON.stringify(res)).data;
   }
 
-
   public getEventCount(schoolId? : number, userID? : number){
     let loginToken = this.cookie.get("loginToken");
     let decodedToken = this.jwtService.DecodeToken(loginToken);
@@ -306,6 +307,73 @@ export class APIService {
     return this.hc.delete('https://localhost:7184/api/events/v1/'+id, options);
   }
 
+  public getJobPostings(offset: number, count : number, userID? : number, applied? : boolean, employerId?: number) {
+    let loginToken = this.cookie.get("loginToken");
+    
+    let parameters = {};
+    if (userID == undefined && applied == undefined) {
+      parameters = {'count': count, 'offset': offset};
+    } else if (userID == undefined) {
+      parameters = {'applied': applied, 'count': count, 'offset': offset};
+    } else {
+      parameters = {'userId': userID, 'count': count, 'offset': offset};
+    }
+    if (employerId != undefined) {
+      parameters = {...parameters, employerId: employerId};
+    }
+
+    const options =
+    {
+      params: parameters,
+      headers: new HttpHeaders(
+      {
+        'Api-Key': environment.firebase.apiKey,
+        'Authorization': loginToken,
+        'Accept': 'application/json' as const, 
+        'Content-Type': 'application/json' as const, 
+        'Response-Type': 'JSON' as const
+      })
+    }
+    
+    return this.hc.get('https://localhost:7184/api/job/v1/posting', options);
+  }
+
+  public createJobPosting(title : string, description : string, applicationDeadline : Date){
+    let loginToken = this.cookie.get("loginToken");
+    let decodedToken = this.jwtService.DecodeToken(loginToken);
+    const body = JSON.stringify({"title":title, "description":description, "applicationDeadline": applicationDeadline, "userId":decodedToken.userID})
+    const options = {
+        headers: new HttpHeaders(
+        {
+          "Api-Key": environment.firebase.apiKey,
+          "Authorization": loginToken,
+          'Accept': 'application/json' as const, 
+          'Content-Type': 'application/json' as const, 
+          'Response-Type': 'JSON' as const
+        }
+        )
+      };
+    
+    return this.hc.post('https://localhost:7184/api/job/v1/posting', body, options);
+  }
+
+  public deleteJobPosting(id : number){
+    let loginToken = this.cookie.get("loginToken");
+    const options = {
+        headers: new HttpHeaders(
+        {
+          "Api-Key": environment.firebase.apiKey,
+          "Authorization": loginToken,
+          'Accept': 'application/json' as const, 
+          'Content-Type': 'application/json' as const, 
+          'Response-Type': 'JSON' as const
+        }
+        )
+      };
+    
+    return this.hc.delete('https://localhost:7184/api/job/v1/posting/'+id, options);
+  }
+
   public async getStudentSchedule(userID: number) {
     const url = 'https://localhost:7184/api/student/v1/schedule/'+userID;
 
@@ -382,6 +450,7 @@ export class APIService {
 
     return response;
   }
+
   public createCourse(code: string, name: string, discipline: string, type: string, grade: number, credits: number, description: string, prerequisites: string){
     let loginToken = this.cookie.get("loginToken");
     let decodedToken = this.jwtService.DecodeToken(loginToken);
@@ -451,6 +520,26 @@ export class APIService {
         }
         )
       };
+
     return this.hc.delete('https://localhost:7184/api/schools/v1/'+ decodedToken.affiliationID + '/courses/'+id, options);
+  }
+    
+  public jobCount() {
+    let loginToken = this.cookie.get("loginToken");
+    let decodedToken = this.jwtService.DecodeToken(loginToken);
+    const options =
+      {
+        params: {'employerId': decodedToken.userID},
+        headers: new HttpHeaders(
+        {
+          'Api-Key': environment.firebase.apiKey,
+          'Authorization': loginToken,
+          'Accept': 'application/json' as const, 
+          'Content-Type': 'application/json' as const, 
+          'Response-Type': 'JSON' as const
+        })
+      };
+      
+      return this.hc.get('https://localhost:7184/api/job/v1/posting/count', options);
   }
 }
