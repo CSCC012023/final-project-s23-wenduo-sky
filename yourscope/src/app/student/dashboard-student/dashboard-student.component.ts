@@ -15,30 +15,20 @@ export class DashboardStudentComponent implements OnInit {
   schoolName: string = "";
   events: any = [];
   jobs: any = [];
-  currentCourses = [
-    {code: 'CSCC01', name: 'Introduction to Software Engineering'},
-    {code: 'CSCC01', name: 'Introduction to Software Engineering'},
-    {code: 'CSCC01', name: 'Introduction to Software Engineering'},
-    {code: 'CSCC01', name: 'Introduction to Software Engineering'},
-    {code: 'CSCC01', name: 'Introduction to Software Engineering'}
-  ];
-  previousCourses = [
-    {code: 'CSCC01', name: 'Introduction to Software Engineering'},
-    {code: 'CSCC01', name: 'Introduction to Software Engineering'},
-    {code: 'CSCC01', name: 'Introduction to Software Engineering'},
-    {code: 'CSCC01', name: 'Introduction to Software Engineering'},
-    {code: 'CSCC01', name: 'Introduction to Software Engineering'}
-  ];
+  currentCourses: any = [];
+  nextCourses: any = [];
   eventsWidth = 323;
   jobsWidth = 323;
+  courseWidth = 200;
+  user: any
 
   constructor(private api: APIService, private cookie: CookieService, private jwt: JwtService) { }
 
-  ngOnInit() {
-    const user = JSON.parse(this.cookie.get('userObject'));
+  async ngOnInit(): Promise<void> {
+    this.user = JSON.parse(this.cookie.get('userObject'));
     const token = this.jwt.DecodeToken(this.cookie.get("loginToken"));
     this.name = token.name;
-    this.schoolName = user.affiliation;
+    this.schoolName = this.user.affiliation;
     this.api.getEvents(0, 10, token.affiliationID, undefined).subscribe((res: any) => {
       this.events = res.data;
       this.eventsWidth = this.eventsWidth * this.events.length;
@@ -47,5 +37,15 @@ export class DashboardStudentComponent implements OnInit {
       this.jobs = res.data;
       this.jobsWidth = this.jobsWidth * this.jobs.length;
     });
+    
+    let result = await this.api.getStudentSchedule(token.userID);
+
+    if (result == undefined) {
+      await this.api.createStudentSchedule(token.userID);
+      result = await this.api.getStudentSchedule(token.userID);
+    }
+
+    this.currentCourses = result.years[this.user.grade-9].courses;
+    this.nextCourses = result.years[this.user.grade-8].courses;
   }
 }
