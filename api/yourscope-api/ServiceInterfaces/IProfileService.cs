@@ -14,7 +14,7 @@ namespace yourscope_api.service
         public int CreateExperience(int userId, Experience experience);
         public List <Experience> GetExperiences(int userId);
         public void DeleteExperience(int experienceId);
-        public int CreateCoverLetter(int userId, CoverLetter coverLetter);
+        public CoverLetter CreateCoverLetter(int userId, CoverLetter coverLetter);
         public List<CoverLetter> GetCoverLetters(int userId);
         public void DeleteCoverLetter(int coverLetterId);
     }

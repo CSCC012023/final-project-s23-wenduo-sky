@@ -12,7 +12,7 @@ namespace yourscope_api.Services
         public ProfileService() { }
         #endregion
 
-        public int CreateCoverLetter(int userId, CoverLetter coverLetter)
+        public CoverLetter CreateCoverLetter(int userId, CoverLetter coverLetter)
         {
             using var context = new YourScopeContext();
 
@@ -22,7 +22,7 @@ namespace yourscope_api.Services
             profile.CoverLetters.Add(coverLetter);
             context.SaveChanges();
 
-            return coverLetter.CoverLetterId;
+            return coverLetter;
 
         }
 
