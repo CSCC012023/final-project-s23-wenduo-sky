@@ -29,7 +29,7 @@ export class DashboardStudentComponent implements OnInit {
     const token = this.jwt.DecodeToken(this.cookie.get("loginToken"));
     this.name = token.name;
     this.schoolName = this.user.affiliation;
-    this.api.getEvents(0, 10, token.affiliationID, undefined).subscribe((res: any) => {
+    this.api.getEvents(10, 0, token.affiliationID, undefined).subscribe((res: any) => {
       this.events = res.data;
       this.eventsWidth = this.eventsWidth * this.events.length;
     });
