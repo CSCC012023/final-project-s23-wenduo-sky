@@ -28,6 +28,9 @@
             <div class="job-postings card-body">
               <a class="card-text" >{{job.jobTitle}}</a>
               <div class="posting-button-section">
+                <div class="button-view" (click)="loadJobPostingApplicants(job)">
+                  View Applicants
+                </div>
                 <img class="information-button" src="assets/jobPostingDetails.svg" (click)="loadJobPosting(job)">
                 <img class="information-button" src="assets/jobPostingDelete.svg" (click)="loadDeletePosting(job)">
               </div>
@@ -44,6 +47,7 @@
       </div>
       <app-job-posting class="popup-options" *ngIf="options == 1" [posting]="selection"></app-job-posting>
       <app-job-posting-create class="popup-options" *ngIf="options == 2"></app-job-posting-create>
+      <app-job-applicant class="popup-options" *ngIf="options == 5" [posting]="selection"></app-job-applicant>
       <div class="confirmDelete" *ngIf="options == 3">
         <h1 style="margin:auto; margin-top:70px; margin-bottom:70px; text-align:center;">Are you sure you want to delete this posting?</h1>
         <div style="display:flex; justify-content:space-evenly;">

@@ -10,6 +10,7 @@ import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 
 import { JobPostingComponent } from './job-posting/job-posting.component';
 import { JobPostingCreateComponent } from './job-posting-create/job-posting-create.component';
+import { JobApplicantComponent } from './job-applicant/job-applicant.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { JobPostingCreateComponent } from './job-posting-create/job-posting-crea
     EmployerPostingComponent,
     JobPostingComponent,
     JobPostingCreateComponent,
+    JobApplicantComponent,
   ],
   imports: [
     CommonModule,

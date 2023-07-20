@@ -127,7 +127,7 @@
 
 .posting-button-section {
   display: flex;
-  width: 60px;
+  width: 220px;
   justify-content: space-between;
 }
 
@@ -178,4 +178,16 @@
   color: white;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.button-view {
+  color: white;
+  text-align: center;
+  width: 150px;
+  height: 20px;
+  background-color: rgb(42, 61, 104);
+  border-radius: 20px;
+  padding: 0px 0px 10px 0px;
+  margin: 3px ;
+  font-size: 90%;
 }
