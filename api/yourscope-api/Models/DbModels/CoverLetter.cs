@@ -8,7 +8,7 @@ namespace yourscope_api.Models.DbModels
     {
         [Key]
         [JsonIgnore]
-        public int ResumeId { get; set; }
+        public int CoverLetterId { get; set; }
         public required string Intro { get; set; }
         public required string SalesPitch1 { get; set; }
         public string? SalesPitch2 { get; set; } 
