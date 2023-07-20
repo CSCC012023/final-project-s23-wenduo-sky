@@ -1,1 +1,52 @@
-<p>student-courses works!</p>
+<nav class="bg-navy pad-12 navbar navbar-expand-lg">
+  <a class="navbar-brand" href="#">
+    <img src="../../../assets/yourscope.png" width="100" height="30" alt="">
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation" (click)="collapsed = !collapsed">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" [ngbCollapse]="collapsed">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item button-md">
+        <a class="nav-link white" href="student/profile">Profile</a>
+      </li>
+      <li class="nav-item button-md">
+        <a class="nav-link white" href="student/courses">Course Planning</a>
+      </li>
+      <li class="nav-item button-md">
+        <a class="nav-link white" href="student/toolkit">Toolkit</a>
+      </li>
+      <li class="nav-item button-md">
+        <a class="nav-link white" href="student/postings">Job Search</a>
+      </li>
+      <li class="nav-item button-md">
+        <a class="nav-link white" href="student/events">School Events</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<!-- Background for page -->
+<div id="bg">
+  <!-- Title -->
+  <div>
+    <h2 class="pad-12 white">
+      Course Planning
+    </h2>
+  </div>
+
+  <!-- Schedule wrapper div -->
+  <div id="studentSchedule">
+    <!-- Loading gif for schedule -->
+    <div *ngIf="!scheduleLoaded" class="loadingGif"><img src="../../../assets/loading.gif"></div>
+    <app-year class="scheduleYearWrapper" *ngFor="let year of schedule.years" [year]="year" (onClickViewCourse)="onClickViewCourse($event)" (onClickAddCourse)="onClickAddCourse($event)"/>
+  </div>
+
+  <!-- Background for popups -->
+  <div class="overlayBackground" *ngIf="showAddCourse || showViewCourse" (click)="onClickBackground($event)">
+    <!-- View course overlay -->
+    <app-view-course *ngIf="showViewCourse" [course]="viewCourse" (onClickCloseEvent)="onClickClose()" [visible]="viewCourseDiv" [animationDuration]="animationDuration" (onCourseDeleted)="onCourseDeleted()"/>
+    <!-- Add course overlay -->
+    <app-add-course *ngIf="showAddCourse"/>
+  </div>
+</div>
+

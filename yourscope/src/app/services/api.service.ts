@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { JwtService } from '../services/jwt.service';
-import { CookieService } from 'ngx-cookie-service';
-import { firstValueFrom } from 'rxjs';
+import { CookieService } from 'ngx-cookie-service'
+import { firstValueFrom, lastValueFrom } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -25,24 +26,24 @@ export class APIService {
         headers: new HttpHeaders(
         {
           "Api-Key": environment.firebase.apiKey,
-          'Accept': 'application/json' as const, 
-          'Content-Type': 'application/json' as const, 
+          'Accept': 'application/json' as const,
+          'Content-Type': 'application/json' as const,
           'Response-Type': 'JSON' as const
         }
         )
       };
-     
+
     return this.hc.post('https://localhost:7184/api/Accounts/v1/login', body, options);
   }
-  
+
   public passwordReset(email : string){
     const body = JSON.stringify({"email":email})
     const options = {
         headers: new HttpHeaders(
         {
           "Api-Key": environment.firebase.apiKey,
-          'Accept': 'application/json' as const, 
-          'Content-Type': 'application/json' as const, 
+          'Accept': 'application/json' as const,
+          'Content-Type': 'application/json' as const,
           'Response-Type': 'JSON' as const
         }
         )
@@ -68,8 +69,8 @@ export class APIService {
       headers: new HttpHeaders({
         'Api-Key': environment.firebase.apiKey,
         'Authorization': this.cookie.get("loginToken"),
-        'Accept': 'application/json' as const, 
-        'Content-Type': 'application/json' as const, 
+        'Accept': 'application/json' as const,
+        'Content-Type': 'application/json' as const,
         'Response-Type': 'JSON' as const
       })
     };
@@ -87,13 +88,13 @@ export class APIService {
         {
           'Api-Key': environment.firebase.apiKey,
           'Authorization': loginToken,
-          'Accept': 'application/json' as const, 
-          'Content-Type': 'application/json' as const, 
+          'Accept': 'application/json' as const,
+          'Content-Type': 'application/json' as const,
           'Response-Type': 'JSON' as const
         }
         )
       };
-      
+
       return this.hc.get('https://localhost:7184/api/events/v1', options);
     } else if (schoolId != undefined) {
       const options = {
@@ -102,8 +103,8 @@ export class APIService {
         {
           'Api-Key': environment.firebase.apiKey,
           'Authorization': loginToken,
-          'Accept': 'application/json' as const, 
-          'Content-Type': 'application/json' as const, 
+          'Accept': 'application/json' as const,
+          'Content-Type': 'application/json' as const,
           'Response-Type': 'JSON' as const
         }
         )
@@ -117,13 +118,13 @@ export class APIService {
         {
           'Api-Key': environment.firebase.apiKey,
           'Authorization': loginToken,
-          'Accept': 'application/json' as const, 
-          'Content-Type': 'application/json' as const, 
+          'Accept': 'application/json' as const,
+          'Content-Type': 'application/json' as const,
           'Response-Type': 'JSON' as const
         }
         )
       };
-      
+
       return this.hc.get('https://localhost:7184/api/events/v1', options);
     }
   }
@@ -155,13 +156,13 @@ export class APIService {
       {
         'Api-Key': environment.firebase.apiKey,
         'Authorization': loginToken,
-        'Accept': 'application/json' as const, 
-        'Content-Type': 'application/json' as const, 
+        'Accept': 'application/json' as const,
+        'Content-Type': 'application/json' as const,
         'Response-Type': 'JSON' as const
       }
       )
     };
-    
+
     return this.hc.get('https://localhost:7184/api/schools/v1/courses', options);
   }
 
@@ -186,13 +187,13 @@ export class APIService {
       {
         'Api-Key': environment.firebase.apiKey,
         'Authorization': loginToken,
-        'Accept': 'application/json' as const, 
-        'Content-Type': 'application/json' as const, 
+        'Accept': 'application/json' as const,
+        'Content-Type': 'application/json' as const,
         'Response-Type': 'JSON' as const
       }
       )
     };
-    
+
     return this.hc.get('https://localhost:7184/api/schools/v1/courses/count', options);
   }
 
@@ -204,15 +205,15 @@ export class APIService {
         {
           "Api-Key": environment.firebase.apiKey,
           "Authorization": loginToken,
-          'Accept': 'application/json' as const, 
-          'Content-Type': 'application/json' as const, 
+          'Accept': 'application/json' as const,
+          'Content-Type': 'application/json' as const,
           'Response-Type': 'JSON' as const
         }
       )
     };
 
     let res = await firstValueFrom(this.hc.get('https://localhost:7184/api/accounts/v1/'+id, options));
-    
+
     return JSON.parse(JSON.stringify(res)).data;
   }
 
@@ -227,13 +228,13 @@ export class APIService {
         {
           'Api-Key': environment.firebase.apiKey,
           'Authorization': loginToken,
-          'Accept': 'application/json' as const, 
-          'Content-Type': 'application/json' as const, 
+          'Accept': 'application/json' as const,
+          'Content-Type': 'application/json' as const,
           'Response-Type': 'JSON' as const
         }
         )
       };
-      
+
       return this.hc.get('https://localhost:7184/api/events/v1/count', options);
     } else if (schoolId != undefined) {
       const options = {
@@ -242,8 +243,8 @@ export class APIService {
         {
           'Api-Key': environment.firebase.apiKey,
           'Authorization': loginToken,
-          'Accept': 'application/json' as const, 
-          'Content-Type': 'application/json' as const, 
+          'Accept': 'application/json' as const,
+          'Content-Type': 'application/json' as const,
           'Response-Type': 'JSON' as const
         }
         )
@@ -257,13 +258,13 @@ export class APIService {
         {
           'Api-Key': environment.firebase.apiKey,
           'Authorization': loginToken,
-          'Accept': 'application/json' as const, 
-          'Content-Type': 'application/json' as const, 
+          'Accept': 'application/json' as const,
+          'Content-Type': 'application/json' as const,
           'Response-Type': 'JSON' as const
         }
         )
       };
-      
+
       return this.hc.get('https://localhost:7184/api/events/v1/count', options);
     }
   }
@@ -279,13 +280,13 @@ export class APIService {
         {
           "Api-Key": environment.firebase.apiKey,
           "Authorization": loginToken,
-          'Accept': 'application/json' as const, 
-          'Content-Type': 'application/json' as const, 
+          'Accept': 'application/json' as const,
+          'Content-Type': 'application/json' as const,
           'Response-Type': 'JSON' as const
         }
         )
       };
-     
+
     return this.hc.post('https://localhost:7184/api/events/v1', body, options);
   }
 
@@ -296,13 +297,13 @@ export class APIService {
         {
           "Api-Key": environment.firebase.apiKey,
           "Authorization": loginToken,
-          'Accept': 'application/json' as const, 
-          'Content-Type': 'application/json' as const, 
+          'Accept': 'application/json' as const,
+          'Content-Type': 'application/json' as const,
           'Response-Type': 'JSON' as const
         }
         )
       };
-     
+
     return this.hc.delete('https://localhost:7184/api/events/v1/'+id, options);
   }
 
@@ -373,6 +374,83 @@ export class APIService {
     return this.hc.delete('https://localhost:7184/api/job/v1/posting/'+id, options);
   }
 
+  public async getStudentSchedule(userID: number) {
+    const url = 'https://localhost:7184/api/student/v1/schedule/'+userID;
+
+    let loginToken = this.cookie.get("loginToken");
+    const options = {
+      headers: new HttpHeaders(
+      {
+        "Api-Key": environment.firebase.apiKey,
+        "Authorization": loginToken,
+        'Accept': 'application/json' as const,
+        'Content-Type': 'application/json' as const,
+        'Response-Type': 'JSON' as const
+      }
+      )
+    };
+
+    let res;
+    try {
+      res = await lastValueFrom(this.hc.get(url, options));
+    }
+    catch(err: any) {
+      console.log(err);
+      return undefined;
+    }
+
+    let response = JSON.parse(JSON.stringify(res));
+    return response.data;
+  }
+
+  public async createStudentSchedule(userID: number) {
+    const url = "https://localhost:7184/api/student/v1/schedule/" + userID;
+
+    let loginToken = this.cookie.get("loginToken");
+    const options = {
+      headers: new HttpHeaders(
+      {
+        "Api-Key": environment.firebase.apiKey,
+        "Authorization": loginToken,
+        'Accept': 'application/json' as const,
+        'Content-Type': 'application/json' as const,
+        'Response-Type': 'JSON' as const
+      }
+      )
+    };
+
+    let res = await firstValueFrom(this.hc.post(url, options));
+
+    let response = JSON.parse(JSON.stringify(res));
+    if (!(response.statusCode == 201))
+      console.log(response);
+
+    return response.data;
+  }
+
+  public async deleteCourseFromSchedule(userID: number, year: number, courseID: number) {
+    const url = `https://localhost:7184/api/student/v1/schedule/${userID}/year/${year}/course/${courseID}`;
+
+    let loginToken = this.cookie.get("loginToken");
+    const options = {
+      headers: new HttpHeaders(
+      {
+        "Api-Key": environment.firebase.apiKey,
+        "Authorization": loginToken,
+        'Accept': 'application/json' as const,
+        'Content-Type': 'application/json' as const,
+        'Response-Type': 'JSON' as const
+      }
+      )
+    };
+
+    let res = await firstValueFrom(this.hc.delete(url, options));
+
+    let response = JSON.parse(JSON.stringify(res));
+
+    return response;
+  }
+
   public createCourse(code: string, name: string, discipline: string, type: string, grade: number, credits: number, description: string, prerequisites: string){
     let loginToken = this.cookie.get("loginToken");
     let decodedToken = this.jwtService.DecodeToken(loginToken);
@@ -382,14 +460,50 @@ export class APIService {
         {
           "Api-Key": environment.firebase.apiKey,
           "Authorization": loginToken,
-          'Accept': 'application/json' as const, 
-          'Content-Type': 'application/json' as const, 
+          'Accept': 'application/json' as const,
+          'Content-Type': 'application/json' as const,
           'Response-Type': 'JSON' as const
         }
         )
       };
-     
+
     return this.hc.post('https://localhost:7184/api/schools/v1/'+ decodedToken.affiliationID + '/courses', body, options);
+  }
+
+  public getProfile(userID : number){
+    let loginToken = this.cookie.get("loginToken");
+    const options = {
+        params: {'userId': userID},
+        headers: new HttpHeaders(
+        {
+          'Api-Key': environment.firebase.apiKey,
+          'Authorization': loginToken,
+          'Accept': 'application/json' as const,
+          'Content-Type': 'application/json' as const,
+          'Response-Type': 'JSON' as const
+          }
+        )
+      };
+    return this.hc.get('https://localhost:7184/api/profile/v1/profile', options);
+  }
+
+  public createProfile(skills?: string | null, intrestsHobbies?:string | null, awards?:string | null){
+    console.log(skills + " " + intrestsHobbies + " " + awards);
+    let loginToken = this.cookie.get("loginToken");
+    let decodedToken = this.jwtService.DecodeToken(loginToken);
+    const body = JSON.stringify({"userId":decodedToken.userID, "skills":skills, "intrestsHobbies": intrestsHobbies, "awards": awards})
+    const options = {
+        headers: new HttpHeaders(
+        {
+          'Api-Key': environment.firebase.apiKey,
+          'Authorization': loginToken,
+          'Accept': 'application/json' as const,
+          'Content-Type': 'application/json' as const,
+          'Response-Type': 'JSON' as const
+          }
+        )
+      };
+    return this.hc.post('https://localhost:7184/api/profile/v1/profile', body, options);
   }
 
   public deleteCourse(id : number){
@@ -400,13 +514,13 @@ export class APIService {
         {
           "Api-Key": environment.firebase.apiKey,
           "Authorization": loginToken,
-          'Accept': 'application/json' as const, 
-          'Content-Type': 'application/json' as const, 
+          'Accept': 'application/json' as const,
+          'Content-Type': 'application/json' as const,
           'Response-Type': 'JSON' as const
         }
         )
       };
-    
+
     return this.hc.delete('https://localhost:7184/api/schools/v1/'+ decodedToken.affiliationID + '/courses/'+id, options);
   }
     
