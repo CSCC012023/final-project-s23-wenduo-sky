@@ -185,7 +185,7 @@ namespace yourscope_api.Controllers
         /// <param name="userId">Id of user that is creating the new cover letter</param>
         /// <param name="coverLetter">Details for cover letter</param>
         /// <returns></returns>
-        [ProducesResponseType(typeof(int), 200)]
+        [ProducesResponseType(typeof(CoverLetter), 200)]
         [ProducesResponseType(500)]
         [HttpPost]
         [Route("cover-letter")]
