@@ -60,8 +60,10 @@ export class APIService {
       parameters = {'count': count, 'offset': offset};
     } else if (userID == undefined) {
       parameters = {'applied': applied, 'count': count, 'offset': offset};
-    } else {
+    } else if (applied == undefined) {
       parameters = {'userId': userID, 'count': count, 'offset': offset};
+    } else {
+      parameters = {'userId': userID, 'applied': applied, 'count': count, 'offset': offset};
     }
     
     const options = {

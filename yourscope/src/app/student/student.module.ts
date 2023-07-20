@@ -18,13 +18,13 @@ import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { SharedModule } from '../shared.module';
 import { SharedModuleV2 } from '../shared/shared.module';
 import { StudentApplicationComponent } from './student-application/student-application.component';
-import { TruncatePipe } from '../pipes/truncate.pipe';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
     DashboardStudentComponent,
-    StudentPostingsComponent,
     StudentEventsComponent,
+    StudentPostingsComponent,
     StudentEventDetailsComponent,
     StudentCoursesComponent,
     StudentPostingDetailsComponent,
@@ -34,7 +34,6 @@ import { TruncatePipe } from '../pipes/truncate.pipe';
     AddCourseComponent,
     ProfileComponent,
     CreateProfileComponent,
-    TruncatePipe,
     StudentPostingDetailsComponent
   ],
   imports: [
@@ -45,7 +44,8 @@ import { TruncatePipe } from '../pipes/truncate.pipe';
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    SharedModuleV2
+    SharedModuleV2,
+    MatSlideToggleModule
   ]
 })
 export class StudentModule { }
