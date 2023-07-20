@@ -90,6 +90,7 @@
             <h5 class="card-header text-center">
               My Current Courses
             </h5>
+            <div *ngIf="currentCourses.length > 0"></div>
               <div class="card item-card-small shadow rounded" *ngFor="let course of currentCourses">
                 <h5 class="card-header">
                   {{course.courseCode | truncate:25}}
@@ -98,6 +99,9 @@
                   <h6 class="card-title">{{course.name | truncate:50}}</h6>
                 </div>
               </div>
+            <div *ngIf="currentCourses.length == 0">
+              <p> You have no courses for this school year. </p>
+            </div>
           </div>
           <div class="card-content-2" >
             <h5 class="card-header text-center">
@@ -114,7 +118,7 @@
                 </div>
               </div>
               <div *ngIf="nextCourses.length == 0">
-                <p> You have no courses planned for next year! </p>
+                <p> You have no courses planned for next year. </p>
               </div>
           </div>
         </div>

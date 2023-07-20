@@ -45,10 +45,7 @@ export class DashboardStudentComponent implements OnInit {
       result = await this.api.getStudentSchedule(token.userID);
     }
 
-    console.log(this.user);
-    // Setting the schedule object.
     this.currentCourses = result.years[this.user.grade-9].courses;
-    this.nextCourses = result.years[this.user.grade-8].courses;
-    console.log(this.user.grade)
+    this.nextCourses = result.years[15-8].courses;
   }
 }
