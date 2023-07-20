@@ -415,7 +415,7 @@ export class APIService {
     let decodedToken = this.jwtService.DecodeToken(loginToken);
     const options =
       {
-        params: {'userId': decodedToken.userID},
+        params: {'employerId': decodedToken.userID},
         headers: new HttpHeaders(
         {
           'Api-Key': environment.firebase.apiKey,

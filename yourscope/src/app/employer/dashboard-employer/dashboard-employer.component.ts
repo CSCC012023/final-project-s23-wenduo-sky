@@ -78,7 +78,7 @@ export class DashboardEmployerComponent implements OnInit {
   loadPosting(p : number) {
     let loginToken = this.cookie.get("loginToken");
     let decodedToken = this.jwt.DecodeToken(loginToken);
-    this.api.getJobPostings((p - 1) * this.load, this.load, decodedToken.userID, undefined, undefined).subscribe({
+    this.api.getJobPostings((p - 1) * this.load, this.load, undefined, undefined, decodedToken.userID).subscribe({
       next: res => {
         this.jobs = JSON.parse(JSON.stringify(res)).data;
         console.log(res);
@@ -111,6 +111,7 @@ export class DashboardEmployerComponent implements OnInit {
       this.loadPosting(1);
       this.page = [1, 1];
       setTimeout(() => {console.log("Posting Deleted...");}, 2000);
+      this.ngOnInit();
       this.options = 0;
     })
   }
