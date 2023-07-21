@@ -9,8 +9,7 @@ import { CreateEventComponent } from './create-event/create-event.component';
 import { AdminEventDetailsComponent } from './admin-event-details/admin-event-details.component';
 import { AdminCourseDetailsComponent } from './admin-course-details/admin-course-details.component';
 import { FormsModule } from '@angular/forms';
-import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
-import { SharedModule } from '../shared.module';
+import { SharedModule } from '../shared/shared.module';
 import { CreateCourseComponent } from './create-course/create-course.component';
 
 @NgModule({
@@ -27,7 +26,6 @@ import { CreateCourseComponent } from './create-course/create-course.component';
     CommonModule,
     AdminRoutingModule,
     FormsModule,
-    NgbCollapse,
     SharedModule,
   ],
   exports: [RouterModule],

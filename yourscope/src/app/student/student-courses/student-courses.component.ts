@@ -13,7 +13,6 @@ import { ToastrService } from 'ngx-toastr';
 export class StudentCoursesComponent {
   // Constants
   animationDuration: number = 150;
-  collapsed: boolean = true;
   // Class fields
   scheduleLoaded = false;
   showAddCourse = false;

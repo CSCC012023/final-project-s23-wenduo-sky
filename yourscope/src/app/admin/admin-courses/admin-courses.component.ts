@@ -10,7 +10,6 @@ import { JwtService } from 'src/app/services/jwt.service';
 })
 export class AdminCoursesComponent {
   courses = <any> [];
-  collapsed: boolean = false;
   popup: boolean = false; 
   selected: any = {};
   currentPage: number = 1;
