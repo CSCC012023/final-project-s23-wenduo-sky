@@ -85,3 +85,9 @@ export class User {
     this.grade = grade;
   }
 }
+
+export enum UserRole {
+  Student = 0,
+  Admin,
+  Employer
+}
