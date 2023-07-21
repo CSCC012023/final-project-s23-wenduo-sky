@@ -19,10 +19,14 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularFireModule } from '@angular/fire/compat';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { LandingComponent } from './landing/landing.component';
+import { SharedModuleV2 } from './shared/shared.module';
+
 @NgModule({
   declarations: [
     AppComponent,
-    PasswordResetComponent
+    PasswordResetComponent,
+    LandingComponent
   ],
   imports: [
     BrowserModule,
@@ -40,7 +44,8 @@ import { ToastrModule } from 'ngx-toastr';
     AngularFireModule.initializeApp(environment.firebase),
     FormsModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    SharedModuleV2
   ],
   providers: [JwtService],
   bootstrap: [AppComponent]
