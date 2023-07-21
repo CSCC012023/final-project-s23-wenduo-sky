@@ -44,7 +44,12 @@ export class LandingComponent {
 
   checkLoggedIn(): boolean {
     let token: string = this.cookie.get('loginToken');
-    if (token.length == 0) return false;
+    if (token.length == 0) {
+      //  Clearing cookies.
+      this.clearLoginCookies();
+
+      return false;
+    }
 
     let tokenInfo = this.jwt.DecodeToken(token);
     // Check if the token is expired.
