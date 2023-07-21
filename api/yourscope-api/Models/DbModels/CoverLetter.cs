@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace yourscope_api.Models.DbModels
 {
@@ -6,7 +7,8 @@ namespace yourscope_api.Models.DbModels
     public class CoverLetter
     {
         [Key]
-        public int ResumeId { get; set; }
+        [JsonIgnore]
+        public int CoverLetterId { get; set; }
         public required string Intro { get; set; }
         public required string SalesPitch1 { get; set; }
         public string? SalesPitch2 { get; set; } 

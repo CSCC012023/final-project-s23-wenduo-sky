@@ -103,9 +103,24 @@ namespace yourscope_api.Migrations
                     b.ToTable("Courses");
                 });
 
+            modelBuilder.Entity("yourscope_api.Models.DbModels.CourseYear", b =>
+                {
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("YearId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CourseId", "YearId");
+
+                    b.HasIndex("YearId");
+
+                    b.ToTable("CourseYear");
+                });
+
             modelBuilder.Entity("yourscope_api.Models.DbModels.CoverLetter", b =>
                 {
-                    b.Property<int>("ResumeId")
+                    b.Property<int>("CoverLetterId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -130,7 +145,7 @@ namespace yourscope_api.Migrations
                     b.Property<string>("SalesPitch3")
                         .HasColumnType("longtext");
 
-                    b.HasKey("ResumeId");
+                    b.HasKey("CoverLetterId");
 
                     b.HasIndex("ProfileId");
 
@@ -219,6 +234,9 @@ namespace yourscope_api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int?>("CoverLetterId")
+                        .HasColumnType("int");
+
                     b.Property<int>("JobPostingId")
                         .HasColumnType("int");
 
@@ -226,6 +244,8 @@ namespace yourscope_api.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("JobApplicationId");
+
+                    b.HasIndex("CoverLetterId");
 
                     b.HasIndex("JobPostingId");
 
@@ -287,6 +307,22 @@ namespace yourscope_api.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Profiles");
+                });
+
+            modelBuilder.Entity("yourscope_api.Models.DbModels.Schedule", b =>
+                {
+                    b.Property<int>("ScheduleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ScheduleId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("Schedules");
                 });
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.School", b =>
@@ -364,6 +400,44 @@ namespace yourscope_api.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("yourscope_api.Models.DbModels.Year", b =>
+                {
+                    b.Property<int>("YearId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("ScheduleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("YearNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("YearId");
+
+                    b.HasIndex("ScheduleId");
+
+                    b.ToTable("Years");
+                });
+
+            modelBuilder.Entity("yourscope_api.Models.DbModels.CourseYear", b =>
+                {
+                    b.HasOne("yourscope_api.Models.DbModels.Course", "Course")
+                        .WithMany("CourseYears")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("yourscope_api.Models.DbModels.Year", "Year")
+                        .WithMany("CourseYears")
+                        .HasForeignKey("YearId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Year");
+                });
+
             modelBuilder.Entity("yourscope_api.Models.DbModels.CoverLetter", b =>
                 {
                     b.HasOne("yourscope_api.Models.DbModels.Profile", null)
@@ -395,6 +469,10 @@ namespace yourscope_api.Migrations
 
             modelBuilder.Entity("yourscope_api.Models.DbModels.JobApplication", b =>
                 {
+                    b.HasOne("yourscope_api.Models.DbModels.CoverLetter", "CoverLetter")
+                        .WithMany()
+                        .HasForeignKey("CoverLetterId");
+
                     b.HasOne("yourscope_api.Models.DbModels.JobPosting", "JobPosting")
                         .WithMany()
                         .HasForeignKey("JobPostingId")
@@ -406,6 +484,8 @@ namespace yourscope_api.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("CoverLetter");
 
                     b.Navigation("JobPosting");
 
@@ -434,6 +514,17 @@ namespace yourscope_api.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("yourscope_api.Models.DbModels.Schedule", b =>
+                {
+                    b.HasOne("yourscope_api.Models.DbModels.User", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("yourscope_api.Models.DbModels.SchoolCourse", b =>
                 {
                     b.HasOne("yourscope_api.Models.DbModels.Course", "Course")
@@ -453,8 +544,21 @@ namespace yourscope_api.Migrations
                     b.Navigation("School");
                 });
 
+            modelBuilder.Entity("yourscope_api.Models.DbModels.Year", b =>
+                {
+                    b.HasOne("yourscope_api.Models.DbModels.Schedule", "Schedule")
+                        .WithMany("Years")
+                        .HasForeignKey("ScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Schedule");
+                });
+
             modelBuilder.Entity("yourscope_api.Models.DbModels.Course", b =>
                 {
+                    b.Navigation("CourseYears");
+
                     b.Navigation("SchoolCourses");
                 });
 
@@ -465,9 +569,19 @@ namespace yourscope_api.Migrations
                     b.Navigation("Experiences");
                 });
 
+            modelBuilder.Entity("yourscope_api.Models.DbModels.Schedule", b =>
+                {
+                    b.Navigation("Years");
+                });
+
             modelBuilder.Entity("yourscope_api.Models.DbModels.School", b =>
                 {
                     b.Navigation("SchoolCourses");
+                });
+
+            modelBuilder.Entity("yourscope_api.Models.DbModels.Year", b =>
+                {
+                    b.Navigation("CourseYears");
                 });
 #pragma warning restore 612, 618
         }

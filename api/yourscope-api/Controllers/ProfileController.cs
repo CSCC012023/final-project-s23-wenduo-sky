@@ -94,6 +94,7 @@ namespace yourscope_api.Controllers
         /// <summary>
         /// Create job/volunteer experience for student profile
         /// </summary>
+        /// <param name="userId">Id of user that is creating the new experience</param>
         /// <param name="experience">Details for expereince</param>
         /// <returns></returns>
         [ProducesResponseType(typeof(Experience), 200)]
@@ -101,11 +102,32 @@ namespace yourscope_api.Controllers
         [HttpPost]
         [Route("experience")]
 
-        public IActionResult CreateExperience([FromBody] Experience experience)
+        public IActionResult CreateExperience(int userId, [FromBody] Experience experience)
         {
             try
             {
-                return Ok(new ApiResponse(200, data: service.CreateExperience(experience), success: true));
+                return Ok(new ApiResponse(200, data: service.CreateExperience(userId, experience), success: true));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ApiResponse(500, ex.Message, success: false));
+            }
+        }
+
+        /// <summary>
+        /// Get experiences of user
+        /// </summary>
+        /// <param name="userId">Id of user whose experiences are being returned</param>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(List<Experience>), 200)]
+        [ProducesResponseType(500)]
+        [HttpGet]
+        [Route("experience")]
+        public IActionResult GetExperiences(int userId)
+        {
+            try
+            {
+                return Ok(new ApiResponse(200, data: service.GetExperiences(userId), success: true));
             }
             catch (Exception ex)
             {
@@ -137,21 +159,66 @@ namespace yourscope_api.Controllers
         }
 
         /// <summary>
+        /// Get Cover letters of user
+        /// </summary>
+        /// <param name="userId">Id of user whose cover letters are being returned</param>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(List<CoverLetter>), 200)]
+        [ProducesResponseType(500)]
+        [HttpGet]
+        [Route("cover-letter")]
+        public IActionResult GetCoverLetters(int userId)
+        {
+            try
+            {
+                return Ok(new ApiResponse(200, data: service.GetCoverLetters(userId), success: true));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ApiResponse(500, ex.Message, success: false));
+            }
+        }
+
+        /// <summary>
         /// Create cover letter for student profile
         /// </summary>
+        /// <param name="userId">Id of user that is creating the new cover letter</param>
         /// <param name="coverLetter">Details for cover letter</param>
         /// <returns></returns>
-        [ProducesResponseType(typeof(int), 200)]
+        [ProducesResponseType(typeof(CoverLetter), 200)]
         [ProducesResponseType(500)]
         [HttpPost]
         [Route("cover-letter")]
 
-        public IActionResult CreateCoverLetter([FromBody] CoverLetter coverLetter)
+        public IActionResult CreateCoverLetter(int userId, [FromBody] CoverLetter coverLetter)
         {
             try
             {
                 
-                return Ok(new ApiResponse(200, data: service.CreateCoverLetter(coverLetter), success: true));
+                return Ok(new ApiResponse(200, data: service.CreateCoverLetter(userId, coverLetter), success: true));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ApiResponse(500, ex.Message, success: false));
+            }
+        }
+
+        /// <summary>
+        /// Delete cover letter for student profile
+        /// </summary>
+        /// <param name="userId">Id of user that is deleting the new cover letter</param>
+        /// <returns></returns>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        [HttpDelete]
+        [Route("cover-letter")]
+
+        public IActionResult DeleteCoverLetter(int coverLetterId)
+        {
+            try
+            {
+                service.DeleteCoverLetter(coverLetterId);
+                return Ok(new ApiResponse(200, success: true));
             }
             catch (Exception ex)
             {

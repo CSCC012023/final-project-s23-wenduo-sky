@@ -22,6 +22,9 @@ namespace yourscope_api
         public DbSet<Profile> Profiles { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<SchoolCourse> SchoolCourse { get; set; }
+        public DbSet<Schedule> Schedules { get; set; }
+        public DbSet<Year> Years { get; set; }
+        public DbSet<CourseYear> CourseYear{ get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -32,6 +35,8 @@ namespace yourscope_api
         {
             modelBuilder.Entity<SchoolCourse>()
                 .HasKey(e => new { e.SchoolId, e.CourseId });
+            modelBuilder.Entity<CourseYear>()
+                .HasKey(e => new { e.CourseId, e.YearId });
         }
     }
 }

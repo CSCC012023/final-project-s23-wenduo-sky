@@ -10,7 +10,10 @@ import { CookieService } from 'ngx-cookie-service'
 
 export class AuthService {
 
-  constructor(private router : Router, private service : APIService, private jwtService : JwtService, private cookieService: CookieService)  { }
+  constructor(private router: Router,
+              private service : APIService,
+              private jwtService : JwtService,
+              private cookieService: CookieService)  { }
 
   login(email: string, password: string) {
     this.service.getLogin(email, password).subscribe({
@@ -26,6 +29,25 @@ export class AuthService {
       error: err => {
         alert(err.error);
       }
+    });
+  }
+
+  async logout(): Promise<void> {
+    if (this.cookieService.check('loginToken')) {
+      await this.deleteCookie('loginToken');
+    }
+
+    if (this.cookieService.check('userObject')) {
+      await this.deleteCookie('userObject');
+    }
+
+    this.router.navigate(['/']);
+  }
+
+  private deleteCookie(cookieName: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.cookieService.delete(cookieName);
+      resolve();
     });
   }
   
@@ -84,4 +106,10 @@ export class User {
     this.affiliationID = affiliationID;
     this.grade = grade;
   }
+}
+
+export enum UserRole {
+  Student = 0,
+  Admin,
+  Employer
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Firebase.Auth;
+using Microsoft.EntityFrameworkCore;
 using yourscope_api.Models.DbModels;
 using yourscope_api.Models.Request;
 using yourscope_api.service;
@@ -11,22 +12,28 @@ namespace yourscope_api.Services
         public ProfileService() { }
         #endregion
 
-        public int CreateCoverLetter(CoverLetter coverLetter)
+        public CoverLetter CreateCoverLetter(int userId, CoverLetter coverLetter)
         {
             using var context = new YourScopeContext();
 
-            context.CoverLetters.Add(coverLetter);
+            //Assume profile exsists
+            Profile profile = context.Profiles.Include(q => q.User).First(p => p.User.UserId == userId);
+
+            profile.CoverLetters.Add(coverLetter);
             context.SaveChanges();
 
-            return coverLetter.ResumeId;
+            return coverLetter;
 
         }
 
-        public int CreateExperience(Experience experience)
+        public int CreateExperience(int userId, Experience experience)
         {
             using var context = new YourScopeContext();
+            
+            //Assume profile exsists
+            Profile profile = context.Profiles.Include(q => q.User).First(p => p.User.UserId == userId);
 
-            context.Experiences.Add(experience);
+            profile.Experiences.Add(experience);
             context.SaveChanges();
 
             return experience.ExperienceId;
@@ -50,6 +57,16 @@ namespace yourscope_api.Services
             return newProfile.ProfileId;
         }
 
+        public void DeleteCoverLetter(int coverLetterId)
+        {
+            using var context = new YourScopeContext();
+
+            var experience = context.CoverLetters.First(q => q.CoverLetterId == coverLetterId);
+
+            context.CoverLetters.Remove(experience);
+            context.SaveChanges();
+        }
+
         public void DeleteExperience(int experienceId)
         {
             using var context = new YourScopeContext();
@@ -59,6 +76,30 @@ namespace yourscope_api.Services
             context.Experiences.Remove(experience);
             context.SaveChanges();
 
+        }
+
+        public List<CoverLetter> GetCoverLetters(int userId)
+        {
+            using var context = new YourScopeContext();
+
+            return context.Profiles.Include(q => q.User)
+                .Where(p => p.User.UserId == userId)
+                .Include(q => q.CoverLetters)
+                .Select(q => q.CoverLetters)
+                .First()
+                .ToList();
+        }
+
+        public List<Experience> GetExperiences(int userId)
+        {
+            using var context = new YourScopeContext();
+
+            return context.Profiles.Include(q => q.User)
+                .Where(p => p.User.UserId == userId)
+                .Include(q => q.Experiences)
+                .Select(q => q.Experiences)
+                .First()
+                .ToList();
         }
 
         public Profile? GetProfile(int userId)
