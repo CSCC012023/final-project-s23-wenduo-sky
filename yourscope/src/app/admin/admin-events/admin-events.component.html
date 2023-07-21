@@ -30,7 +30,7 @@
               <div class="button-sm" (click)="loadPopup(event)">
                 More Info
               </div>
-              <div class="button-sm" (click)="deleteEvent(event)">
+              <div class="button-d" (click)="deleteEvent(event)">
                 Delete
               </div>
             </div>
@@ -60,3 +60,5 @@
     <app-admin-event-details [event]="selected"></app-admin-event-details>
   </div>
 </div>
+
+<confirmation-dialog *ngIf="confirm" (onClickEvent)="confirmDeletion($event)"/>

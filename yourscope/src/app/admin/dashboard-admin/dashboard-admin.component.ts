@@ -8,29 +8,15 @@ import { JwtService } from 'src/app/services/jwt.service';
   templateUrl: './dashboard-admin.component.html',
   styleUrls: ['./dashboard-admin.component.scss']
 })
-export class DashboardAdminComponent implements OnInit{
+export class DashboardAdminComponent implements OnInit {
   events: any[] = [];
   eventStates: boolean[] = [];
-  courses = [
-    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
-    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
-    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
-    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
-    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
-    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
-    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
-    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
-    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
-    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
-    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
-    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
-    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
-    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
-    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
-    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
-    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
-    {code: 'CSCC01', name: 'Introduction to Software Engineering', url: '#'},
-  ];
+  courses: any[] = [];
+  courseStates: boolean[] = [];
+  selectedEvent: any = {};
+  selectedCourse: any = {};
+  confirmEvent: boolean = false;
+  confirmCourse: boolean = false;
 
   constructor(private api: APIService, private cookie: CookieService, private jwt: JwtService) { }
 
@@ -48,9 +34,64 @@ export class DashboardAdminComponent implements OnInit{
         alert("Unable retrieve events." );
       }
     });
+    this.api.getCourses(this.token.affiliationID, undefined, undefined, undefined, 0, 20).subscribe({
+      next: (res: any) => {
+        this.courses = JSON.parse(JSON.stringify(res)).data;
+        for (let i = 0; i < this.courses.length; i++) {
+          this.courseStates.push(false);
+        }
+      },
+      error: err => {
+        alert("Unable to retrieve events.");
+      }
+    });
   }
 
   toggleEventState(index: number): void {
     this.eventStates[index] = !this.eventStates[index];
+  }
+
+  toggleCourseState(index: number): void {
+    this.courseStates[index] = !this.courseStates[index];
+  }
+
+  deleteEvent(e: any){
+    this.selectedEvent = e;
+    this.confirmEvent = true;
+  }
+
+  confirmEventDeletion(result: boolean) {
+    this.confirmEvent = false;
+    if (result) {
+      this.api.deleteEvent(this.selectedEvent.eventId).subscribe({
+        next: res => {
+          alert("Successfully deleted event.");
+          location.reload();
+        }, 
+        error: err => {
+          alert("Unable to delete event.");
+        }
+      });
+    }
+  }
+
+  deleteCourse(e: any){
+    this.selectedCourse = e;
+    this.confirmCourse = true;
+  }
+
+  confirmCourseDeletion(result: boolean) {
+    this.confirmCourse = false;
+    if (result) {
+      this.api.deleteCourse(this.selectedCourse.courseId).subscribe({
+        next: res => {
+          alert("Successfully deleted course.");
+          location.reload();
+        }, 
+        error: err => {
+          alert("Unable to delete event.");
+        }
+      });
+    }
   }
 }

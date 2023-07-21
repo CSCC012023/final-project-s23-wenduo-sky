@@ -11,6 +11,7 @@ import { JwtService } from 'src/app/services/jwt.service';
 export class AdminEventsComponent implements OnInit {
   events = <any> [];
   popup: boolean = false; 
+  confirm: boolean = false;
   selected: any = {};
   currentPage: number = 1;
   totalPages: number = 0;
@@ -27,15 +28,23 @@ export class AdminEventsComponent implements OnInit {
   }
 
   deleteEvent(e: any){
-    this.api.deleteEvent(e.eventId).subscribe({
-      next: res => {
-        alert("Successfully deleted event.");
-        location.reload();
-      }, 
-      error: err => {
-        alert("Unable to delete event.");
-      }
-    });
+    this.selected = e;
+    this.confirm = true;
+  }
+
+  confirmDeletion(result: boolean) {
+    this.confirm = false;
+    if (result) {
+      this.api.deleteEvent(this.selected.eventId).subscribe({
+        next: res => {
+          alert("Successfully deleted event.");
+          location.reload();
+        }, 
+        error: err => {
+          alert("Unable to delete event.");
+        }
+      });
+    }
   }
 
   loadPopup(e: any) {

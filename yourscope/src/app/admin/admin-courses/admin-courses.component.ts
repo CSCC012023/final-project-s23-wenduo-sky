@@ -11,6 +11,7 @@ import { JwtService } from 'src/app/services/jwt.service';
 export class AdminCoursesComponent {
   courses = <any> [];
   popup: boolean = false; 
+  confirm: boolean = false;
   selected: any = {};
   currentPage: number = 1;
   totalPages: number = 0;
@@ -27,15 +28,23 @@ export class AdminCoursesComponent {
   }
 
   deleteCourse(e: any){
-    this.api.deleteCourse(e.courseId).subscribe({
-      next: res => {
-        alert("Successfully deleted course.");
-        this.updatePage();
-      }, 
-      error: err => {
-        alert("Unable to delete event.");
-      }
-    });
+    this.selected = e;
+    this.confirm = true;
+  }
+
+  confirmDeletion(result: boolean) {
+    this.confirm = false;
+    if (result) {
+      this.api.deleteCourse(this.selected.courseId).subscribe({
+        next: res => {
+          alert("Successfully deleted course.");
+          this.updatePage();
+        }, 
+        error: err => {
+          alert("Unable to delete event.");
+        }
+      });
+    }
   }
 
   loadPopup(e: any) {

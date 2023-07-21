@@ -29,7 +29,7 @@
               <div class="button-sm" (click)="loadPopup(course)">
                 More Info
               </div>
-              <div class="button-sm" (click)="deleteCourse(course)">
+              <div class="button-d" (click)="deleteCourse(course)">
                 Delete
               </div>
             </div>
@@ -59,3 +59,5 @@
     <app-admin-course-details [course]="selected"></app-admin-course-details>
   </div>
 </div>
+
+<confirmation-dialog *ngIf="confirm" (onClickEvent)="confirmDeletion($event)"/>
