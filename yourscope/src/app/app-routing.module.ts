@@ -16,7 +16,7 @@ import { DashboardAdminComponent } from './admin/dashboard-admin/dashboard-admin
 import { DashboardEmployerComponent } from './employer/dashboard-employer/dashboard-employer.component';
 import { PasswordResetComponent } from './auth/password-reset/password-reset.component';
 
-import { SharedModuleV2 } from './shared/shared.module';
+import { SharedModule } from './shared/shared.module';
 
 const routes: Routes = [
   { path: '', component: LandingComponent },
@@ -41,7 +41,7 @@ const routes: Routes = [
     RegisterEmployerCompanyComponent,
     RegisterCompanyComponent,
     FormsModule,
-    SharedModuleV2
+    SharedModule
   ],
   exports: [
     RouterModule

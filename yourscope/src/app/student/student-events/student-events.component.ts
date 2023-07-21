@@ -22,7 +22,6 @@ interface event {
 })
 
 export class StudentEventsComponent implements OnInit {
-  collapsed : boolean = false;
   popup : boolean = false; 
   selected : event = {eventId: -1, title: "", date: "", description: "", location: "", userId:  null, user:  null, schoolId:  null, school:  null};
   currentPage: number = 1;

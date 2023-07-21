@@ -10,7 +10,10 @@ import { CookieService } from 'ngx-cookie-service'
 
 export class AuthService {
 
-  constructor(private router : Router, private service : APIService, private jwtService : JwtService, private cookieService: CookieService)  { }
+  constructor(private router: Router,
+              private service : APIService,
+              private jwtService : JwtService,
+              private cookieService: CookieService)  { }
 
   login(email: string, password: string) {
     this.service.getLogin(email, password).subscribe({
@@ -27,6 +30,16 @@ export class AuthService {
         alert(err.error);
       }
     });
+  }
+
+  logout(): void {
+    if (this.cookieService.check('loginToken')) {
+      this.cookieService.delete('loginToken');
+    }
+    if (this.cookieService.check('userObject')) {
+      this.cookieService.delete('userObject');
+    }
+    this.router.navigate(['/']);
   }
   
   passwordReset(email: string) {

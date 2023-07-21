@@ -31,8 +31,6 @@ interface profile {
 })
 export class ProfileComponent implements OnInit{
   constructor(private router: Router, private cookie: CookieService, private api: APIService, private jwt: JwtService){}
-
-  collapsed = true;
   student_profile : profile = {profileId: -1, user: {email: "", firstName: "", middleName: "", lastName: "", birthday: "", role: -1, affiliation: "", affiliationID: -1, grade: -1}, coverLetters: [], experiences: [], skills: "", intrestsHobbies: "", awards: ""};
 
   num_experiences = -1;

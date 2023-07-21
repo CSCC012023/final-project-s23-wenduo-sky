@@ -5,25 +5,31 @@ import { SharedRoutingModule } from './shared-routing.module';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
+import { TruncatePipe } from '../pipes/truncate.pipe';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CarouselComponent } from './components/carousel/carousel.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 
 @NgModule({
   declarations: [
     ConfirmationDialogComponent,
-    CarouselComponent
+    CarouselComponent,
+    TruncatePipe,
+    NavbarComponent,
   ],
   imports: [
     CommonModule,
     SharedRoutingModule,
     NgbModule,
     BrowserAnimationsModule,
-    NgbCollapse
+    NgbCollapse,
   ],
   exports: [
     ConfirmationDialogComponent,
-    CarouselComponent
+    CarouselComponent,
+    TruncatePipe,
+    NavbarComponent,
   ]
 })
-export class SharedModuleV2 { }
+export class SharedModule { }

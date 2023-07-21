@@ -9,7 +9,6 @@ import { JwtService } from 'src/app/services/jwt.service';
   styleUrls: ['./student-postings.component.scss']
 })
 export class StudentPostingsComponent implements OnInit {
-  collapsed: boolean = false;
   popup: boolean = false; 
   apply: boolean = false;
   selected: any = {};

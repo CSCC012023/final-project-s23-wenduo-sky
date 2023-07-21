@@ -6,7 +6,6 @@ import { StudentCoursesComponent } from './student-courses/student-courses.compo
 import { StudentPostingsComponent } from './student-postings/student-postings.component';
 import { StudentEventsComponent } from './student-events/student-events.component';
 import { StudentEventDetailsComponent } from './student-event-details/student-event-details.component';
-import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { StudentPostingDetailsComponent } from './student-posting-details/student-posting-details.component';
 import { CourseComponent } from './course/course.component';
 import { YearComponent } from './year/year.component';
@@ -15,8 +14,7 @@ import { AddCourseComponent } from './add-course/add-course.component';
 import { CreateProfileComponent } from './create-profile/create-profile.component';
 import { ProfileComponent } from './profile/profile.component';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
-import { SharedModule } from '../shared.module';
-import { SharedModuleV2 } from '../shared/shared.module';
+import { SharedModule } from '../shared/shared.module';
 import { StudentApplicationComponent } from './student-application/student-application.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
@@ -40,11 +38,9 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     CommonModule,
     StudentRoutingModule,
     StudentApplicationComponent,
-    NgbCollapse,
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    SharedModuleV2,
     MatSlideToggleModule
   ]
 })

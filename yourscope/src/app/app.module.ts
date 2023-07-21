@@ -20,7 +20,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { LandingComponent } from './landing/landing.component';
-import { SharedModuleV2 } from './shared/shared.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -45,7 +45,7 @@ import { SharedModuleV2 } from './shared/shared.module';
     FormsModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    SharedModuleV2
+    SharedModule
   ],
   providers: [JwtService],
   bootstrap: [AppComponent]

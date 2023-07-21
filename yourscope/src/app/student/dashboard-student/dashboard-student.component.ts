@@ -10,7 +10,6 @@ import { JwtService } from 'src/app/services/jwt.service';
   styleUrls: ['./dashboard-student.component.scss']
 })
 export class DashboardStudentComponent implements OnInit {
-  collapsed = true;
   name: string = "";
   schoolName: string = "";
   events: any = [];
