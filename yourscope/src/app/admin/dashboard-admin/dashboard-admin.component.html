@@ -17,16 +17,19 @@
             </h5>
             <div class="scrollspy-container">
               <div data-spy="scroll" data-offset="0" *ngIf="events.length > 0">
-                <div class="card item-card shadow bg-white rounded" *ngFor="let event of events; let i = index" (click)="toggleEventState(i)" >
-                  <h6 class="card-header">
+                <div class="card item-card shadow bg-white rounded" *ngFor="let event of events; let i = index">
+                  <h6 class="pointer card-header" (click)="toggleEventState(i)">
                     {{event.title | truncate:40}}
+                    <img *ngIf="!eventStates[i]" src="../../../assets/caretDown.svg" class="caret">
+                    <img *ngIf="eventStates[i]" src="../../../assets/caretUp.svg" class="caret">
                   </h6>
                   <div *ngIf="eventStates[i]" class="card-body">
                     <h6 class="card-title">{{event.date | date:'MM/dd/yyyy, h:mma'}}</h6>
                     <h6 class="card-title">{{event.location | truncate:30}}</h6>
-                    <p class="card-text">
+                    <div class="card-text">
                       {{event.description | truncate:200}}
-                    </p>
+                      <div class="button-d" (click)="deleteEvent(event)">Delete</div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -48,11 +51,26 @@
             </h5>
             <div class="scrollspy-container">
               <div data-spy="scroll" data-offset="0">
-                <div class="card item-card shadow bg-white rounded" *ngFor="let course of courses">
+                <div class="card item-card shadow bg-white rounded" *ngFor="let course of courses; let i = index">
+                  <h6 class="pointer card-header" (click)="toggleCourseState(i)">
+                    {{course.courseCode}} - {{course.name | truncate:50}}
+                    <img *ngIf="!courseStates[i]" src="../../../assets/caretDown.svg" class="caret">
+                    <img *ngIf="courseStates[i]" src="../../../assets/caretUp.svg" class="caret">
+                  </h6>
+                  <div *ngIf="courseStates[i]" class="card-body">
+                    <div class="card-text">
+                      {{course.description | truncate:200}}
+                      <div class="button-d" (click)="deleteCourse(course)">Delete</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="courses.length == 0">
+                <div class="card item-card shadow bg-white rounded">
                   <div class="card-body">
-                    <a class="card-text" [href]="course.url">
-                      {{course.code}} - {{course.name}}
-                    </a>
+                    <p class="card-text">
+                       You have no courses.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -63,3 +81,5 @@
     </div>
   </div>
 </div>
+<confirmation-dialog *ngIf="confirmEvent" (onClickEvent)="confirmEventDeletion($event)"/>
+<confirmation-dialog *ngIf="confirmCourse" (onClickEvent)="confirmCourseDeletion($event)"/>
