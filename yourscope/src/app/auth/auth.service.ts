@@ -32,14 +32,23 @@ export class AuthService {
     });
   }
 
-  logout(): void {
+  async logout(): Promise<void> {
     if (this.cookieService.check('loginToken')) {
-      this.cookieService.delete('loginToken');
+      await this.deleteCookie('loginToken');
     }
+
     if (this.cookieService.check('userObject')) {
-      this.cookieService.delete('userObject');
+      await this.deleteCookie('userObject');
     }
+
     this.router.navigate(['/']);
+  }
+
+  private deleteCookie(cookieName: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.cookieService.delete(cookieName);
+      resolve();
+    });
   }
   
   passwordReset(email: string) {
