@@ -28,6 +28,10 @@ body{
     visibility: hidden;
 }
 
+.cdk-overlay-pane {
+    background-color: white;
+}
+
 .ng-trigger-transformPanel {
     background-color: white;
     border: 1px solid #0d6efd;

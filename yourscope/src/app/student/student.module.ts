@@ -17,12 +17,14 @@ import { ProfileComponent } from './profile/profile.component';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { SharedModule } from '../shared.module';
 import { SharedModuleV2 } from '../shared/shared.module';
+import { StudentApplicationComponent } from './student-application/student-application.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
     DashboardStudentComponent,
-    StudentPostingsComponent,
     StudentEventsComponent,
+    StudentPostingsComponent,
     StudentEventDetailsComponent,
     StudentCoursesComponent,
     StudentPostingDetailsComponent,
@@ -31,16 +33,19 @@ import { SharedModuleV2 } from '../shared/shared.module';
     ViewCourseComponent,
     AddCourseComponent,
     ProfileComponent,
-    CreateProfileComponent
+    CreateProfileComponent,
+    StudentPostingDetailsComponent
   ],
   imports: [
     CommonModule,
     StudentRoutingModule,
+    StudentApplicationComponent,
     NgbCollapse,
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    SharedModuleV2
+    SharedModuleV2,
+    MatSlideToggleModule
   ]
 })
 export class StudentModule { }
