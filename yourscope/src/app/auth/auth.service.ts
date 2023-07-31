@@ -52,15 +52,7 @@ export class AuthService {
   }
   
   passwordReset(email: string) {
-    this.service.passwordReset(email).subscribe({
-      next: () => {
-        alert("Email sent");
-        this.router.navigate(['/login']);
-      }, 
-      error: err => {
-        alert(err.error);
-      }
-    });
+    this.service.passwordReset(email);
   }
 
   redirectToDashboard(loginToken: any) {
