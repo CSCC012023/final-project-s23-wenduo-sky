@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using yourscope_api;
 
@@ -10,9 +11,11 @@ using yourscope_api;
 namespace yourscope_api.Migrations
 {
     [DbContext(typeof(YourScopeContext))]
-    partial class YourScopeDataContextModelSnapshot : ModelSnapshot
+    [Migration("20230729212629_AddedUniTables")]
+    partial class AddedUniTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -358,31 +361,21 @@ namespace yourscope_api.Migrations
                     b.ToTable("SchoolCourse");
                 });
 
-            modelBuilder.Entity("yourscope_api.Models.DbModels.Tag", b =>
-                {
-                    b.Property<int>("TagId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("TagName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("TagId");
-
-                    b.ToTable("Tags");
-                });
             modelBuilder.Entity("yourscope_api.Models.DbModels.UniProgram", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("GradeRange")
+                    b.Property<string>("Degree")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Language")
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("GradeRange")
                         .IsRequired()
                         .HasColumnType("longtext");
 

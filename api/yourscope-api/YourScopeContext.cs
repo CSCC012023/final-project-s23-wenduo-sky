@@ -26,6 +26,8 @@ namespace yourscope_api
         public DbSet<Year> Years { get; set; }
         public DbSet<CourseYear> CourseYear{ get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<University> Universities { get; set; }
+        public DbSet<UniProgram> UniPrograms { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
