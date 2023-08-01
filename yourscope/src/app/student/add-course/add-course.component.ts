@@ -60,12 +60,15 @@ export class AddCourseComponent {
 
       this.prerequisites.forEach((courseID: string) => {
         this.schedule.years.forEach((year: any) => {
-          year.courses.forEach((courseInfo: any) => {
-            let modified_courseID = courseInfo.courseCode.substring(0,5)
-            if (courseID == modified_courseID){
-              this.confirmNoPrereqs = true; 
-            }
-          });
+          if (year.yearNumber <= this.yearNumber){
+            year.courses.forEach((courseInfo: any) => {
+              let modified_courseID = courseInfo.courseCode.substring(0,5)
+              if (courseID == modified_courseID){
+                this.confirmNoPrereqs = true; 
+              }
+
+            });
+          }
         });
       });
     }
