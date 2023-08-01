@@ -451,6 +451,24 @@ export class APIService {
     return response.data;
   }
 
+  public addCourseToSchedule( year: number, courseID: number) {
+    let loginToken = this.cookie.get("loginToken");
+    let decodedToken = this.jwtService.DecodeToken(loginToken);
+    const options = {
+        headers: new HttpHeaders(
+        {
+          "Api-Key": environment.firebase.apiKey,
+          "Authorization": loginToken,
+          'Accept': 'application/json' as const,
+          'Content-Type': 'application/json' as const,
+          'Response-Type': 'JSON' as const
+        }
+        )
+      };
+
+    return this.hc.post('https://localhost:7184/api/student/v1/schedule/'+decodedToken.userID+'/year/'+year+'/course/'+courseID, options);
+  }
+
   public async deleteCourseFromSchedule(userID: number, year: number, courseID: number) {
     const url = `https://localhost:7184/api/student/v1/schedule/${userID}/year/${year}/course/${courseID}`;
 
