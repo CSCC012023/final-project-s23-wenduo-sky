@@ -1,59 +1,52 @@
-<div class="inner-card">
-  <div class="popup-title">
-    <h1>School Courses</h1>
-  </div>
-
-  <div class="centre flex wrap">
-    <div *ngIf="allCourses.length == 0" class="card pad-12">
-        <h5>There are no courses for this school.</h5>
+<div class="divViewCourse" [@inOutAnimation] *ngIf="visible">
+  <div *ngIf="!selectedCourse">
+    <h2>Select a course</h2>
+    <div class="search">
+      <input placeholder="Search..." id="student-search-course" [(ngModel)]="search">
+      <mat-select class="select-discipline" placeholder="Discipline" [(ngModel)]="selectedDiscipline">
+        <mat-option *ngFor="let disc of disciplines" [value]="disc">{{disc}}</mat-option>
+      </mat-select>
+      <mat-select class="select-grade" placeholder="Grade" [(ngModel)]="selectedGrade">
+        <mat-option *ngFor="let grade of grades" [value]="grade.g">{{grade.g}}</mat-option>
+      </mat-select>
+      <button (click)="searchQuery()">Search</button>
     </div>
-    <div class="scrollspy-container">
-      <div data-spy="scroll" class="content-box flex" data-offset="0">
-        <div class="card item-card shadow mb-5 bg-white rounded flex" *ngFor="let course of allCourses">
-          <div class="full-size">
-            <h5 class="card-header">
-              {{course.courseCode}}
-            </h5>
-            <div class="card-body">
-              <h6 class="card-title">{{course.name | truncate:30}}</h6>
-              <p class="card-text">
-                {{course.description | truncate:200}}
-              </p>
-            </div>
-            <div class="centre flex">
-              <div class="button-sm" (click)="loadPopup(course)">
-                More Info
-              </div>
-              <div class="button-d" (click)="addCourse(course)">
-                Add
-              </div>
-            </div>
+    <img src="../../../assets/closeBox.png" class="closeIcon" (click)="onClickCloseButton()">
+    <div class="container-wrapper">
+      <div class="container container-item">
+        <div *ngFor="let course of offeredCourses; let i = index;" class="row">
+          <div class="col course-item" (click)="selectCourse(i)">
+            <h4 style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{course.name}}</h4>
+            <p class="subHeading">{{course.courseCode}}</p>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <ul class="pagination justify-content-center">
-    <li class="page-item">
-      <button class="page-link" (click)="onPageMove(false)">Previous</button>
-    </li>
-    <li class="page-item" *ngFor="let item of [].constructor(totalPages); let i = index">
-      <button class="page-link" (click)="onPageChange(i + 1)">{{ i + 1 }}</button>
-    </li>
-    <li class="page-item">
-      <button class="page-link" (click)="onPageMove(true)">Next</button>
-    </li>
-  </ul>
-</div>
-
-<div class="close-popup" (click)="closePopup2($event)" *ngIf="popup">
-  <div class="info-card">
-    <div class="close-button-bg">
-      <div class="close-button" (click)="closePopup1()">X</div>
+    <div class="course-pages">
+      <img class="cant-click" *ngIf="this.page == 1" src="assets/iconPrevious.svg">
+      <img *ngIf="this.page != 1" src="assets/iconPrevious.svg" (click)="prevPage()">
+      <p>{{this.page}} of {{this.maxPage}}</p>
+      <img class="cant-click" *ngIf="this.page == this.maxPage" src="assets/iconNext.svg">
+      <img *ngIf="this.page != this.maxPage" src="assets/iconNext.svg" (click)="nextPage()">
     </div>
-    <app-student-course-details [course]="selected"></app-student-course-details>
+  </div>
+  <div *ngIf="selectedCourse">
+    <h4>{{this.course.name}}</h4>
+    <img src="../../../assets/closeBox.png" class="closeIcon" (click)="onClickCloseButton()">
+    <p class="subHeading">
+      <span class="bold">Credits:</span> {{this.course.credits}}
+    </p>
+    <p class="subHeading">
+      <span class="bold">Discipline:</span> {{this.course.discipline}}
+    </p>
+    <p class="subHeading">
+      <span class="bold">Pre-requisites:</span> {{this.course.prerequisites}}
+    </p>
+    <hr />
+    <h5>Description</h5>
+    <p class="courseDescription">{{this.course.description}}</p>
+    <hr />
+    <button class="btn btn-success btnAddCourse">Add</button>
+    <button class="btn btn-secondary btnAddCourse" (click)="returnToSearch()">Back</button>
   </div>
 </div>
-
-<confirmation-dialog *ngIf="confirmNoPrereqs" (onClickEvent)="confirmAddition($event)"/>
-<app-missing-prereq *ngIf="confirmWithPrereqs"(onClickEvent)="confirmAddition(false)" [prerequisites]="coursePrereqs"/>

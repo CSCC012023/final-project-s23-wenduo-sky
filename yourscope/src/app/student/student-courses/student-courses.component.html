@@ -20,15 +20,7 @@
     <!-- View course overlay -->
     <app-view-course *ngIf="showViewCourse" [course]="viewCourse" (onClickCloseEvent)="onClickClose()" [visible]="viewCourseDiv" [animationDuration]="animationDuration" (onCourseDeleted)="onCourseDeleted()"/>
     <!-- Add course overlay -->
-  </div>
-    
-  <div class="close-popup" (click)="closePopup2($event)" *ngIf="popup">
-    <div class="info-card">
-      <div class="close-button-bg">
-        <div class="close-button" (click)="closePopup1()">X</div>
-      </div>
-      <app-add-course *ngIf="showAddCourse" [yearNumber]="selectedYear" (onCourseAdded)="onCourseAdded()"/>
-    </div>
+    <app-add-course *ngIf="showAddCourse" (onClickCloseEvent)="onClickClose()" [visible]="viewCourseDiv" [animationDuration]="animationDuration" [yearNumber]="selectedYear"/>
   </div>
 </div>
 
