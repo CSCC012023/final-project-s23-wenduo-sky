@@ -3,6 +3,7 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 import { APIService } from 'src/app/services/api.service';
 import { CookieService } from 'ngx-cookie-service';
 import { JwtService } from 'src/app/services/jwt.service';
+import { StudentSchedule } from '../student-courses/student-courses.component';
 
 @Component({
   selector: 'app-add-course',
@@ -37,11 +38,18 @@ export class AddCourseComponent implements OnInit {
   @Input() animationDuration: number = 0;
   @Input() yearNumber: number = 0;
   @Output() onClickCloseEvent = new EventEmitter<void>();
+  @Output() onCourseAdded = new EventEmitter<void>();
+  schedule: StudentSchedule = new StudentSchedule(-1, -1, []);
   page: number = 1;
   maxPage: number = 1;
   offeredCourses: any = [];
   selectedCourse: boolean = false;
   course: any = {};
+  confirmNoPrereqs: boolean = false;
+  confirmWithPrereqs: boolean = false;
+  currentCourses = <any> [];
+  prerequisites = <any> [];
+  coursePrereqs = "";
 
   schoolId: number = 0;
   search: string | undefined = undefined;
@@ -75,6 +83,60 @@ export class AddCourseComponent implements OnInit {
                 ];
 
   constructor(private api: APIService, private cookie: CookieService, private jwt : JwtService) {}
+
+  async checkCoursePrereqs(){
+    this.coursePrereqs = this.course.prerequisites;
+    console.log(this.coursePrereqs);
+    if (this.coursePrereqs == ""){
+      this.confirmNoPrereqs = true; 
+    } else {
+      this.prerequisites = this.coursePrereqs.split(",")
+      
+      const user = JSON.parse(this.cookie.get('userObject'));
+      let userID = user.userId;
+  
+      let result = await this.api.getStudentSchedule(userID);
+
+      this.schedule = result;
+
+      this.prerequisites.forEach((courseID: string) => {
+        this.schedule.years.forEach((year: any) => {
+          if (year.yearNumber <= this.yearNumber){
+            year.courses.forEach((courseInfo: any) => {
+              let modified_courseID = courseInfo.courseCode.substring(0,5)
+              if (courseID == modified_courseID){
+                this.confirmNoPrereqs = true; 
+              }
+
+            });
+          }
+        });
+      });
+    }
+
+    if(this.confirmNoPrereqs == false){
+      this.confirmWithPrereqs = true; 
+    }
+  }
+
+  addCourse() {
+    this.checkCoursePrereqs();
+  }
+
+  confirmAddition(result: boolean) {
+    this.confirmWithPrereqs = false;
+    this.confirmNoPrereqs = false;
+    if (result) {
+      this.api.addCourseToSchedule(this.yearNumber, this.course.courseId).subscribe({
+        next: res => {
+          this.onCourseAdded.emit()
+        }, 
+        error: err => {
+          alert("Unable to add course.");
+        }
+      });
+    }
+  }
 
   checkAny() {
     if (this.selectedGrade == "Any") this.selectedGrade = undefined;

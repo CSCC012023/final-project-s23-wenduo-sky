@@ -20,7 +20,7 @@
     <!-- View course overlay -->
     <app-view-course *ngIf="showViewCourse" [course]="viewCourse" (onClickCloseEvent)="onClickClose()" [visible]="viewCourseDiv" [animationDuration]="animationDuration" (onCourseDeleted)="onCourseDeleted()"/>
     <!-- Add course overlay -->
-    <app-add-course *ngIf="showAddCourse" (onClickCloseEvent)="onClickClose()" [visible]="viewCourseDiv" [animationDuration]="animationDuration" [yearNumber]="selectedYear"/>
+    <app-add-course *ngIf="showAddCourse" (onClickCloseEvent)="onClickClose()" [visible]="viewCourseDiv" [animationDuration]="animationDuration" [yearNumber]="selectedYear" (onCourseAdded)="onCourseAdded()"/>
   </div>
 </div>
 

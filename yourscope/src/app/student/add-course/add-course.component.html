@@ -46,7 +46,10 @@
     <h5>Description</h5>
     <p class="courseDescription">{{this.course.description}}</p>
     <hr />
-    <button class="btn btn-success btnAddCourse">Add</button>
+    <button class="btn btn-success btnAddCourse" (click)="addCourse()">Add</button>
     <button class="btn btn-secondary btnAddCourse" (click)="returnToSearch()">Back</button>
   </div>
 </div>
+
+<confirmation-dialog *ngIf="confirmNoPrereqs" (onClickEvent)="confirmAddition($event)"/>
+<app-missing-prereq *ngIf="confirmWithPrereqs"(onClickEvent)="confirmAddition(false)" [prerequisites]="coursePrereqs"/>
