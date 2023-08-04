@@ -24,6 +24,7 @@ import { CoverLetterViewComponent } from './cover-letter-view/cover-letter-view.
 import { CoverLetterComponent } from './cover-letter/cover-letter.component';
 import { PostSecondaryViewComponent } from './post-secondary-view/post-secondary-view.component';
 import { ProgramComponent } from './program/program.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { ProgramComponent } from './program/program.component';
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatSelectModule
   ]
 })
 export class StudentModule { }

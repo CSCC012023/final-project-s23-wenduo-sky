@@ -62,7 +62,9 @@
 #bg {
   background: rgb(110, 197, 239) !important;
   display: block;
+  position: absolute;
   height: 100vh;
+  width: 100vw;
 }
 
 #studentSchedule {
@@ -146,6 +148,11 @@
 }
 
 .toolkit-card {
+  vertical-align: inherit !important;
   margin-top: 1%;
   width: 40%;
+}
+
+.toolkit-div {
+  vertical-align: top !important;
 }

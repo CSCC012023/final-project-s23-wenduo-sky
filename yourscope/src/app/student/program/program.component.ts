@@ -9,4 +9,5 @@ import { Program } from '../post-secondary-view/post-secondary-view.component';
 export class ProgramComponent {
   // Program information
   @Input() program: Program | undefined;
+  @Input() universityName: string | undefined;
 }

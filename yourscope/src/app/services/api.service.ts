@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { JwtService } from '../services/jwt.service';
 import { CookieService } from 'ngx-cookie-service'
 import { firstValueFrom, lastValueFrom } from 'rxjs';
+import { off } from '@angular/fire/database';
 
 
 @Injectable({
@@ -639,6 +640,90 @@ export class APIService {
     if (response.statusCode != 200) {
       console.log(response);
       throw new Error("Unsuccesful call to DELETE cover letter endpoint from API.");
+    }
+
+    return response.data;
+  }
+
+  public async getUniversityList() {
+    // Getting user information.
+    let loginToken = this.cookie.get('loginToken');
+    if (loginToken.length == 0) throw new Error("The user is not logged in.");
+
+    // API header setup.
+    const url = 'https://localhost:7184/api/university/v1/schools';
+    const options = {
+      headers: new HttpHeaders({
+        "Api-Key": environment.firebase.apiKey,
+        "Authorization": loginToken,
+        'Accept': 'application/json' as const,
+        'Content-Type': 'application/json' as const,
+        'Response-Type': 'JSON' as const
+      })
+    };
+
+    let res = await lastValueFrom(this.hc.get(url, options));
+
+    let response = JSON.parse(JSON.stringify(res));
+    if (response.statusCode != 200) {
+      console.log(response);
+      throw new Error("Unsuccesful call to GET univeristy endpoint from API.");
+    }
+
+    return response.data;
+  }
+
+  public async getProgramWithFilters(searchQuery: string, university: number | undefined, count: number, offset: number) {
+    // Getting user information.
+    let loginToken = this.cookie.get('loginToken');
+    if (loginToken.length == 0) throw new Error("The user is not logged in.");
+
+    // API header setup.
+    const url = `https://localhost:7184/api/university/v1/programs?count=${count}&offset=${offset}&Search=${searchQuery}${(university !== undefined ? `&UniversityId=${university}` : '')}`;
+    const options = {
+      headers: new HttpHeaders({
+        "Api-Key": environment.firebase.apiKey,
+        "Authorization": loginToken,
+        'Accept': 'application/json' as const,
+        'Content-Type': 'application/json' as const,
+        'Response-Type': 'JSON' as const
+      })
+    };
+
+    let res = await lastValueFrom(this.hc.get(url, options));
+
+    let response = JSON.parse(JSON.stringify(res));
+    if (response.statusCode != 200) {
+      console.log(response);
+      throw new Error("Unsuccesful call to GET university programs endpoint from API.");
+    }
+
+    return response.data;
+  }
+
+  public async countProgramWithFilters(searchQuery: string, university: number | undefined) {
+    // Getting user information.
+    let loginToken = this.cookie.get('loginToken');
+    if (loginToken.length == 0) throw new Error("The user is not logged in.");
+
+    // API header setup.
+    const url = `https://localhost:7184/api/university/v1/programs/count?Search=${searchQuery}${(university !== undefined ? `&UniversityId=${university}` : '')}`;
+    const options = {
+      headers: new HttpHeaders({
+        "Api-Key": environment.firebase.apiKey,
+        "Authorization": loginToken,
+        'Accept': 'application/json' as const,
+        'Content-Type': 'application/json' as const,
+        'Response-Type': 'JSON' as const
+      })
+    };
+
+    let res = await lastValueFrom(this.hc.get(url, options));
+
+    let response = JSON.parse(JSON.stringify(res));
+    if (response.statusCode != 200) {
+      console.log(response);
+      throw new Error("Unsuccesful call to GET university programs count endpoint from API.");
     }
 
     return response.data;

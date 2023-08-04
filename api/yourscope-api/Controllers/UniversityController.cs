@@ -67,6 +67,29 @@ namespace yourscope_api.Controllers
             }
         }
 
+        /// <summary>
+        /// Returns the total number of filtered university programs
+        /// </summary>
+        /// <param name="details">Search program by university and name</param>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(int), 200)]
+        [ProducesResponseType(500)]
+        [HttpGet]
+        [Route("programs/count")]
+        public async Task<IActionResult> CountPrograms(UniProgramDetails details)
+        {
+            ApiResponse response;
+            try
+            {
+                response = await service.CountProgramsMethod(details);
+            }
+            catch(Exception ex)
+            {
+                response = new ApiResponse(StatusCodes.Status500InternalServerError, exception: ex);
+            }
+            return StatusCode(response.StatusCode, response);
+        }
+
     }
 }
 
