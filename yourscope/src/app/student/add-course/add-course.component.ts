@@ -50,6 +50,8 @@ export class AddCourseComponent implements OnInit {
   confirmWithPrereqs: boolean = false;
   currentCourses = <any> [];
   prerequisites = <any> [];
+  courseReqs = <any> [];
+  recommendedCourses = "";
   coursePrereqs = "";
 
   schoolId: number = 0;
@@ -196,9 +198,24 @@ export class AddCourseComponent implements OnInit {
     })
   }
 
+  getRecommendedCourses() {
+    const user = JSON.parse(this.cookie.get('userObject'));
+    let userID = user.userId;
+
+    this.api.getRecommendedCourses(userID, this.schoolId).subscribe((res: any) => {
+      this.courseReqs = res.data;
+      
+      this.courseReqs.forEach((course: any) => {
+        this.recommendedCourses = this.recommendedCourses.concat(course.courseCode+ " or ")
+      })
+      this.recommendedCourses = this.recommendedCourses.substring(0, this.recommendedCourses.length - 4);
+     })  
+  }
+
   ngOnInit() {
     let user = this.jwt.DecodeToken(this.cookie.get("loginToken"));
     this.schoolId = user.affiliationID;
     this.getCourses(true, undefined, undefined, undefined);
+    this.getRecommendedCourses();
   }
 }

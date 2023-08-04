@@ -11,6 +11,10 @@
       </mat-select>
       <button (click)="searchQuery()">Search</button>
     </div>
+    <div *ngIf="recommendedCourses">
+      <h4>Based on your current courses, we recommended you take: </h4>
+      <h5>{{recommendedCourses}}</h5>
+    </div>
     <img src="../../../assets/closeBox.png" class="closeIcon" (click)="onClickCloseButton()">
     <div class="container-wrapper">
       <div class="container container-item">

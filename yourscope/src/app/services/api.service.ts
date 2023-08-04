@@ -509,6 +509,28 @@ export class APIService {
     return this.hc.post('https://localhost:7184/api/schools/v1/'+ decodedToken.affiliationID + '/courses', body, options);
   }
 
+  public getRecommendedCourses(userID: number, schoolID: number) {
+    let loginToken = this.cookie.get("loginToken");
+    let parameters: any = {};
+    if (schoolID != undefined) {
+      parameters.schoolID = schoolID;
+    }
+    const options = {
+      params: parameters,
+      headers: new HttpHeaders(
+      {
+        'Api-Key': environment.firebase.apiKey,
+        'Authorization': loginToken,
+        'Accept': 'application/json' as const,
+        'Content-Type': 'application/json' as const,
+        'Response-Type': 'JSON' as const
+      }
+      )
+    };
+
+    return this.hc.get('https://localhost:7184/api/student/v1/insight/courses/'+ userID + "/", options);
+  }
+
   public getProfile(userID : number){
     let loginToken = this.cookie.get("loginToken");
     const options = {
