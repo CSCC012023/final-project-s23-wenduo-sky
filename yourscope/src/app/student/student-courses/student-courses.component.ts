@@ -53,8 +53,8 @@ export class StudentCoursesComponent {
   }
   onClickAddCourse(yearNumber: number) {
     this.showAddCourse = true;
+    this.viewCourseDiv = true;
     this.selectedYear = yearNumber;
-    this.loadPopup(yearNumber);
   }
   onClickBackground(event: any) {
     if (event.target.classList.contains("overlayBackground")) {
