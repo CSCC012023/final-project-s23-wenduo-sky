@@ -45,9 +45,17 @@ h5 {
   margin-bottom: 0;
 }
 
+.empty {
+  text-align: center;
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+}
+
 .container {
   margin-left: 1%;
   width: 735px;
+  height: 400px;
   padding: 2%;
   overflow-y: hidden;
   overflow-x: hidden;
