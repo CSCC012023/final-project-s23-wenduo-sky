@@ -8,3 +8,19 @@
   </div>
 </div>
 <confirmation-dialog *ngIf="confirm" (onClickEvent)="onConfirmResult($event)"/>
+<div class="overlay" *ngIf="displayCoverLetter">
+    <div class="coverLetterDisplay">
+      <img src="assets/closeBox.png" class="btnClosePopup" (click)="onClickClosePopup()"/>
+      <h3>Cover Letter Viewer</h3>
+      <hr />
+      <p *ngIf="coverLetter?.intro">{{coverLetter?.intro}}</p>
+      <br />
+      <p *ngIf="coverLetter?.salesPitch1">{{coverLetter?.salesPitch1}}</p>
+      <br />
+      <p *ngIf="coverLetter?.salesPitch2">{{coverLetter?.salesPitch2}}</p>
+      <br />
+      <p *ngIf="coverLetter?.salesPitch3">{{coverLetter?.salesPitch3}}</p>
+      <br />
+      <p *ngIf="coverLetter?.conclusion">{{coverLetter?.conclusion}}</p>
+    </div>
+</div>
