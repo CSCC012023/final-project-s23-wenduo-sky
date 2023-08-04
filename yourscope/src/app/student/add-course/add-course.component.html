@@ -40,7 +40,7 @@
       <span class="bold">Discipline:</span> {{this.course.discipline}}
     </p>
     <p class="subHeading">
-      <span class="bold">Pre-requisites:</span> {{this.course.prerequisites}}
+      <span class="bold">Pre-requisites:</span> {{this.parsePrereqs(this.course.prerequisites)}}
     </p>
     <hr />
     <h5>Description</h5>

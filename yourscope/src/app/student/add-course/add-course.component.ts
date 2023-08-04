@@ -84,6 +84,11 @@ export class AddCourseComponent implements OnInit {
 
   constructor(private api: APIService, private cookie: CookieService, private jwt : JwtService) {}
 
+  parsePrereqs(prereqs: string | undefined) {
+    if (prereqs == undefined || prereqs == "") return "None";
+    else return prereqs.replaceAll(",", " or ");
+  }
+
   async checkCoursePrereqs(){
     this.coursePrereqs = this.course.prerequisites;
     console.log(this.coursePrereqs);
