@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { APIService } from '../services/api.service';
 import { JwtService } from '../services/jwt.service';
 import { CookieService } from 'ngx-cookie-service'
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class AuthService {
   constructor(private router: Router,
               private service : APIService,
               private jwtService : JwtService,
-              private cookieService: CookieService)  { }
+              private cookieService: CookieService,
+              private toastr: ToastrService)  { }
 
   login(email: string, password: string) {
     this.service.getLogin(email, password).subscribe({
@@ -27,7 +29,7 @@ export class AuthService {
         this.redirectToDashboard(loginToken);
       }, 
       error: err => {
-        alert(err.error);
+        this.toastr.error("Unable to login. Check your credentials.");
       }
     });
   }
@@ -54,11 +56,11 @@ export class AuthService {
   passwordReset(email: string) {
     this.service.passwordReset(email).subscribe({
       next: () => {
-        alert("Email sent");
+        this.toastr.success("Successfully sent email.");
         this.router.navigate(['/login']);
       }, 
       error: err => {
-        alert(err.error);
+        this.toastr.error("Unable to send email.");
       }
     });
   }

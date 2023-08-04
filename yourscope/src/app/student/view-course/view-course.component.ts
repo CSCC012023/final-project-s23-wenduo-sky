@@ -3,6 +3,7 @@ import { YearCourse } from '../year/year.component';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { APIService } from 'src/app/services/api.service';
 import { CookieService } from 'ngx-cookie-service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-view-course',
@@ -54,7 +55,7 @@ export class ViewCourseComponent {
   showConfirmationDialog: boolean = false;
   disableDrop: boolean = false;
   // Constructor.
-  constructor (private api: APIService, private cookie: CookieService) { }
+  constructor (private api: APIService, private cookie: CookieService, private toastr: ToastrService) { }
   // Initialization
   ngOnInit(): void {
     if (this.course) {
@@ -97,7 +98,7 @@ export class ViewCourseComponent {
         response = await this.api.deleteCourseFromSchedule(userId, this.yearNumber, this.courseId);
       }
       catch(error) {
-        console.log(error);
+        this.toastr.error("Unable to remove course from schedule.");
       }
       // Closing the UI and reloading the schedule list.
       this.closeCourseView();

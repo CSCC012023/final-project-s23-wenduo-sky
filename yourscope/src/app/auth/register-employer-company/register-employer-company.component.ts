@@ -13,6 +13,7 @@ import { take, takeUntil } from 'rxjs/operators';
 import { RegisterEmployerComponent } from '../register-employer/register-employer.component';
 import { RegisterCompanyComponent } from '../register-company/register-company.component';
 import { APIService } from '../../services/api.service';
+import { ToastrService } from 'ngx-toastr';
 
 interface Company {
   companyID: number;
@@ -56,7 +57,7 @@ export class RegisterEmployerCompanyComponent implements AfterViewInit, OnDestro
   public filteredCompanies: ReplaySubject<any> = new ReplaySubject();
 
   protected _onDestroy = new Subject();
-  constructor(private api: APIService) { }
+  constructor(private api: APIService, private toastr: ToastrService) { }
 
   selectedCompany(event: MatSelectChange) {
     this.selected = event.source.triggerValue;
@@ -129,7 +130,7 @@ export class RegisterEmployerCompanyComponent implements AfterViewInit, OnDestro
         this.populateCompanyDropdown(response.data);
       },
       error: err => {
-        console.log(err);
+        this.toastr.error("Unable to retrieve companies.");
       }
     })
   }

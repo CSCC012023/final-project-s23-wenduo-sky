@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { APIService } from '../../services/api.service';
 import { AuthService } from 'src/app/auth/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 class UserObj {
   Email!: string;
@@ -65,7 +66,7 @@ export class RegisterStudentComponent {
   validBirthday: boolean = true;
   formErrorStr: string = "";
 
-  constructor(private api: APIService, private auth: AuthService) { }
+  constructor(private api: APIService, private auth: AuthService, private toastr: ToastrService) { }
 
   public studentForm = new FormGroup({
     fname: new FormControl(),
@@ -171,7 +172,7 @@ export class RegisterStudentComponent {
         }
       },
       error: err => {
-        console.log(err);
+        this.toastr.error("Unable to validate email.");
       }
     })
   }
@@ -226,7 +227,7 @@ export class RegisterStudentComponent {
         component.populateSchoolList(response.data);
       },
       error: err => {
-        console.log(err.error);
+        this.toastr.error("Unable to retrieve schools.");
       }
     });
   }

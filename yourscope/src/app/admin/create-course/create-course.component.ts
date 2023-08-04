@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { APIService } from 'src/app/services/api.service';
 
 @Component({
@@ -17,45 +18,45 @@ export class CreateCourseComponent {
   credits : number | string = '';
   prerequisites : string = '';
   
-  constructor(private router : Router, private hc : APIService) { }
+  constructor(private router : Router, private hc : APIService, private toastr: ToastrService) { }
 
   save() {
     if(this.code == '') {
-      alert('Please enter course code');
+      this.toastr.error("Please enter course code.");
       return;
     }
     if(this.description == '') {
-      alert('Please enter course description');
+      this.toastr.error("Please enter course description.");
       return;
     }
     if(this.name == '') {
-      alert('Please enter course name');
+      this.toastr.error("Please enter course name.");
       return;
     }
     if(this.discipline == '') {
-      alert('Please enter course discipline');
+      this.toastr.error("Please enter course discipline.");
       return;
     }
     if(this.type == '') {
-      alert('Please enter course type');
+      this.toastr.error("Please enter course type.");
       return;
     }
     if(this.credits == '' || <number>this.credits < 1) {
-      alert('Please enter a valid numnber of credits');
+      this.toastr.error("Please enter a valid number of credits.");
       return;
     }
     if(this.grade == '' || <number>this.grade < 9) {
-      alert('Please enter a valid grade');
+      this.toastr.error("Please enter a valid grade.");
       return;
     }
 
     this.hc.createCourse(this.code, this.name, this.discipline, this.type, <number>this.grade, <number>this.credits, this.description, this.prerequisites).subscribe({
       next: res => {
-        alert("Successfully added course");
+        this.toastr.success("Successfully added course.");
         this.router.navigate(['/admin/courses']);
       }, 
       error: err => {
-        alert(err.message);
+        this.toastr.error("Unable to add course.");
       }
     });
   }

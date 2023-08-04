@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
+import { ToastrService } from 'ngx-toastr';
 import { APIService } from 'src/app/services/api.service';
 import { JwtService } from 'src/app/services/jwt.service';
 
@@ -18,7 +19,7 @@ export class DashboardAdminComponent implements OnInit {
   confirmEvent: boolean = false;
   confirmCourse: boolean = false;
 
-  constructor(private api: APIService, private cookie: CookieService, private jwt: JwtService) { }
+  constructor(private api: APIService, private cookie: CookieService, private jwt: JwtService, private toastr: ToastrService) { }
 
   token = this.jwt.DecodeToken(this.cookie.get("loginToken"));
   
@@ -31,7 +32,7 @@ export class DashboardAdminComponent implements OnInit {
         }
       }, 
       error: err => {
-        alert("Unable retrieve events." );
+        this.toastr.error("Unable to retrieve events.");
       }
     });
     this.api.getCourses(this.token.affiliationID, undefined, undefined, undefined, 0, 20).subscribe({
@@ -42,7 +43,7 @@ export class DashboardAdminComponent implements OnInit {
         }
       },
       error: err => {
-        alert("Unable to retrieve events.");
+        this.toastr.error("Unable to retrieve events.");
       }
     });
   }
@@ -65,11 +66,11 @@ export class DashboardAdminComponent implements OnInit {
     if (result) {
       this.api.deleteEvent(this.selectedEvent.eventId).subscribe({
         next: res => {
-          alert("Successfully deleted event.");
+          this.toastr.success("Successfully deleted event.");
           location.reload();
         }, 
         error: err => {
-          alert("Unable to delete event.");
+          this.toastr.error("Unable to delete event.");
         }
       });
     }
@@ -85,11 +86,11 @@ export class DashboardAdminComponent implements OnInit {
     if (result) {
       this.api.deleteCourse(this.selectedCourse.courseId).subscribe({
         next: res => {
-          alert("Successfully deleted course.");
+          this.toastr.success("Successfully deleted course.");
           location.reload();
         }, 
         error: err => {
-          alert("Unable to delete event.");
+          this.toastr.error("Unable to delete event.");
         }
       });
     }
