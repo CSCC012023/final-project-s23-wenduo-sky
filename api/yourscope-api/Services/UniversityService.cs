@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using yourscope_api.entities;
 using yourscope_api.Models.DbModels;
 using yourscope_api.Models.Request;
 using yourscope_api.service;
@@ -47,6 +48,38 @@ namespace yourscope_api.Services
         {
             using var context = new YourScopeContext();
             return context.Universities.ToList();
+        }
+
+        public async Task<ApiResponse> CountProgramsMethod(UniProgramDetails details)
+        {
+            int count = await CountPrograms(details);
+
+            return new ApiResponse(StatusCodes.Status200OK, data: count, success: true);
+        }
+
+        private static async Task<int> CountPrograms(UniProgramDetails details)
+        {
+            using var context = new YourScopeContext();
+            var query = context.UniPrograms.AsQueryable();
+
+            if (details.UniversityId != null)
+            {
+                query = query.Where(q => q.UniversityId == details.UniversityId);
+            }
+
+            var programList = await query.ToListAsync();
+
+            if (details.Search != null)
+            {
+                return programList
+                    .Where(q => q.Name.Contains(details.Search, StringComparison.OrdinalIgnoreCase))
+                    .ToList()
+                    .Count;
+            }
+
+            return programList
+                    .ToList()
+                    .Count;
         }
     }
 }

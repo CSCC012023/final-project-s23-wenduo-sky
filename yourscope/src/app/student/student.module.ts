@@ -17,8 +17,13 @@ import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { StudentApplicationComponent } from './student-application/student-application.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { StudentToolkitComponent } from './student-toolkit/student-toolkit.component';
 import { StudentCourseDetailsComponent } from './student-course-details/student-course-details.component';
 import { MissingPrereqComponent } from './missing-prereq/missing-prereq.component';
+import { CoverLetterViewComponent } from './cover-letter-view/cover-letter-view.component';
+import { CoverLetterComponent } from './cover-letter/cover-letter.component';
+import { PostSecondaryViewComponent } from './post-secondary-view/post-secondary-view.component';
+import { ProgramComponent } from './program/program.component';
 import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
@@ -37,7 +42,12 @@ import { MatSelectModule } from '@angular/material/select';
     CreateProfileComponent,
     StudentPostingDetailsComponent,
     StudentCourseDetailsComponent,
-    MissingPrereqComponent
+    MissingPrereqComponent,
+    CoverLetterViewComponent,
+    CoverLetterComponent,
+    StudentToolkitComponent,
+    PostSecondaryViewComponent,
+    ProgramComponent
   ],
   imports: [
     CommonModule,

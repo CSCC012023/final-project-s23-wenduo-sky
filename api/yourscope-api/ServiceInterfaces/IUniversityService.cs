@@ -9,6 +9,7 @@ namespace yourscope_api.service
     {
         public List<UniProgram> GetPrograms(UniProgramDetails details, int count, int offset);
         public List<University> GetUniversities();
+        public Task<ApiResponse> CountProgramsMethod(UniProgramDetails details);
     }
 }
 
