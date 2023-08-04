@@ -17,10 +17,14 @@ export class CoverLetterComponent {
 
   // Display
   confirm = false;
+  displayCoverLetter = false;
 
   // Methods
+  onClickClosePopup() {
+    this.displayCoverLetter = false;
+  }
   onClickDetails() {
-    alert("Details ID: " + this.coverLetter?.coverLetterId);
+    this.displayCoverLetter = true;
   }
   onClickDelete() {
     this.confirm = true;
