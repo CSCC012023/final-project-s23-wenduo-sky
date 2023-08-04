@@ -4,6 +4,7 @@ import { APIService } from 'src/app/services/api.service';
 import { CookieService } from 'ngx-cookie-service';
 import { JwtService } from 'src/app/services/jwt.service';
 import { StudentSchedule } from '../student-courses/student-courses.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-course',
@@ -82,7 +83,7 @@ export class AddCourseComponent implements OnInit {
                  "Technological Education"
                 ];
 
-  constructor(private api: APIService, private cookie: CookieService, private jwt : JwtService) {}
+  constructor(private api: APIService, private cookie: CookieService, private jwt : JwtService, private toastr: ToastrService) {}
 
   parsePrereqs(prereqs: string | undefined) {
     if (prereqs == undefined || prereqs == "") return "None";
@@ -91,7 +92,6 @@ export class AddCourseComponent implements OnInit {
 
   async checkCoursePrereqs(){
     this.coursePrereqs = this.course.prerequisites;
-    console.log(this.coursePrereqs);
     if (this.coursePrereqs == ""){
       this.confirmNoPrereqs = true; 
     } else {
@@ -137,7 +137,7 @@ export class AddCourseComponent implements OnInit {
           this.onCourseAdded.emit()
         }, 
         error: err => {
-          alert("Unable to add course.");
+          this.toastr.error("There was an internal error.");
         }
       });
     }

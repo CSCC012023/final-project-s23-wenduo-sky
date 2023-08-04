@@ -275,7 +275,6 @@ export class APIService {
   public createEvent(title : string, description : string, eventDate : Date, location : string){
     let loginToken = this.cookie.get("loginToken");
     let decodedToken = this.jwtService.DecodeToken(loginToken);
-    console.log(decodedToken);
     const body = JSON.stringify({"title":title, "description":description, "date": eventDate, "location": location, "userId":decodedToken.userID})
     const options = {
         headers: new HttpHeaders(
@@ -445,8 +444,6 @@ export class APIService {
     let res = await firstValueFrom(this.hc.post(url, options));
 
     let response = JSON.parse(JSON.stringify(res));
-    if (!(response.statusCode == 201))
-      console.log(response);
 
     return response.data;
   }
@@ -529,7 +526,6 @@ export class APIService {
   }
 
   public createProfile(skills?: string | null, intrestsHobbies?:string | null, awards?:string | null){
-    console.log(skills + " " + intrestsHobbies + " " + awards);
     let loginToken = this.cookie.get("loginToken");
     let decodedToken = this.jwtService.DecodeToken(loginToken);
     const body = JSON.stringify({"userId":decodedToken.userID, "skills":skills, "intrestsHobbies": intrestsHobbies, "awards": awards})
