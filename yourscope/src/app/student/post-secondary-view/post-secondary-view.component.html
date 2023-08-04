@@ -1,0 +1,5 @@
+<program *ngFor="let program of programs" [program]="program"/>
+<div *ngIf="programs.length === 0 && loadingComplete">
+    <h5>Enter a search query to find programs!</h5>
+</div>
+<img class="gifLoad" src="../../../assets/loading.gif" *ngIf="!loadingComplete">
