@@ -746,4 +746,41 @@ export class APIService {
 
     return response.data;
   }
+
+  public async createCoverLetter(intro: string, pitch1: string, pitch2: string, pitch3: string, conclusion: string) {
+    // Getting user information.
+    let loginToken = this.cookie.get('loginToken');
+    if (loginToken.length == 0) throw new Error("The user is not logged in.");
+    let decodedToken = this.jwtService.DecodeToken(loginToken);
+
+    // API header and body setup.
+    const url = settings.apiBaseURL + 'api/profile/v1/cover-letter?userId=' + decodedToken.userID;
+    const options = {
+      headers: new HttpHeaders({
+        "Api-Key": environment.firebase.apiKey,
+        "Authorization": loginToken,
+        'Accept': 'application/json' as const,
+        'Content-Type': 'application/json' as const,
+        'Response-Type': 'JSON' as const
+      })
+    };
+    let body = {
+      intro: intro,
+      salesPitch1: pitch1,
+      salesPitch2: pitch2,
+      salesPitch3: pitch3,
+      conclusion: conclusion
+    }
+
+    // Calling the API
+    let res = await lastValueFrom(this.hc.post(url, body, options));
+
+    let response = JSON.parse(JSON.stringify(res));
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      console.log(response);
+      throw new Error("Unsuccessful call to POST cover letter endpoint from API.");
+    }
+
+    return response.data;
+  }
 }

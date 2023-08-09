@@ -52,7 +52,7 @@
           <label for="intro">Conclusion</label>
           <textarea formControlName="conclusion" type="text" class="form-control"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary btn-lg btnSubmit">Create</button>
+        <button type="submit" class="btn btn-primary btn-lg btnSubmit" [disabled]="clickedCreate">Create</button>
         <label class="lblText">{{lblText}}</label>
       </form>
     </div>
