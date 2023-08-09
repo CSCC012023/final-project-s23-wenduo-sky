@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 import { JwtService } from '../services/jwt.service';
 import { CookieService } from 'ngx-cookie-service'
 import { firstValueFrom, lastValueFrom } from 'rxjs';
-
+import settings from '../../appsettings.json';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +33,7 @@ export class APIService {
         )
       };
 
-    return this.hc.post('https://localhost:7184/api/Accounts/v1/login', body, options);
+    return this.hc.post(settings.apiBaseURL+'api/Accounts/v1/login', body, options);
   }
 
   public passwordReset(email : string){
@@ -49,7 +49,7 @@ export class APIService {
         )
       };
 
-      let url : string =  'https://localhost:7184/api/Accounts/v1/';
+      let url : string =  settings.apiBaseURL+'api/Accounts/v1/';
       url = url.concat(email, '/send-password-reset-email')
       return this.hc.post(url, body, options);
   }
@@ -76,7 +76,7 @@ export class APIService {
         'Response-Type': 'JSON' as const
       })
     };
-    return this.hc.get('https://localhost:7184/api/job/v1/posting', options);
+    return this.hc.get(settings.apiBaseURL+'api/job/v1/posting', options);
   }
 
   public getEvents(count: number, offset: number, schoolId? : number, userID? : number){
@@ -97,7 +97,7 @@ export class APIService {
         )
       };
 
-      return this.hc.get('https://localhost:7184/api/events/v1', options);
+      return this.hc.get(settings.apiBaseURL+'api/events/v1', options);
     } else if (schoolId != undefined) {
       const options = {
         params: {'offset': offset, 'count': count, 'schoolId': decodedToken.affiliationID},
@@ -112,7 +112,7 @@ export class APIService {
         )
       };
 
-      return this.hc.get('https://localhost:7184/api/events/v1', options);
+      return this.hc.get(settings.apiBaseURL+'api/events/v1', options);
     } else {
       const options = {
         params: {'offset': offset, 'count': count},
@@ -127,7 +127,7 @@ export class APIService {
         )
       };
 
-      return this.hc.get('https://localhost:7184/api/events/v1', options);
+      return this.hc.get(settings.apiBaseURL+'api/events/v1', options);
     }
   }
 
@@ -165,7 +165,7 @@ export class APIService {
       )
     };
 
-    return this.hc.get('https://localhost:7184/api/schools/v1/courses', options);
+    return this.hc.get(settings.apiBaseURL+'api/schools/v1/courses', options);
   }
 
   public getCourseCount(schoolID?: number, searchQuery?: string, grade?: number, disciplines?: string) {
@@ -196,7 +196,7 @@ export class APIService {
       )
     };
 
-    return this.hc.get('https://localhost:7184/api/schools/v1/courses/count', options);
+    return this.hc.get(settings.apiBaseURL+'api/schools/v1/courses/count', options);
   }
 
   public async getUser(id: number) {
@@ -214,7 +214,7 @@ export class APIService {
       )
     };
 
-    let res = await firstValueFrom(this.hc.get('https://localhost:7184/api/accounts/v1/'+id, options));
+    let res = await firstValueFrom(this.hc.get(settings.apiBaseURL+'api/accounts/v1/'+id, options));
 
     return JSON.parse(JSON.stringify(res)).data;
   }
@@ -237,7 +237,7 @@ export class APIService {
         )
       };
 
-      return this.hc.get('https://localhost:7184/api/events/v1/count', options);
+      return this.hc.get(settings.apiBaseURL+'api/events/v1/count', options);
     } else if (schoolId != undefined) {
       const options = {
         params: {'userId': decodedToken.affiliationID},
@@ -252,7 +252,7 @@ export class APIService {
         )
       };
 
-      return this.hc.get('https://localhost:7184/api/events/v1/count', options);
+      return this.hc.get(settings.apiBaseURL+'api/events/v1/count', options);
     } else {
       const options = {
         params: {'schoolId': decodedToken.affiliationID},
@@ -267,7 +267,7 @@ export class APIService {
         )
       };
 
-      return this.hc.get('https://localhost:7184/api/events/v1/count', options);
+      return this.hc.get(settings.apiBaseURL+'api/events/v1/count', options);
     }
   }
 
@@ -288,7 +288,7 @@ export class APIService {
         )
       };
 
-    return this.hc.post('https://localhost:7184/api/events/v1', body, options);
+    return this.hc.post(settings.apiBaseURL+'api/events/v1', body, options);
   }
 
   public deleteEvent(id : number){
@@ -305,7 +305,7 @@ export class APIService {
         )
       };
 
-    return this.hc.delete('https://localhost:7184/api/events/v1/'+id, options);
+    return this.hc.delete(settings.apiBaseURL+'api/events/v1/'+id, options);
   }
 
   public getJobPostings(offset: number, count : number, userID? : number, applied? : boolean, employerId?: number) {
@@ -336,7 +336,7 @@ export class APIService {
       })
     }
 
-    return this.hc.get('https://localhost:7184/api/job/v1/posting', options);
+    return this.hc.get(settings.apiBaseURL+'api/job/v1/posting', options);
   }
 
   public createJobPosting(title : string, description : string, applicationDeadline : Date){
@@ -355,7 +355,7 @@ export class APIService {
         )
       };
 
-    return this.hc.post('https://localhost:7184/api/job/v1/posting', body, options);
+    return this.hc.post(settings.apiBaseURL+'api/job/v1/posting', body, options);
   }
 
   public deleteJobPosting(id : number){
@@ -372,7 +372,7 @@ export class APIService {
         )
       };
 
-    return this.hc.delete('https://localhost:7184/api/job/v1/posting/'+id, options);
+    return this.hc.delete(settings.apiBaseURL+'api/job/v1/posting/'+id, options);
   }
 
   public getJobApplicants(postingID: number) {
@@ -393,11 +393,11 @@ export class APIService {
       })
     }
 
-    return this.hc.get('https://localhost:7184/api/job/v1/application/' + postingID, options);
+    return this.hc.get(settings.apiBaseURL+'api/job/v1/application/' + postingID, options);
   }
 
   public async getStudentSchedule(userID: number) {
-    const url = 'https://localhost:7184/api/student/v1/schedule/'+userID;
+    const url = settings.apiBaseURL+'api/student/v1/schedule/'+userID;
 
     let loginToken = this.cookie.get("loginToken");
     const options = {
@@ -426,7 +426,7 @@ export class APIService {
   }
 
   public async createStudentSchedule(userID: number) {
-    const url = "https://localhost:7184/api/student/v1/schedule/" + userID;
+    const url = settings.apiBaseURL+"api/student/v1/schedule/" + userID;
 
     let loginToken = this.cookie.get("loginToken");
     const options = {
@@ -463,11 +463,11 @@ export class APIService {
         )
       };
 
-    return this.hc.post('https://localhost:7184/api/student/v1/schedule/'+decodedToken.userID+'/year/'+year+'/course/'+courseID, options);
+    return this.hc.post(settings.apiBaseURL+'api/student/v1/schedule/'+decodedToken.userID+'/year/'+year+'/course/'+courseID, options);
   }
 
   public async deleteCourseFromSchedule(userID: number, year: number, courseID: number) {
-    const url = `https://localhost:7184/api/student/v1/schedule/${userID}/year/${year}/course/${courseID}`;
+    const url = `${settings.apiBaseURL}api/student/v1/schedule/${userID}/year/${year}/course/${courseID}`;
 
     let loginToken = this.cookie.get("loginToken");
     const options = {
@@ -505,7 +505,7 @@ export class APIService {
         )
       };
 
-    return this.hc.post('https://localhost:7184/api/schools/v1/'+ decodedToken.affiliationID + '/courses', body, options);
+    return this.hc.post(settings.apiBaseURL+'api/schools/v1/'+ decodedToken.affiliationID + '/courses', body, options);
   }
 
   public getRecommendedCourses(userID: number, schoolID: number) {
@@ -527,7 +527,7 @@ export class APIService {
       )
     };
 
-    return this.hc.get('https://localhost:7184/api/student/v1/insight/courses/'+ userID + "/", options);
+    return this.hc.get(settings.apiBaseURL+'api/student/v1/insight/courses/'+ userID + "/", options);
   }
 
   public getProfile(userID : number){
@@ -544,7 +544,7 @@ export class APIService {
           }
         )
       };
-    return this.hc.get('https://localhost:7184/api/profile/v1/profile', options);
+    return this.hc.get(settings.apiBaseURL+'api/profile/v1/profile', options);
   }
 
   public createProfile(skills?: string | null, intrestsHobbies?:string | null, awards?:string | null){
@@ -562,7 +562,7 @@ export class APIService {
           }
         )
       };
-    return this.hc.post('https://localhost:7184/api/profile/v1/profile', body, options);
+    return this.hc.post(settings.apiBaseURL+'api/profile/v1/profile', body, options);
   }
 
   public deleteCourse(id : number){
@@ -580,7 +580,7 @@ export class APIService {
         )
       };
 
-    return this.hc.delete('https://localhost:7184/api/schools/v1/'+ decodedToken.affiliationID + '/courses/'+id, options);
+    return this.hc.delete(settings.apiBaseURL+'api/schools/v1/'+ decodedToken.affiliationID + '/courses/'+id, options);
   }
 
   public jobCount() {
@@ -599,7 +599,7 @@ export class APIService {
         })
       };
 
-      return this.hc.get('https://localhost:7184/api/job/v1/posting/count', options);
+      return this.hc.get(settings.apiBaseURL+'api/job/v1/posting/count', options);
   }
 
   public async getCoverLetters() {
@@ -609,7 +609,7 @@ export class APIService {
     let decodedToken = this.jwtService.DecodeToken(loginToken);
 
     // API header setup.
-    const url = 'https://localhost:7184/api/profile/v1/cover-letter';
+    const url = settings.apiBaseURL+'api/profile/v1/cover-letter';
     const options = {
       params: {'userId': decodedToken.userID },
       headers: new HttpHeaders({
@@ -639,7 +639,7 @@ export class APIService {
     let decodedToken = this.jwtService.DecodeToken(loginToken);
 
     // API header setup.
-    const url = 'https://localhost:7184/api/profile/v1/cover-letter';
+    const url = settings.apiBaseURL+'api/profile/v1/cover-letter';
     const options = {
       params: {'coverLetterId': id },
       headers: new HttpHeaders({
@@ -668,7 +668,7 @@ export class APIService {
     if (loginToken.length == 0) throw new Error("The user is not logged in.");
 
     // API header setup.
-    const url = 'https://localhost:7184/api/university/v1/schools';
+    const url = settings.apiBaseURL+'api/university/v1/schools';
     const options = {
       headers: new HttpHeaders({
         "Api-Key": environment.firebase.apiKey,
@@ -696,7 +696,7 @@ export class APIService {
     if (loginToken.length == 0) throw new Error("The user is not logged in.");
 
     // API header setup.
-    const url = `https://localhost:7184/api/university/v1/programs?count=${count}&offset=${offset}&Search=${searchQuery}${(university !== undefined ? `&UniversityId=${university}` : '')}`;
+    const url = `${settings.apiBaseURL}api/university/v1/programs?count=${count}&offset=${offset}&Search=${searchQuery}${(university !== undefined ? `&UniversityId=${university}` : '')}`;
     const options = {
       headers: new HttpHeaders({
         "Api-Key": environment.firebase.apiKey,
@@ -724,7 +724,7 @@ export class APIService {
     if (loginToken.length == 0) throw new Error("The user is not logged in.");
 
     // API header setup.
-    const url = `https://localhost:7184/api/university/v1/programs/count?Search=${searchQuery}${(university !== undefined ? `&UniversityId=${university}` : '')}`;
+    const url = `${settings.apiBaseURL}api/university/v1/programs/count?Search=${searchQuery}${(university !== undefined ? `&UniversityId=${university}` : '')}`;
     const options = {
       headers: new HttpHeaders({
         "Api-Key": environment.firebase.apiKey,
@@ -741,6 +741,43 @@ export class APIService {
     if (response.statusCode != 200) {
       console.log(response);
       throw new Error("Unsuccesful call to GET university programs count endpoint from API.");
+    }
+
+    return response.data;
+  }
+
+  public async createCoverLetter(intro: string, pitch1: string, pitch2: string, pitch3: string, conclusion: string) {
+    // Getting user information.
+    let loginToken = this.cookie.get('loginToken');
+    if (loginToken.length == 0) throw new Error("The user is not logged in.");
+    let decodedToken = this.jwtService.DecodeToken(loginToken);
+
+    // API header and body setup.
+    const url = settings.apiBaseURL + 'api/profile/v1/cover-letter?userId=' + decodedToken.userID;
+    const options = {
+      headers: new HttpHeaders({
+        "Api-Key": environment.firebase.apiKey,
+        "Authorization": loginToken,
+        'Accept': 'application/json' as const,
+        'Content-Type': 'application/json' as const,
+        'Response-Type': 'JSON' as const
+      })
+    };
+    let body = {
+      intro: intro,
+      salesPitch1: pitch1,
+      salesPitch2: pitch2,
+      salesPitch3: pitch3,
+      conclusion: conclusion
+    }
+
+    // Calling the API
+    let res = await lastValueFrom(this.hc.post(url, body, options));
+
+    let response = JSON.parse(JSON.stringify(res));
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      console.log(response);
+      throw new Error("Unsuccessful call to POST cover letter endpoint from API.");
     }
 
     return response.data;
