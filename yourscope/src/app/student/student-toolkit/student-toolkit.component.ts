@@ -39,6 +39,8 @@ export class StudentToolkitComponent {
   }
   onClickClosePopup() {
     this.displayCreateCoverLetter = false;
+    this.clearValidation();
+    this.formCV.reset();
   }
   // Cover letter creation
   submitCV() {
