@@ -13,13 +13,6 @@ namespace yourscope_api.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Company");
-
-            migrationBuilder.DropTable(
-                name: "JobQuestions");
-
-            migrationBuilder.DropColumn(
-                name: "responses",
-                table: "JobApplications");
         }
 
         /// <inheritdoc />
